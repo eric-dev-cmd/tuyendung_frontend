@@ -9,14 +9,14 @@ import {
   USER_REGISTER_FAIL,
 } from "../constants/authConstants";
 
-const token = JSON.parse(localStorage?.getItem("token"));
-const user = JSON.parse(localStorage?.getItem("user"));
+const token = localStorage?.getItem("token") || null;
+const user = JSON.parse(localStorage?.getItem("user")) || null;
 
 const initialState = {
-  token: token ? token : null,
+  token: token,
   isAuthenticated: false,
   loading: true,
-  user: user ? user : null,
+  user: user,
 };
 export const userRegisterReducer = (state = initialState, action) => {
   const { type, payload } = action;

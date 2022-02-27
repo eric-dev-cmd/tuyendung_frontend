@@ -42,3 +42,6 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+.error-input p {
+  color: #bf1650;
+}

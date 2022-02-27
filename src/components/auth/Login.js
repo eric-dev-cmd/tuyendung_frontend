@@ -5,15 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/authActions";
 import "./Login.css";
 import { Helmet } from "react-helmet";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    tenDangNhap: "",
-    matKhau: "",
-  });
-  const { tenDangNhap, matKhau } = formData;
+  const { register, errors, handleSubmit } = useForm({});
   const user = useSelector((state) => state.userLogin);
+
   useEffect(() => {
     console.log("USER LOGIN", user);
     if (user.isAuthenticated) {
@@ -22,11 +20,13 @@ const Login = () => {
       console.log("No logged");
     }
   }, [user]);
-  const handleOnChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    dispatch(login(tenDangNhap, matKhau));
+  const onSubmit = async (data) => {
+    const payload = {
+      tenDangNhap: data.dangNhapTenTaiKhoan?.trim(),
+      matKhau: data.dangNhapMatKhau?.trim(),
+    };
+    console.log("payload:::", payload);
+    dispatch(login(payload));
   };
   return (
     <Fragment>
@@ -40,41 +40,65 @@ const Login = () => {
       </Helmet>
       <div className="login-wrapper d-flex justify-content-center pt-5">
         <div className="bg-login">
-          <form onSubmit={handleOnSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="py-2 text-center">
               <h3>Đăng nhập</h3>
             </div>
             <div className="admin-modal-content">
               <div className="input-wrapper">
-                <div className="input-wrapper-item">
+                <div className="input-wrapper-item mb-3">
                   <input
-                    name="tenDangNhap"
+                    name="dangNhapTenTaiKhoan"
                     type="text"
                     className="form__input"
                     placeholder="zunggzing"
-                    value={tenDangNhap}
-                    onChange={handleOnChange}
-                    required
+                    ref={register({
+                      required: true,
+                      minLength: 8,
+                      maxLength: 30,
+                    })}
                   />
                   <label htmlFor="adminUsername" className="form__label">
                     Tên tài khoản
                   </label>
                 </div>
+                <div className="error-input">
+                  {errors.dangNhapTenTaiKhoan &&
+                    errors.dangNhapTenTaiKhoan.type === "required" && (
+                      <p>Vui lòng nhập tên tài khoản của bạn</p>
+                    )}
+                  {errors.dangNhapTenTaiKhoan &&
+                    errors.dangNhapTenTaiKhoan.type === "minLength" && (
+                      <p>Vui lòng nhập tối thiểu 8 ký tự</p>
+                    )}
+                  {errors.dangNhapTenTaiKhoan &&
+                    errors.dangNhapTenTaiKhoan.type === "maxLength" && (
+                      <p>Vui lòng nhập ít hơn 30 ký tự</p>
+                    )}
+                </div>
               </div>
               <div className="input-wrapper">
-                <div className="input-wrapper-item">
+                <div className="input-wrapper-item mb-3">
                   <input
-                    name="matKhau"
+                    name="dangNhapMatKhau"
                     type="password"
                     className="form__input"
                     placeholder="********"
-                    value={matKhau}
-                    onChange={handleOnChange}
-                    required
+                    ref={register({ required: true, minLength: 8 })}
                   />
                   <label htmlFor="adminPassword" className="form__label">
                     Mật khẩu
                   </label>
+                </div>
+                <div className="error-input">
+                  {errors.dangNhapMatKhau &&
+                    errors.dangNhapMatKhau.type === "required" && (
+                      <p>Vui lòng nhập mật khẩu của bạn</p>
+                    )}
+                  {errors.dangNhapMatKhau &&
+                    errors.dangNhapMatKhau.type === "minLength" && (
+                      <p>Vui lòng nhập tối thiểu 8 ký tự</p>
+                    )}
                 </div>
               </div>
             </div>

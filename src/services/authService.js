@@ -5,7 +5,7 @@ const authService = {
     const url = "auth/dangnhap";
     return axiosClient.post(url, { tenDangNhap, matKhau });
   },
-  register: (tenDangNhap, email, matKhau, xacNhanMatKhau, loaiTaiKhoan) => {
+  registerUser: (tenDangNhap, email, matKhau, xacNhanMatKhau, loaiTaiKhoan) => {
     const url = "auth/dangki";
     return axiosClient.post(url, {
       tenDangNhap,
