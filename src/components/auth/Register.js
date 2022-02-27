@@ -1,52 +1,46 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Helmet } from "react-helmet";
+import { register } from "../../redux/actions/authActions";
 import "./Login.css";
-import axios from "axios";
+import { Button } from "antd";
+
 const Register = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    userName: "",
+    tenDangNhap: "",
     email: "",
-    password: "",
-    confirmPassword: "",
+    matKhau: "",
+    xacNhanMatKhau: "",
+    loaiTaiKhoan: "ung_tuyen_vien",
   });
-  const { userName, email, password, confirmPassword } = formData;
+  const { tenDangNhap, email, matKhau, xacNhanMatKhau, loaiTaiKhoan } =
+    formData;
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onSubmit = async (e) => {
+
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      console.log("Password not match!");
-    } else {
-      console.log(formData);
-      const newUser = {
-        tenDangNhap: userName,
-        email,
-        matKhau: password,
-      };
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const body = JSON.stringify(newUser);
-        const res = await axios.post(
-          "http://localhost:4000/auth/dangki",
-          body,
-          config
-        );
-        console.log(res.data);
-      } catch (err) {
-        console.log(err);
-        console.error(err.response.data);
-      }
-    }
+    dispatch(
+      register(tenDangNhap, email, matKhau, xacNhanMatKhau, loaiTaiKhoan)
+    );
   };
+
   return (
     <Fragment>
-      <div className="login-wrapper d-flex justify-content-center py-5">
+      <Helmet>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        ></meta>
+        <meta charSet="utf-8" />
+        <title>Đăng Ký Tài Khoản | 123job.org</title>
+      </Helmet>
+      <div className="login-wrapper d-flex justify-content-center pt-5">
         <div className="bg-login">
-          <form onSubmit={(e) => onSubmit(e)}>
+          <form onSubmit={handleOnSubmit}>
             <div className="py-2 text-center">
               <h3>Đăng ký</h3>
             </div>
@@ -54,11 +48,11 @@ const Register = () => {
               <div className="input-wrapper">
                 <div className="input-wrapper-item my-3">
                   <input
-                    name="userName"
+                    name="tenDangNhap"
                     type="text"
                     className="form__input"
                     placeholder="zunggzing"
-                    value={userName}
+                    value={tenDangNhap}
                     onChange={(e) => onChange(e)}
                     required
                   />
@@ -84,11 +78,11 @@ const Register = () => {
               <div className="input-wrapper">
                 <div className="input-wrapper-item my-3">
                   <input
-                    name="password"
+                    name="matKhau"
                     type="password"
                     className="form__input"
                     placeholder="********"
-                    value={password}
+                    value={matKhau}
                     onChange={(e) => onChange(e)}
                     required
                   />
@@ -98,12 +92,12 @@ const Register = () => {
                 </div>
                 <div className="input-wrapper-item">
                   <input
-                    name="confirmPassword"
+                    name="xacNhanMatKhau"
                     type="password"
                     id="adminConfirmPassword"
                     className="form__input"
                     placeholder="********"
-                    value={confirmPassword}
+                    value={xacNhanMatKhau}
                     onChange={(e) => onChange(e)}
                     required
                   />
@@ -115,11 +109,14 @@ const Register = () => {
             </div>
 
             <div>
-              <input
-                type="submit"
-                className="btn btn-md btn-primary form-control"
-                value="Đăng ký"
-              />
+              <Button
+                className="btn form-control"
+                type="primary"
+                htmlType="submit"
+                size="large"
+              >
+                Đăng ký
+              </Button>
             </div>
           </form>
           <p className="pt-3">

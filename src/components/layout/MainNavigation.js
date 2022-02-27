@@ -1,12 +1,16 @@
 import { Fragment } from "react";
 import { Link, NavLink } from "react-router-dom";
+const logoStyle = {
+  "height": "35px",
+    "width": "auto"
+};
 const MainNavigation = () => {
   return (
     <Fragment>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
-            <i className="fas fa-code"></i> TOPLV
+            <img src="https://123job.vn/images/logo_tim.png" style={logoStyle } alt="Logo"/>
           </Link>
           <button
             className="navbar-toggler"

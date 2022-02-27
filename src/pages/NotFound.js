@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import NotFoundPage from "../components/notFoundPage/NotFoundPage";
+import NotFoundPage from "../components/notFoundPage/notFoundPage";
 
 const NotFound = () => {
   return (
