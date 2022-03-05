@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
@@ -10,10 +10,11 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 const ResetPasswordPage = (props) => {
-  const { register, errors, handleSubmit } = useForm({});
+  const { register, watch, errors, handleSubmit } = useForm({});
   const history = useHistory();
   const param = useParams();
-  console.log(param);
+  const password = useRef({});
+  password.current = watch("inputResetPassword", "");
   const onSubmit = async (data) => {
     const payload = {
       matKhau: data.inputResetPassword?.trim(),
@@ -76,22 +77,19 @@ const ResetPasswordPage = (props) => {
                     type="password"
                     className="form__input"
                     placeholder="Nhập mật khẩu mới"
-                    ref={register({ required: true })}
+                    ref={register({ required: true, minLength: 8 })}
                   />
-                  {/* <label htmlFor="emailRegister" className="form__label">
-                    Email
-                  </label> */}
                 </div>
-                {/* <div className="error-input">
+                <div className="error-input">
                   {errors.inputResetPassword &&
                     errors.inputResetPassword.type === "required" && (
-                      <p>Vui lòng nhập email của bạn</p>
+                      <p>Vui lòng nhập mật khẩu của bạn</p>
                     )}
                   {errors.inputResetPassword &&
-                    errors.inputResetPassword.type === "pattern" && (
-                      <p>Vui lòng nhập email hợp lệ</p>
+                    errors.inputResetPassword.type === "minLength" && (
+                      <p>Vui lòng nhập tối thiểu 8 ký tự</p>
                     )}
-                </div> */}
+                </div>
               </div>
               <div className="input-wrapper">
                 <div
@@ -103,22 +101,28 @@ const ResetPasswordPage = (props) => {
                     type="password"
                     className="form__input"
                     placeholder="Nhập lại mật khẩu mới"
-                    ref={register({ required: true })}
+                    ref={register({
+                      required: true,
+                      minLength: 8,
+                      validate: (value) =>
+                        value === password.current ||
+                        "Mật khẩu nhập lại không chính xác",
+                    })}
                   />
-                  {/* <label htmlFor="emailRegister" className="form__label">
-                    Email
-                  </label> */}
                 </div>
-                {/* <div className="error-input">
+                <div className="error-input">
                   {errors.inputResetConfirmPassword &&
                     errors.inputResetConfirmPassword.type === "required" && (
-                      <p>Vui lòng nhập email của bạn</p>
+                      <p>Vui lòng nhập mật khẩu xác nhận của bạn</p>
                     )}
                   {errors.inputResetConfirmPassword &&
-                    errors.inputResetConfirmPassword.type === "pattern" && (
-                      <p>Vui lòng nhập email hợp lệ</p>
+                    errors.inputResetConfirmPassword.type === "minLength" && (
+                      <p>Vui lòng nhập tối thiểu 8 ký tự</p>
                     )}
-                </div> */}
+                  {errors.inputResetConfirmPassword && (
+                    <p>{errors.inputResetConfirmPassword.message}</p>
+                  )}
+                </div>
               </div>
             </div>
 
