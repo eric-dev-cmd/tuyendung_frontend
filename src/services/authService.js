@@ -18,6 +18,19 @@ const authService = {
   logout: () => {
     return localStorage.removeItem("user");
   },
+  forgotPasword: (email) => {
+    const url = "auth/quenmatkhau";
+    return axiosClient.post(url, {
+      email,
+    });
+  },
+  resetPasword: (password, confirmPassword, token) => {
+    const url = `auth/datlaiMatKhau/${token}`;
+    return axiosClient.patch(url, {
+      matKhau: password,
+      xacNhanMatKhau: confirmPassword,
+    });
+  },
 };
 
 export default authService;

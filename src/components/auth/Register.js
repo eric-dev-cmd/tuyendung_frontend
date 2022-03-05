@@ -1,4 +1,4 @@
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
@@ -6,10 +6,17 @@ import { registerUser } from "../../redux/actions/authActions";
 import "./Login.css";
 import { Button } from "antd";
 import { useForm } from "react-hook-form";
+import { useHistory, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
+import authService from "../../services/authService";
+import { toast } from "react-toastify";
 
 const Register = () => {
-  const dispatch = useDispatch();
   const { register, errors, watch, handleSubmit } = useForm({});
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
   const password = useRef({});
   password.current = watch("matKhau", "");
   const onSubmit = async (data) => {
@@ -20,8 +27,45 @@ const Register = () => {
       xacNhanMatKhau: data.matKhau?.trim(),
       loaiTaiKhoan: "ung_tuyen_vien",
     };
+    const { tenDangNhap, email, matKhau, xacNhanMatKhau, loaiTaiKhoan } =
+      payload;
     console.log("payload:::", payload);
-    dispatch(registerUser(payload));
+    try {
+      await authService.registerUser(
+        tenDangNhap,
+        email,
+        matKhau,
+        xacNhanMatKhau,
+        loaiTaiKhoan
+      );
+      console.log("Success");
+      setIsSuccess(true);
+      toast.success("Đăng ký thành công", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setLoading(false);
+      history.push("/dang-nhap");
+    } catch (error) {
+      console.log("Fail");
+      const errors = error.response;
+      console.log("errors::", errors);
+      toast.error(error.response?.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,7 +78,7 @@ const Register = () => {
         <meta charSet="utf-8" />
         <title>Đăng Ký Tài Khoản | 123job.org</title>
       </Helmet>
-      <div className="login-wrapper d-flex justify-content-center pt-5">
+      <div className="login-wrapper d-flex justify-content-center pt-2 my-2">
         <div className="bg-login">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="py-2 text-center">

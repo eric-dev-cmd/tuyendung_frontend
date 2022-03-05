@@ -1,16 +1,39 @@
 import { Fragment } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/actions/authActions";
+import { toast } from "react-toastify";
 const logoStyle = {
-  "height": "35px",
-    "width": "auto"
+  height: "35px",
+  width: "auto",
 };
 const MainNavigation = () => {
+  const { isAuthenticated } = useSelector((state) => state.userLogin);
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    toast.success("Đăng xuất thành công", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
   return (
     <Fragment>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
-            <img src="https://123job.vn/images/logo_tim.png" style={logoStyle } alt="Logo"/>
+            <img
+              src="https://123job.vn/images/logo_tim.png"
+              style={logoStyle}
+              alt="Logo"
+            />
           </Link>
           <button
             className="navbar-toggler"
@@ -78,20 +101,36 @@ const MainNavigation = () => {
               </li>
             </ul>
             <ul className="navbar-nav mb-2 mb-lg-0">
-              <li className="nav-item">
-                <NavLink
-                  to="/dang-nhap"
-                  className="nav-link"
-                  aria-current="page"
-                >
-                  Đăng nhập
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/dang-ky" className="nav-link">
-                  Đăng ký
-                </NavLink>
-              </li>
+              {isAuthenticated && (
+                <li className="nav-item">
+                  <span
+                    className="nav-link"
+                    aria-current="page"
+                    onClick={logoutHandler}
+                  >
+                    Đăng xuất
+                  </span>
+                </li>
+              )}
+              {!isAuthenticated && (
+                <li className="nav-item">
+                  <NavLink
+                    to="/dang-nhap"
+                    className="nav-link"
+                    aria-current="page"
+                  >
+                    Đăng nhập
+                  </NavLink>
+                </li>
+              )}
+              {!isAuthenticated && (
+                <li className="nav-item">
+                  <NavLink to="/dang-ky" className="nav-link">
+                    Đăng ký
+                  </NavLink>
+                </li>
+              )}
+
               <li className="nav-item">
                 <NavLink className="nav-link" to="nha-tuyen-dung-dang-tin">
                   Nhà tuyển dụng đăng tin

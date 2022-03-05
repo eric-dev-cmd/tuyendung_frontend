@@ -1,5 +1,5 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { Fragment, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/authActions";
@@ -10,24 +10,23 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const dispatch = useDispatch();
   const { register, errors, handleSubmit } = useForm({});
-  const user = useSelector((state) => state.userLogin);
-
-  useEffect(() => {
-    console.log("USER LOGIN", user);
-    if (user.isAuthenticated) {
-      console.log("Logged");
-    } else {
-      console.log("No logged");
-    }
-  }, [user]);
+  const { isAuthenticated } = useSelector((state) => state.userLogin);
+  console.log("isAuthenticated", isAuthenticated);
   const onSubmit = async (data) => {
     const payload = {
       tenDangNhap: data.dangNhapTenTaiKhoan?.trim(),
       matKhau: data.dangNhapMatKhau?.trim(),
     };
-    console.log("payload:::", payload);
     dispatch(login(payload));
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  if (isAuthenticated) {
+    return <Redirect to="/ho-so" />;
+  } else {
+    <Redirect to="/dang-nhap" />;
+  }
   return (
     <Fragment>
       <Helmet>
@@ -38,8 +37,8 @@ const Login = () => {
         <meta charSet="utf-8" />
         <title>Đăng nhập tài khoản | 123job.org</title>
       </Helmet>
-      <div className="login-wrapper d-flex justify-content-center pt-5">
-        <div className="bg-login">
+      <div className="login-wrapper d-flex justify-content-center pt-5 my-5">
+        <div className="bg-login mt-2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="py-2 text-center">
               <h3>Đăng nhập</h3>

@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import "./notFoundPage.css";
+import "./NotFoundPage.css";
+
 const NotFoundPage = () => {
   return (
     <Fragment>
