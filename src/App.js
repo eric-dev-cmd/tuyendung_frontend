@@ -1,22 +1,24 @@
+import "antd/dist/antd.min.css";
 import { Fragment } from "react";
-import { Redirect, Route, Router, Switch } from "react-router-dom";
-import NotFound from "./pages/NotFound";
-import Home from "./pages/Home";
-import "./App.css";
-import Login from "./components/auth/Login";
-import Footer from "./components/footer/Footer";
+import { Helmet } from "react-helmet";
+import { Route, Switch, useHistory, withRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import ProfilePage from "./pages/ProfilePage";
+import "./App.css";
+import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import "antd/dist/antd.min.css";
-import { Helmet } from "react-helmet";
 import MainNavigation from "./components/layout/MainNavigation";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import ProfilePage from "./pages/ProfilePage";
+import ChangePasswordPage from "./pages/User/ChangePasswordPage";
 import { FogotPasswordPage } from "./pages/User/FogotPasswordPage";
 import ResetPasswordPage from "./pages/User/ResetPasswordPage";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
-function App() {
+function App(props) {
+  const history = useHistory();
+
   return (
     <Fragment>
       <Helmet>
@@ -25,6 +27,7 @@ function App() {
           đầu tại Việt Nam
         </title>
       </Helmet>
+      {/* {props.history.location.pathname !== "/login" ? : ""} */}
       <MainNavigation />
       {/* <section className="container my-3"> */}
 
@@ -45,9 +48,14 @@ function App() {
               <h1>Nhà tuyển dụng đăng tin</h1>
             </Route>*/}
         <Route path="/" component={Home} exact />
-        <Route exact path="/dang-nhap" component={Login} />
-        <Route exact path="/dang-ky" component={Register} />
-        <Route exact path="/quen-mat-khau" component={FogotPasswordPage} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/sign-up" component={Register} />
+        <Route exact path="/forgot-password" component={FogotPasswordPage} />
+        <ProtectedRoute
+          exact
+          path="/user/account/password"
+          component={ChangePasswordPage}
+        />
         <Route
           exact
           path="/auth/verified/:token"
@@ -62,9 +70,8 @@ function App() {
       {/* </Layout> */}
       <ToastContainer autoClose={2000} hideProgressBar={true} />
       {/* Footer */}
-      <Footer />
     </Fragment>
   );
 }
 
-export default App;
+export default withRouter(App);

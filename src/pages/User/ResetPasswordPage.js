@@ -1,13 +1,10 @@
-import React, { useRef } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import { Link } from "react-router-dom";
 import { Button } from "antd";
+import React, { useRef } from "react";
+import Helmet from "react-helmet";
 import { useForm } from "react-hook-form";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import authService from "../../services/authService";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 const ResetPasswordPage = (props) => {
   const { register, watch, errors, handleSubmit } = useForm({});
@@ -36,8 +33,6 @@ const ResetPasswordPage = (props) => {
         history.replace("/dang-nhap");
       })
       .catch((err) => {
-        console.log("Trung vinh: ", err);
-
         toast.error("Đã xảy ra lỗi. Vui lòng thử lại.", {
           position: "top-right",
           autoClose: 2000,

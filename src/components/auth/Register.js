@@ -1,15 +1,11 @@
-import React, { Fragment, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { Helmet } from "react-helmet";
-import { registerUser } from "../../redux/actions/authActions";
-import "./Login.css";
 import { Button } from "antd";
+import React, { Fragment, useRef, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
-import { useHistory, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
-import authService from "../../services/authService";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import authService from "../../services/authService";
+import "./Login.css";
 
 const Register = () => {
   const { register, errors, watch, handleSubmit } = useForm({});
@@ -78,7 +74,7 @@ const Register = () => {
         <meta charSet="utf-8" />
         <title>Đăng Ký Tài Khoản | 123job.org</title>
       </Helmet>
-      <div className="login-wrapper d-flex justify-content-center pt-2 my-2">
+      <div className="login-wrapper d-flex justify-content-center pt-2 my-5">
         <div className="bg-login">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="py-2 text-center">
@@ -206,7 +202,7 @@ const Register = () => {
           </form>
           <div className="pt-3">
             Bạn đã có tài khoản?{" "}
-            <Link to="/dang-nhap" className="text-decoration-none">
+            <Link to="/login" className="text-decoration-none">
               Đăng nhập
             </Link>
           </div>

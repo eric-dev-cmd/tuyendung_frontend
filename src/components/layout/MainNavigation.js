@@ -1,14 +1,35 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/actions/authActions";
 import { toast } from "react-toastify";
+import { logout } from "../../redux/actions/authActions";
+import { MdArrowDropDown } from "react-icons/md";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 const logoStyle = {
   height: "35px",
   width: "auto",
 };
+const avatarStyle = {
+  width: "45px",
+  height: "45px",
+  maxWidth: "100%",
+};
+const borderStyle = {
+  border: "0.5px solid #918a88",
+  borderRadius: "6px",
+};
+
 const MainNavigation = () => {
   const { isAuthenticated } = useSelector((state) => state.userLogin);
+  // const currentUser = useSelector((state) => state.userLogin.user.taiKhoan);
+  // const [user, setUser] = useState({});
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     console.log("Running current user");
+  //     setUser(currentUser);
+  //   }
+  // }, [currentUser]);
+  // console.log("Trung vinh:::", user);
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(logout());
@@ -52,22 +73,12 @@ const MainNavigation = () => {
             style={{ fontSize: "14px" }}
           >
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <NavLink to="/ho-so" className="nav-link" aria-current="page">
-                  Hồ sơ
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="tin-tuc" className="nav-link">
-                  Tin tức
-                </NavLink>
-              </li>
-              <li className="nav-item">
+              <li className="nav-item mt-1">
                 <NavLink to="/kham-pha" className="nav-link">
                   Khám phá
                 </NavLink>
               </li>
-              <li className="nav-item dropdown">
+              <li className="nav-item mt-1 dropdown">
                 <NavLink
                   to="viec-lam"
                   className="nav-link dropdown-toggle"
@@ -90,9 +101,6 @@ const MainNavigation = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
                     <NavLink to="/viec-lam-da-luu" className="dropdown-item">
                       Việc làm đã lưu
                     </NavLink>
@@ -102,37 +110,86 @@ const MainNavigation = () => {
             </ul>
             <ul className="navbar-nav mb-2 mb-lg-0">
               {isAuthenticated && (
-                <li className="nav-item">
-                  <span
-                    className="nav-link"
+                <li className="nav-item mt-1">
+                  <NavLink
+                    to="/user/profile"
+                    className="nav-link d-flex align-items-center"
                     aria-current="page"
-                    onClick={logoutHandler}
                   >
-                    Đăng xuất
-                  </span>
+                    <AiOutlinePlusCircle color="white" size="16px" />
+                    &nbsp;Hồ sơ của tôi
+                  </NavLink>
                 </li>
               )}
-              {!isAuthenticated && (
-                <li className="nav-item">
-                  <NavLink
-                    to="/dang-nhap"
-                    className="nav-link"
-                    aria-current="page"
+              {isAuthenticated && (
+                <li className="nav-item dropdown d-flex align-items-center dropdown-toggle">
+                  <img
+                    style={avatarStyle}
+                    // src="https://mdbootstrap.com/img/Photos/Avatars/img%20(20).jpg"
+                    src="https://123job.vn/images/no_user.png"
+                    alt="Avatar"
+                    className="md-avatar rounded-circle nav-link "
+                    id="navbarDropdown-profile"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  />
+                  <MdArrowDropDown color="white" size="16px" />
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown-profile"
                   >
+                    <li className="dropdown-item pe-none">
+                      {/* <b>{user.tenDangNhap || null}</b> */}
+                    </li>
+                    <li className="dropdown-item pe-none">
+                      <span>{/* ID: <b>{user._id || null}</b> */}</span>
+                    </li>
+                    <li>
+                      <NavLink to="/user/account" className="dropdown-item">
+                        Thiết lập tài khoản
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/user/account/password"
+                        className="dropdown-item"
+                      >
+                        Đổi mật khẩu
+                      </NavLink>
+                    </li>
+                    <li>
+                      <a
+                        onClick={logoutHandler}
+                        className="dropdown-item text-decoration-none"
+                      >
+                        Đăng xuất
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              )}
+
+              {!isAuthenticated && (
+                <li className="nav-item mt-1">
+                  <NavLink to="/login" className="nav-link" aria-current="page">
                     Đăng nhập
                   </NavLink>
                 </li>
               )}
               {!isAuthenticated && (
-                <li className="nav-item">
-                  <NavLink to="/dang-ky" className="nav-link">
+                <li className="nav-item mt-1">
+                  <NavLink to="/sign-up" className="nav-link">
                     Đăng ký
                   </NavLink>
                 </li>
               )}
-
-              <li className="nav-item">
-                <NavLink className="nav-link" to="nha-tuyen-dung-dang-tin">
+              <li className="nav-item mt-1">
+                <NavLink
+                  style={borderStyle}
+                  className="nav-link"
+                  to="/account/create"
+                >
                   Nhà tuyển dụng đăng tin
                 </NavLink>
               </li>

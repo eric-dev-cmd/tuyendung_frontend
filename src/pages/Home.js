@@ -1,8 +1,6 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { Helmet } from "react-helmet";
-import { useSelector, useDispatch } from "react-redux";
-import { UNG_TUYEN_VIEN } from "../constansts/common";
-import { logout } from "../redux/actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
   const user = useSelector((state) => state.userLogin.userInfor);

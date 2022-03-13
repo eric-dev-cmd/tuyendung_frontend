@@ -1,8 +1,8 @@
 import { Button } from "antd";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import authService from "../../services/authService";
 import { ForgotPasswordSuccess } from "./components/ForgotPasswordSuccess";
@@ -92,6 +92,14 @@ export const FogotPasswordPage = () => {
                         <p>Vui lòng nhập email hợp lệ</p>
                       )}
                   </div>
+                  <p>
+                    Bằng việc thực hiện đổi mật khẩu, bạn đã đồng ý với{" "}
+                    <a className="text-decoration-none">Điều khoản dịch vụ</a>{" "}
+                    và{" "}
+                    <a className="text-decoration-none">
+                      Chính sách bảo mật của chúng tôi
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -102,13 +110,13 @@ export const FogotPasswordPage = () => {
                   htmlType="submit"
                   size="large"
                 >
-                  Lấy lại mật khẩu
+                  Đổi mật khẩu
                 </Button>
               </div>
             </form>
             <p className="pt-3 text-center">
               Bạn sử dụng 123job.org lần đâu?{" "}
-              <Link to="/dang-ky" className="text-decoration-none">
+              <Link to="/sign-up" className="text-decoration-none">
                 Hãy đăng ký
               </Link>
             </p>

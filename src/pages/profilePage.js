@@ -1,6 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect, useState } from "react";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
   const currentUser = useSelector((state) => state.userLogin.userInfor);

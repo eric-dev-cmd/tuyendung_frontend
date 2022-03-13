@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
 import { Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/actions/authActions";
-import "./Login.css";
+import React, { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import { login } from "../../redux/actions/authActions";
+import "./Login.css";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,8 +37,11 @@ const Login = () => {
         <meta charSet="utf-8" />
         <title>Đăng nhập tài khoản | 123job.org</title>
       </Helmet>
-      <div className="login-wrapper d-flex justify-content-center pt-5 my-5">
-        <div className="bg-login mt-2">
+      <div
+        className="login-wrapper d-flex justify-content-center"
+        style={{ padding: "50px" }}
+      >
+        <div className="bg-login mt-5">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="py-2 text-center">
               <h3>Đăng nhập</h3>
@@ -103,7 +106,7 @@ const Login = () => {
             </div>
             <p className="float-end">
               <Link
-                to="/quen-mat-khau"
+                to="/forgot-password"
                 className="text-decoration-none"
                 style={{ fontSize: "13px" }}
               >
@@ -123,7 +126,7 @@ const Login = () => {
           </form>
           <p className="pt-3">
             Bạn chưa có tài khoản?{" "}
-            <Link to="/dang-ky" className="text-decoration-none">
+            <Link to="/sign-up" className="text-decoration-none">
               Đăng ký
             </Link>
           </p>

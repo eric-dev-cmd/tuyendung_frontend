@@ -31,6 +31,14 @@ const authService = {
       xacNhanMatKhau: confirmPassword,
     });
   },
+  changePasword: (matKhauHienTai, matKhau, xacNhanMatKhau) => {
+    const url = `auth/doimatkhau`;
+    return axiosClient.patch(url, {
+      matKhauHienTai,
+      matKhau,
+      xacNhanMatKhau,
+    });
+  },
 };
 
 export default authService;
