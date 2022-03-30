@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
+import MainNavigation from "../components/layout/MainNavigation";
 
 const ProfilePage = () => {
   const currentUser = useSelector((state) => state.userLogin.userInfor);
@@ -13,6 +14,7 @@ const ProfilePage = () => {
   // console.log("AAAA", user);
   return (
     <Fragment>
+      <MainNavigation />
       <h1>Profile page:</h1>
       {/* <ul>
         <li>{email}</li>

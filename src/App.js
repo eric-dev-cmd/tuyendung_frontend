@@ -1,6 +1,7 @@
 import "antd/dist/antd.min.css";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { useSelector } from "react-redux";
 import { Route, Switch, useHistory, withRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,6 +12,7 @@ import MainNavigation from "./components/layout/MainNavigation";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
+import AccountSetupPage from "./pages/User/AccountSetupPage";
 import ChangePasswordPage from "./pages/User/ChangePasswordPage";
 import { FogotPasswordPage } from "./pages/User/FogotPasswordPage";
 import ResetPasswordPage from "./pages/User/ResetPasswordPage";
@@ -18,7 +20,6 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App(props) {
   const history = useHistory();
-
   return (
     <Fragment>
       <Helmet>
@@ -28,7 +29,6 @@ function App(props) {
         </title>
       </Helmet>
       {/* {props.history.location.pathname !== "/login" ? : ""} */}
-      <MainNavigation />
       {/* <section className="container my-3"> */}
 
       <Switch>
@@ -55,6 +55,11 @@ function App(props) {
           exact
           path="/user/account/password"
           component={ChangePasswordPage}
+        />
+        <ProtectedRoute
+          exact
+          path="/user/account"
+          component={AccountSetupPage}
         />
         <Route
           exact

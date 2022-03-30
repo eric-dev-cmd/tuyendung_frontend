@@ -27,7 +27,7 @@ export const userLoginReducer = (state = initialState, action) => {
         ...action.state,
         loading: false,
         isAuthenticated: true,
-        userInfor: action.payload,
+        user: action.payload,
       };
     case USER_LOGIN_FAIL:
       return {

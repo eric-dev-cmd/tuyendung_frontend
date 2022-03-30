@@ -5,11 +5,14 @@ import App from "./App";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </BrowserRouter>
   </Provider>,
 

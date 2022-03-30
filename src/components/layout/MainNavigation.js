@@ -1,10 +1,11 @@
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../../redux/actions/authActions";
 import { MdArrowDropDown } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { getUserProfile } from "../../utils/localStorage";
 const logoStyle = {
   height: "35px",
   width: "auto",
@@ -20,16 +21,34 @@ const borderStyle = {
 };
 
 const MainNavigation = () => {
-  const { isAuthenticated } = useSelector((state) => state.userLogin);
-  // const currentUser = useSelector((state) => state.userLogin.user.taiKhoan);
-  // const [user, setUser] = useState({});
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     console.log("Running current user");
-  //     setUser(currentUser);
-  //   }
-  // }, [currentUser]);
-  // console.log("Trung vinh:::", user);
+  const { isAuthenticated } = useSelector((state) => state?.userLogin);
+  const [user, setUser] = useState(() => {
+    return getUserProfile();
+  });
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("user", user);
+  useEffect(() => {
+    console.log("Localstorage");
+    console.log("isAuthenticated", isAuthenticated);
+    if (isAuthenticated) {
+      if (user?.taiKhoan?._id) {
+        setUser(getUserProfile());
+      }
+    } else {
+      <Redirect to="/login" />;
+    }
+  }, []);
+  useEffect(() => {
+    console.log("isAuthenticated", isAuthenticated);
+    console.log("Localstorage");
+    if (!isAuthenticated) {
+      if (user?.taiKhoan?._id) {
+        setUser(getUserProfile());
+      }
+    } else {
+      <Redirect to="/login" />;
+    }
+  }, [user?.taiKhoan?._id]);
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(logout());
@@ -140,28 +159,25 @@ const MainNavigation = () => {
                     aria-labelledby="navbarDropdown-profile"
                   >
                     <li className="dropdown-item pe-none">
-                      {/* <b>{user.tenDangNhap || null}</b> */}
+                      <b>{user?.taiKhoan?.tenDangNhap}</b>
                     </li>
-                    <li className="dropdown-item pe-none">
-                      <span>{/* ID: <b>{user._id || null}</b> */}</span>
-                    </li>
-                    <li>
-                      <NavLink to="/user/account" className="dropdown-item">
+                    <li className="dropdown-item bg-none">
+                      <NavLink to="/user/account" className="text-dark">
                         Thiết lập tài khoản
                       </NavLink>
                     </li>
-                    <li>
+                    <li className="dropdown-item bg-none">
                       <NavLink
                         to="/user/account/password"
-                        className="dropdown-item"
+                        className="text-dark"
                       >
                         Đổi mật khẩu
                       </NavLink>
                     </li>
-                    <li>
+                    <li className="dropdown-item bg-none">
                       <a
                         onClick={logoutHandler}
-                        className="dropdown-item text-decoration-none"
+                        className="text-decoration-none text-dark"
                       >
                         Đăng xuất
                       </a>

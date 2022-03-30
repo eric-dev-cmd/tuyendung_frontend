@@ -45,3 +45,6 @@ body::-webkit-scrollbar {
 .error-input p {
   color: #bf1650;
 }
+.bg-none:active{
+  background: none !important;
+}

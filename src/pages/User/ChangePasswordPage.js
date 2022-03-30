@@ -3,17 +3,21 @@ import React, { useRef } from "react";
 import Helmet from "react-helmet";
 import { useForm } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../../redux/actions/authActions";
 import authService from "../../services/authService";
+import MainNavigation from "../../components/layout/MainNavigation";
 const ChangePasswordPage = (props) => {
   const { register, watch, errors, handleSubmit } = useForm({});
   const dispatch = useDispatch();
   const history = useHistory();
   const password = useRef({});
   password.current = watch("newPassword", "");
+  const currentUser = useSelector((state) => state.userLogin);
+  console.log("currentUser:::", currentUser);
+  console.log("props:::", props);
   const onSubmit = async (data) => {
     const payload = {
       matKhauHienTai: data?.oldPassword?.trim(),
@@ -72,6 +76,7 @@ const ChangePasswordPage = (props) => {
       <Helmet>
         <title>Setting account | 123job.org</title>
       </Helmet>
+      <MainNavigation />
       <div className=" d-flex justify-content-center py-4 my-5">
         <div className="container">
           <form onSubmit={handleSubmit(onSubmit)}>
