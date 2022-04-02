@@ -12,12 +12,12 @@ const AccountSetupPage = (props) => {
   const currentUser = useSelector((state) => state?.userLogin?.user?.taiKhoan);
   const [user, setUser] = useState({});
   const [isSuccessSubmit, setIsSuccessSubmit] = useState(false);
-  console.log("currentUsercurrentUsercurrentUser", currentUser);
+
   const getProfileDetail = async (id) => {
     try {
       const response = await portfolioApi.getAccountById(id);
       setUser(response?.data);
-      console.log("responseresponse", response);
+      setIsSuccessSubmit(false);
     } catch (error) {
       toast.error(error, {
         position: "top-right",
@@ -35,6 +35,7 @@ const AccountSetupPage = (props) => {
     console.log("Run away api get detail");
     setIsSuccessSubmit(true);
   }, []);
+
   useEffect(() => {
     getProfileDetail(currentUser?._id);
   }, [isSuccessSubmit]);
@@ -51,10 +52,15 @@ const AccountSetupPage = (props) => {
       </Helmet>
       <MainNavigation />
       <div className="bg-main">
-        <div className="container mt-4">
+        <div className="container">
           <Tabs tabPosition="left">
             <TabPane tab="Thông tin tài khoản" key="1">
-              <TabAccountInformation user={user} />
+              <TabAccountInformation
+                user={user}
+                getProfileDetail={getProfileDetail}
+                setIsSuccessSubmit={setIsSuccessSubmit}
+                isSuccessSubmit={isSuccessSubmit}
+              />
             </TabPane>
             <TabPane tab="Thiết lập thông báo" key="2">
               Content of Tab 2

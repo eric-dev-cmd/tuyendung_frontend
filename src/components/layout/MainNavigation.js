@@ -6,6 +6,7 @@ import { logout } from "../../redux/actions/authActions";
 import { MdArrowDropDown } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { getUserProfile } from "../../utils/localStorage";
+import Logo from "../../assets/logo/logo_remove_bg.png";
 const logoStyle = {
   height: "35px",
   width: "auto",
@@ -66,14 +67,10 @@ const MainNavigation = () => {
   };
   return (
     <Fragment>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
-            <img
-              src="https://123job.vn/images/logo_tim.png"
-              style={logoStyle}
-              alt="Logo"
-            />
+            <img src="https://123job.vn/images/logo_tim.png" alt="Logo" />
           </Link>
           <button
             className="navbar-toggler"

@@ -3,19 +3,84 @@ import { Button, Form } from "antd";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Input } from "antd";
 import { useForm, Controller } from "react-hook-form";
-
-const TabAccountInformation = ({ user }) => {
+import { toast } from "react-toastify";
+import portfolioApi from "../../../services/portfoliApi";
+const TabAccountInformation = ({
+  user,
+  getProfileDetail,
+  isSuccessSubmit,
+  setIsSuccessSubmit,
+}) => {
   const [isShowForm, setIsShowForm] = useState(false);
-  const { register, watch, trigger, errors, handleSubmit, control } = useForm({
+  const [isShowFormUserName, setIsShowFormUserName] = useState(false);
+  const { register, watch, trigger, errors, handleSubmit, setValue } = useForm({
     mode: "onBlur",
   });
+  const [isSetValue, setIsSetValue] = useState(false);
 
-  const handleAddForm = (e) => {
+  console.log("ttv id: ", user);
+  console.log("user", user);
+
+  useEffect(() => {
+    let timeout = null;
+    if (isSuccessSubmit) {
+      timeout = setTimeout(() => getProfileDetail(user?._id), 1000);
+    }
+    return () => clearTimeout(timeout);
+  }, [isSuccessSubmit]);
+
+  useEffect(() => {
+    setValue("updateEmail", user?.email);
+  }, [user?.email]);
+
+  useEffect(() => {
+    setValue("updateEmail", user?.email);
+  }, [isSetValue]);
+
+  useEffect(() => {
+    setValue("updateEmail", user?.email);
+  }, []);
+
+  const handleAddForm = () => {
     setIsShowForm((prev) => !prev);
+    setIsShowFormUserName(false);
+  };
+
+  const handleAddFormUserName = () => {
+    setIsShowFormUserName((prev) => !prev);
+    setIsShowForm(false);
   };
   const onSubmit = async (payload) => {
     console.log("payload", payload);
-    handleAddForm();
+    try {
+      await portfolioApi.updateAccountById(user._id, payload);
+
+      toast.success("Cập nhật thông tin thành công", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setIsSuccessSubmit(true);
+      setIsShowFormUserName(false);
+      setIsShowForm(false);
+    } catch (err) {
+      const errors = err.response.data.message.split("-");
+      errors.forEach((err) =>
+        toast.error(err, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      );
+    }
   };
 
   return (
@@ -27,7 +92,7 @@ const TabAccountInformation = ({ user }) => {
         <div className="row mb-3">
           <div className={`mb-2 ${isShowForm ? "col-3" : "col-12"}`}>
             <span>
-              <b>Tài khoản đăng nhập</b>
+              <b>Địa chỉ email</b>
             </span>
           </div>
           {isShowForm ? (
@@ -93,6 +158,77 @@ const TabAccountInformation = ({ user }) => {
             <div className="col-8">
               <div className="d-block float-end">
                 <Button onClick={handleAddForm}>
+                  {" "}
+                  <AiOutlineEdit /> &nbsp;Thay đổi
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="border-bottom"></div>
+        <div className="row mb-3 mt-3">
+          <div className={`mb-2 ${isShowFormUserName ? "col-3" : "col-12"}`}>
+            <span>
+              <b>Tên đăng nhập</b>
+            </span>
+          </div>
+          {isShowFormUserName ? (
+            ""
+          ) : (
+            <div className="col-4">
+              {user ? <span>{user.tenDangNhap}</span> : "-"}
+            </div>
+          )}
+          {isShowFormUserName ? (
+            <div className="mb-2 col-9">
+              <span className="text-muted">
+                <b>Tài khoản đăng nhập</b>
+              </span>
+              <p>{user ? <b>{user.tenDangNhap}</b> : "-"}</p>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-3">
+                  <input
+                    name="tenDangNhap"
+                    type="text"
+                    className="form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="username"
+                    ref={register({
+                      required: true,
+                    })}
+                  ></input>
+                  <div className="error-input mt-2">
+                    {errors.tenDangNhap &&
+                      errors.tenDangNhap.type === "required" && (
+                        <p className="m-0">Vui lòng nhập thông tin</p>
+                      )}
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <Button
+                      className="me-3"
+                      size="default"
+                      type="primary"
+                      // loading={true}
+                      htmlType="submit"
+                    >
+                      Cập nhật
+                    </Button>
+                    <Button size="default" onClick={handleAddFormUserName}>
+                      Huỷ
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          ) : (
+            ""
+          )}
+          {!isShowFormUserName && (
+            <div className="col-8">
+              <div className="d-block float-end">
+                <Button onClick={handleAddFormUserName}>
                   {" "}
                   <AiOutlineEdit /> &nbsp;Thay đổi
                 </Button>

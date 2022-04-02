@@ -5,13 +5,16 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { login } from "../../redux/actions/authActions";
+import Logo from "../../assets/logo/logo_remove_bg.png";
 import "./Login.css";
+import { logoStyle, maxWH } from "../../utils/style";
 
 const Login = () => {
   const dispatch = useDispatch();
   const { register, errors, handleSubmit } = useForm({});
   const { isAuthenticated } = useSelector((state) => state.userLogin);
   console.log("isAuthenticated", isAuthenticated);
+
   const onSubmit = async (data) => {
     const payload = {
       tenDangNhap: data.dangNhapTenTaiKhoan?.trim(),
@@ -43,6 +46,9 @@ const Login = () => {
       >
         <div className="bg-login mt-5">
           <form onSubmit={handleSubmit(onSubmit)}>
+            <div style={logoStyle}>
+              <img src={Logo} style={maxWH}></img>
+            </div>
             <div className="py-2 text-center">
               <h3>Đăng nhập</h3>
             </div>

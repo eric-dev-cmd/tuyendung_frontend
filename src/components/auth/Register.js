@@ -5,7 +5,9 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import authService from "../../services/authService";
+import { logoStyle, maxWH } from "../../utils/style";
 import "./Login.css";
+import Logo from "../../assets/logo/logo_remove_bg.png";
 
 const Register = () => {
   const { register, errors, watch, handleSubmit } = useForm({});
@@ -77,6 +79,9 @@ const Register = () => {
       <div className="login-wrapper d-flex justify-content-center pt-2 my-5">
         <div className="bg-login">
           <form onSubmit={handleSubmit(onSubmit)}>
+            <div style={logoStyle}>
+              <img src={Logo} style={maxWH}></img>
+            </div>
             <div className="py-2 text-center">
               <h3>Đăng ký</h3>
             </div>

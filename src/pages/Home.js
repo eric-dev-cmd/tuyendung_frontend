@@ -11,7 +11,7 @@ const Home = () => {
         <title>Trang chủ | 123job.org</title>
       </Helmet>
       <MainNavigation />
-      <div>
+      <div className="container">
         <h1 className="text-danger">Trang chủ ứng tuyển viên</h1>
       </div>
     </Fragment>
