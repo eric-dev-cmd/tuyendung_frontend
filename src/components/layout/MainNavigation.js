@@ -70,7 +70,11 @@ const MainNavigation = () => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
-            <img src="https://123job.vn/images/logo_tim.png" alt="Logo" />
+            <img
+              style={logoStyle}
+              src="https://123job.vn/images/logo_tim.png"
+              alt="Logo"
+            />
           </Link>
           <button
             className="navbar-toggler"
