@@ -6,15 +6,17 @@ import store from "./redux/store";
 import { Provider } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import ErrorBoundary from "./components/ErrorBoundary";
-
+import './i18n'
+import GlobalStyles from "./components/GlobalStyles";
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <ErrorBoundary>
-        <App />
+        <GlobalStyles>
+          <App />
+        </GlobalStyles>
       </ErrorBoundary>
     </BrowserRouter>
   </Provider>,
-
   document.getElementById("root")
 );

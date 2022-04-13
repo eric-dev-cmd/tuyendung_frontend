@@ -1,12 +1,11 @@
 import React, { Fragment } from "react";
-import MainNavigation from "../components/layout/MainNavigation";
-import NotFoundPage from "../components/notFoundPage/NotFoundPage";
+import MainNavigation from "../components/Layout/MainNavigation";
+import NotFoundPage from "../components/NotFoundPage/NotFoundPage";
 
 const NotFound = () => {
   return (
     <Fragment>
-            <MainNavigation />
-
+      {/* <MainNavigation /> */}
       <NotFoundPage />
     </Fragment>
   );

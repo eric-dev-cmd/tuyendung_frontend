@@ -67,7 +67,7 @@ const MainNavigation = () => {
   };
   return (
     <Fragment>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark position-fixed top-0 z-index-999 w-100">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
             <img
@@ -92,7 +92,7 @@ const MainNavigation = () => {
             id="navbarSupportedContent"
             style={{ fontSize: "14px" }}
           >
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 z-index-999">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item mt-1">
                 <NavLink to="/kham-pha" className="nav-link">
                   Khám phá
@@ -109,7 +109,7 @@ const MainNavigation = () => {
                 >
                   Việc Làm
                 </NavLink>
-                <ul className="dropdown-menu z-index-999" aria-labelledby="navbarDropdown">
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
                     <NavLink to="/tim-viec-lam" className="dropdown-item">
                       Tìm việc làm
@@ -128,7 +128,7 @@ const MainNavigation = () => {
                 </ul>
               </li>
             </ul>
-            <ul className="navbar-nav mb-2 mb-lg-0 z-index-999">
+            <ul className="navbar-nav mb-2 mb-lg-0">
               {isAuthenticated && (
                 <li className="nav-item mt-1">
                   <NavLink

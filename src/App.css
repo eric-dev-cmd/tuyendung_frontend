@@ -45,6 +45,25 @@ body::-webkit-scrollbar {
 .error-input p {
   color: #bf1650;
 }
-.bg-none:active{
+/* .bg-none:active{
   background: none !important;
+}
+.ant-input:hover{ 
+  border-color: #212529 !important
+}
+.ant-input:focus{
+  border-color: #212529 !important;
+  box-shadow: 0 0 0 2px rgb(76 82 88 / 20%) !important;
+} */
+.fs-12{
+  font-size: 12px !important;
+}
+.fs-14{
+  font-size: 14px !important;
+}
+.fs-16{
+  font-size: 16px !important;
+}
+.fs-18{
+  font-size: 18px !important;
 }

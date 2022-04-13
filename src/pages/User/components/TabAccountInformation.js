@@ -57,7 +57,7 @@ const TabAccountInformation = ({
 
       toast.success("Cập nhật thông tin thành công", {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -72,7 +72,7 @@ const TabAccountInformation = ({
       errors.forEach((err) =>
         toast.error(err, {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

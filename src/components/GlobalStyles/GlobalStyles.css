@@ -1,0 +1,44 @@
+.jobItemFavorite:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+.titleParagraphOne {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.cursorDefault {
+  cursor: default;
+}
+.width-70 {
+  width: 69%;
+}
+.width-30 {
+  width: 30%;
+}
+.width-33 {
+  width: 31.9%;
+}
+.height-405 {
+  height: 405px;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.z-index-999 {
+  z-index: 999;
+}
+.mt-65 {
+  margin-top: 65px;
+}
+.w-60 {
+  width: 60px;
+}
+.h-70 {
+  height: 70px;
+}

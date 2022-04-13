@@ -26,7 +26,7 @@ export const FogotPasswordPage = () => {
         console.log("Thanh cong");
         toast.info(data?.message, {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -38,7 +38,7 @@ export const FogotPasswordPage = () => {
         setIsSuccess(false);
         toast.error("Email không tồn tại", {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

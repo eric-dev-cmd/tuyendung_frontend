@@ -20,7 +20,7 @@ export const login = (payload) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_SUCCESS, payload: response });
     toast.success("Đăng nhập thành công", {
       position: "top-right",
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -31,7 +31,7 @@ export const login = (payload) => async (dispatch) => {
     console.log(error);
     toast.error(error.response?.data.message, {
       position: "top-right",
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

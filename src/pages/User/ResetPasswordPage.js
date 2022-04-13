@@ -23,7 +23,7 @@ const ResetPasswordPage = (props) => {
       .then((data) => {
         toast.success("Đặt lại mật khẩu thành công", {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -35,7 +35,7 @@ const ResetPasswordPage = (props) => {
       .catch((err) => {
         toast.error("Đã xảy ra lỗi. Vui lòng thử lại.", {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

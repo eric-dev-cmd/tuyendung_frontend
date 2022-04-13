@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tabs } from "antd";
 import TabAccountInformation from "./components/TabAccountInformation";
 import { useSelector } from "react-redux";
-import MainNavigation from "../../components/layout/MainNavigation";
+import MainNavigation from "../../components/Layout/MainNavigation";
 import portfolioApi from "../../services/portfoliApi";
 import { toast } from "react-toastify";
 import Helmet from "react-helmet";
@@ -21,7 +21,7 @@ const AccountSetupPage = (props) => {
     } catch (error) {
       toast.error(error, {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -51,7 +51,7 @@ const AccountSetupPage = (props) => {
         <title>Setting account | 123job.org</title>
       </Helmet>
       <MainNavigation />
-      <div className="bg-main">
+      <div className="bg-main mt-65">
         <div className="container">
           <Tabs tabPosition="left">
             <TabPane tab="Thông tin tài khoản" key="1">

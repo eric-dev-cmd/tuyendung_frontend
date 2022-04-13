@@ -1,0 +1,14 @@
+{
+  "common": {
+    "placeholder": {
+      "searchInput": "Tên công việc, vị trí bạn muốn ứng tuyển... VN"
+    },
+    "titleHome": "Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc",
+    "titleParagraph": "Tiếp cận 30,000+ tin tuyển dụng việc làm mới mỗi ngày từ hàng nghìn doanh nghiệp uy tín tại Việt Nam",
+    "titleRecruitmentNew": "TIN TUYỂN DỤNG, VIỆC LÀM TỐT NHẤT",
+    "titleHotJob": "Việc làm hấp dẫn",
+    "titleHighPayingJobs": "Việc làm lương cao",
+    "titleManagementJob": "Việc làm quản lý",
+    "titleITJob": "Việc làm IT"
+  }
+}

@@ -1,14 +1,12 @@
 import "antd/dist/antd.min.css";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Helmet } from "react-helmet";
-import { useSelector } from "react-redux";
 import { Route, Switch, useHistory, withRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import MainNavigation from "./components/layout/MainNavigation";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
@@ -17,6 +15,7 @@ import ChangePasswordPage from "./pages/User/ChangePasswordPage";
 import { FogotPasswordPage } from "./pages/User/FogotPasswordPage";
 import ResetPasswordPage from "./pages/User/ResetPasswordPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
+
 
 function App(props) {
   const history = useHistory();
@@ -73,7 +72,7 @@ function App(props) {
       </Switch>
       {/* </section> */}
       {/* </Layout> */}
-      <ToastContainer autoClose={2000} hideProgressBar={true} />
+      <ToastContainer autoClose={1000} hideProgressBar={true} />
       {/* Footer */}
     </Fragment>
   );

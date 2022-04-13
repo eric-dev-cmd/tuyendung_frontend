@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../../redux/actions/authActions";
 import authService from "../../services/authService";
-import MainNavigation from "../../components/layout/MainNavigation";
+import MainNavigation from "../../components/Layout/MainNavigation";
 const ChangePasswordPage = (props) => {
   const { register, watch, errors, handleSubmit } = useForm({});
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const ChangePasswordPage = (props) => {
       );
       toast.success("Thay đổi mật khẩu thành công", {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -45,7 +45,7 @@ const ChangePasswordPage = (props) => {
       errors.forEach((err) =>
         toast.error(err, {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -77,7 +77,7 @@ const ChangePasswordPage = (props) => {
         <title>Setting account | 123job.org</title>
       </Helmet>
       <MainNavigation />
-      <div className=" d-flex justify-content-center py-4 my-5">
+      <div className=" d-flex justify-content-center py-2 mb-5 mt-65">
         <div className="container">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
