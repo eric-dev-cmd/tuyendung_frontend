@@ -16,9 +16,7 @@ import { FogotPasswordPage } from "./pages/User/FogotPasswordPage";
 import ResetPasswordPage from "./pages/User/ResetPasswordPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
-
 function App(props) {
-  const history = useHistory();
   return (
     <Fragment>
       <Helmet>
@@ -27,25 +25,8 @@ function App(props) {
           đầu tại Việt Nam
         </title>
       </Helmet>
-      {/* {props.history.location.pathname !== "/login" ? : ""} */}
-      {/* <section className="container my-3"> */}
 
       <Switch>
-        {/* <Route path="/ho-so" component={Home} exact>
-              <h1>Home</h1>
-            </Route>
-             <Route path="/viec-lam" component={Home} exact>
-              <h1>Viec Lam</h1>
-            </Route>
-            <Route path="/tin-tuc" component={Home} exact>
-              <h1>Tin Tuc</h1>
-            </Route>
-            <Route path="/kham-pha" component={Home} exact>
-              <h1>Kham pha</h1>
-            </Route>
-            <Route path="/nha-tuyen-dung-dang-tin" component={Home} exact>
-              <h1>Nhà tuyển dụng đăng tin</h1>
-            </Route>*/}
         <Route path="/" component={Home} exact />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />

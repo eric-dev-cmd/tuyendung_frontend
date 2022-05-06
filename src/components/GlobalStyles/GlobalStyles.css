@@ -42,3 +42,14 @@
 .h-70 {
   height: 70px;
 }
+.center-screen{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.bottom-footer{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

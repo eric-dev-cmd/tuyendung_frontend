@@ -1,6 +1,6 @@
 export const logoStyle = {
   width: "100%",
-  height: "100px",
+  height: "75px",
   display: "block",
   textAlign: "center",
 };

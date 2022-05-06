@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -7,6 +7,8 @@ import { MdArrowDropDown } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { getUserProfile } from "../../utils/localStorage";
 import Logo from "../../assets/logo/logo_remove_bg.png";
+import { useTranslation } from "react-i18next";
+import { IMAGE_LOGO } from "../../constansts/common";
 const logoStyle = {
   height: "35px",
   width: "auto",
@@ -26,6 +28,7 @@ const MainNavigation = () => {
   const [user, setUser] = useState(() => {
     return getUserProfile();
   });
+  const t = useTranslation();
   console.log("isAuthenticated", isAuthenticated);
   console.log("user", user);
   useEffect(() => {
@@ -70,11 +73,7 @@ const MainNavigation = () => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark position-fixed top-0 z-index-999 w-100">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
-            <img
-              style={logoStyle}
-              src="https://123job.vn/images/logo_tim.png"
-              alt="Logo"
-            />
+            <img style={logoStyle} src={IMAGE_LOGO} alt="Logo" />
           </Link>
           <button
             className="navbar-toggler"
@@ -109,7 +108,10 @@ const MainNavigation = () => {
                 >
                   Việc Làm
                 </NavLink>
-                <ul className="dropdown-menu z-index-999" aria-labelledby="navbarDropdown">
+                <ul
+                  className="dropdown-menu z-index-999"
+                  aria-labelledby="navbarDropdown"
+                >
                   <li>
                     <NavLink to="/tim-viec-lam" className="dropdown-item">
                       Tìm việc làm
@@ -145,7 +147,6 @@ const MainNavigation = () => {
                 <li className="nav-item dropdown d-flex align-items-center dropdown-toggle">
                   <img
                     style={avatarStyle}
-                    // src="https://mdbootstrap.com/img/Photos/Avatars/img%20(20).jpg"
                     src="https://123job.vn/images/no_user.png"
                     alt="Avatar"
                     className="md-avatar rounded-circle nav-link "
