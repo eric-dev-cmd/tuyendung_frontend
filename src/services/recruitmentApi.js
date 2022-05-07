@@ -1,7 +1,7 @@
 import axiosClient from "./axiosClient";
 
-const recruitmentApi = {
-  getListRecruitment: (params) => {
+const RecruitmentApi = {
+  getListRecruitment: () => {
     const url = `/tinTuyenDungs`;
     return axiosClient.get(url);
   },
@@ -15,4 +15,4 @@ const recruitmentApi = {
   },
 };
 
-export default recruitmentApi;
+export default RecruitmentApi;

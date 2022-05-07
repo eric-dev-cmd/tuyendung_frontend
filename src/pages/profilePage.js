@@ -6,13 +6,7 @@ const { Header, Footer, Sider, Content } = Layout;
 const ProfilePage = () => {
   const currentUser = useSelector((state) => state.userLogin.userInfor);
   console.log("currentUser", currentUser);
-  // const [user, setUser] = useState({});
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     setUser(currentUser.taiKhoan);
-  //   }
-  // }, [currentUser]);
-  // console.log("AAAA", user);
+
   return (
     <Fragment>
       <Layout className="layout">

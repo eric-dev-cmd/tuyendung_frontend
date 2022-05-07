@@ -12,7 +12,6 @@ const JobItem = (props) => {
     jobItemFavoriteWrapper,
   } = classes;
   const styleImage = clsx(jobItemImageWrapper, "rounded");
-  console.log("AAAA", props.jobs);
   const { nhaTuyenDung, tieuDe, mucLuong, diaDiem } = props.jobs;
 
   return (

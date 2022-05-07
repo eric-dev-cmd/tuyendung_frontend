@@ -13,95 +13,137 @@ import CareerTrends from "../components/CareerTrends";
 import { GlobalData } from "../data/globalData";
 import { Breadcrumb, Layout, Carousel } from "antd";
 import SearchCommon from "../components/Search";
-import recruitmentApi from "../services/recruitmentApi";
 import JobProvider from "../components/JobHome/context/jobCommonContext";
 import JobListFilter from "../components/JobHome/components/JobListFilter";
 import CareerApi from "../services/careerApi";
+import FieldCompanyApi from "../services/fieldCompanyApi";
+import RecruitmentApi from "../services/recruitmentApi";
+import {
+  BAN_THOI_GIAN,
+  LINH_VUC,
+  TOAN_THOI_GIAN,
+  VI_TRI,
+} from "../constansts/common";
+import { useCommonContext } from "../components/Search/context/commonContext";
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
-
-const BAN_THOI_GIAN = {
-  loaiCongViec: "Bán thời gian",
-};
-const TOAN_THOI_GIAN = {
-  loaiCongViec: "Toàn thời gian",
-};
-const LINH_VUC = {
-  linhVuc: "IT- CÔNG NGHỆ THÔNG TIN",
-};
-const VI_TRI = {
-  viTri: "Quản lý",
-};
-
 const Home = () => {
-  const user = useSelector((state) => state.userLogin.userInfor);
-  const dispatch = useDispatch();
-  var currentTime = new Date();
-  var year = currentTime.getFullYear();
   const { t } = useTranslation();
   const careers = GlobalData.xuHuongNgheNghiep();
-  const [recruitments, setRecruitments] = useState([]);
-  const [recruitmentsPartTime, setRecruitmentsPartTime] = useState([]);
-  const [fields, setFields] = useState([]);
-  const [position, setPosition] = useState([]);
-  const [recruitmentsFullTime, setRecruitmentsFullTime] = useState([]);
-  const [listCareers, setListCareers] = useState([]);
-  const [recruitmentsTopNews, setRecruitmentsTopNews] = useState([]);
+  const {
+    location,
+    recruitmentsPartTime,
+    fields,
+    position,
+    recruitmentsFullTime,
+    listCareers,
+    recruitmentsTopNews,
+    companyFields,
+    recruitments,
+  } = useCommonContext();
+  // // Tin tuyển dụng
+  // const [recruitments, setRecruitments] = useState([]);
+  // // const [location, setLocation] = useState([]);
+  // const [recruitmentsPartTime, setRecruitmentsPartTime] = useState([]);
+  // const [fields, setFields] = useState([]);
+  // const [position, setPosition] = useState([]);
+  // const [recruitmentsFullTime, setRecruitmentsFullTime] = useState([]);
+  // const [listCareers, setListCareers] = useState([]);
+  // const [recruitmentsTopNews, setRecruitmentsTopNews] = useState([]);
+  // const [companyFields, setCompanyFields] = useState([]);
 
-  const getListData = async () => {
-    const response = await recruitmentApi.getListRecruitment();
-    setRecruitments(response.data);
-  };
+  // const getListData = async () => {
+  //   try {
+  //     const response = await RecruitmentApi.getListRecruitment();
+  //     setRecruitments(response.data);
+  //     // setLocation(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
 
-  const getListDataPartTime = async (filter) => {
-    const response = await recruitmentApi.getListRecruitmentFilterParams(
-      filter
-    );
-    setRecruitmentsPartTime(response.data);
-  };
+  // const getListDataPartTime = async (filter) => {
+  //   try {
+  //     const response = await RecruitmentApi.getListRecruitmentFilterParams(
+  //       filter
+  //     );
+  //     setRecruitmentsPartTime(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
 
-  const getListDataFields = async (filter) => {
-    const response = await recruitmentApi.getListRecruitmentFilterParams(
-      filter
-    );
-    setFields(response.data);
-  };
-  const getListDataPosition = async (filter) => {
-    const response = await recruitmentApi.getListRecruitmentFilterParams(
-      filter
-    );
-    setPosition(response.data);
-  };
-  const getListDataFullTime = async (filter) => {
-    const response = await recruitmentApi.getListRecruitmentFilterParams(
-      filter
-    );
-    setRecruitmentsFullTime(response.data);
-  };
-  const getListDataCareers = async () => {
-    const response = await CareerApi.getListCareer();
-    setListCareers(response.data);
-  };
-  const getListDataTopNewsRecruitments = async () => {
-    const response = await recruitmentApi.getListTopNewsRecruitments();
-    setRecruitmentsTopNews(response.data);
-  };
+  // const getListDataFields = async (filter) => {
+  //   try {
+  //     const response = await RecruitmentApi.getListRecruitmentFilterParams(
+  //       filter
+  //     );
+  //     setFields(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
 
-  useEffect(() => {
-    getListData();
-    getListDataPartTime(BAN_THOI_GIAN);
-    getListDataFields(LINH_VUC);
-    getListDataPosition(VI_TRI);
-    getListDataFullTime(TOAN_THOI_GIAN);
-    getListDataCareers();
-    getListDataTopNewsRecruitments();
-  }, []);
+  // const getListDataPosition = async (filter) => {
+  //   try {
+  //     const response = await RecruitmentApi.getListRecruitmentFilterParams(
+  //       filter
+  //     );
+  //     setPosition(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+  // // Full time
+  // const getListDataFullTime = async (filter) => {
+  //   try {
+  //     const response = await RecruitmentApi.getListRecruitmentFilterParams(
+  //       filter
+  //     );
+  //     setRecruitmentsFullTime(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+  // // Tất cả ngành nghề
+  // const getListDataCareers = async () => {
+  //   try {
+  //     const response = await CareerApi.getListCareer();
+  //     setListCareers(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+  // // Top 12 ứng tuyển nhiều nhất
+  // const getListDataTopNewsRecruitments = async () => {
+  //   try {
+  //     const response = await RecruitmentApi.getListTopNewsRecruitments();
+  //     setRecruitmentsTopNews(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+  // // Tất cả lĩnh vực công ty
+  // const getListDataFieldsCompany = async () => {
+  //   try {
+  //     const response = await FieldCompanyApi.getListFieldsCompany();
+  //     setCompanyFields(response.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getListData();
+  //   getListDataPartTime(BAN_THOI_GIAN);
+  //   getListDataFields(LINH_VUC);
+  //   getListDataPosition(VI_TRI);
+  //   getListDataFullTime(TOAN_THOI_GIAN);
+  //   getListDataCareers();
+  //   getListDataTopNewsRecruitments();
+  //   getListDataFieldsCompany();
+  // }, []);
 
   return (
     <Fragment>
@@ -111,7 +153,11 @@ const Home = () => {
       <MainNavigation />
 
       <div className="mt-65">
-        <SearchCommon />
+        <SearchCommon
+          careers={listCareers}
+          fields={companyFields}
+          locations={location}
+        />
         <Layout>
           <JobProvider>
             <div className="container pt-5 bottom-footer">

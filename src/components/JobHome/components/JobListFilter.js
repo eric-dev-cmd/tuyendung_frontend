@@ -7,8 +7,8 @@ const JobListFilter = ({ recruitments }) => {
       {recruitments
         ? recruitments.map((jobs, index) => {
             return (
-              <div className="col-12">
-                <JobItem jobs={jobs} key={index} />
+              <div key={index} className="col-12">
+                <JobItem jobs={jobs} />
               </div>
             );
           })

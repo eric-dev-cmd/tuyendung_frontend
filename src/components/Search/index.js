@@ -1,12 +1,40 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Layout, Select } from "antd";
 import { useTranslation } from "react-i18next";
 const { Option } = Select;
 const { Header, Footer, Sider, Content } = Layout;
 
-const SearchCommon = () => {
+const SearchCommon = ({ careers, fields, locations }) => {
   const { t } = useTranslation();
+  const [cities, setCites] = useState(() => {});
+  let cityObjectUnikey = [];
+
+  const getAllCity = () => {
+    let result = [];
+    let cities = [];
+
+    locations.map((location, index) =>
+      result.push({ diaDiem: location.diaDiem.tinhThanhPho })
+    );
+
+    result.forEach((item) => {
+      cities.push(item.diaDiem);
+    });
+
+    let cityUnikey = [...new Set(cities)];
+
+    cityUnikey.forEach((item) => {
+      console.log("t", item);
+      cityObjectUnikey.push({
+        diaDiem: item,
+      });
+    });
+    console.log("cityObjectUnikey", cityObjectUnikey);
+    return cityObjectUnikey;
+  };
+  getAllCity();
+  // console.log("cityObjectUnikey", cityObjectUnikey);
 
   return (
     <Fragment>
@@ -24,7 +52,6 @@ const SearchCommon = () => {
               <Select
                 showSearch
                 style={{ width: "100%" }}
-                placeholder="Search to Select"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -35,8 +62,18 @@ const SearchCommon = () => {
                     .toLowerCase()
                     .localeCompare(optionB.children.toLowerCase())
                 }
+                defaultValue={t("common.allProfessions")}
+                onChange={(e) => {
+                  console.log("1. ", e);
+                }}
               >
-                <Option value="1">Not Identified</Option>
+                {careers.map((career, index) => {
+                  return (
+                    <Option key={index} value={career.tenNganhNghe}>
+                      {career.tenNganhNghe}
+                    </Option>
+                  );
+                })}
               </Select>
               <br />
             </div>
@@ -44,7 +81,6 @@ const SearchCommon = () => {
               <Select
                 showSearch
                 style={{ width: "100%" }}
-                placeholder="Search to Select"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -55,8 +91,18 @@ const SearchCommon = () => {
                     .toLowerCase()
                     .localeCompare(optionB.children.toLowerCase())
                 }
+                defaultValue={t("common.allAreasOfTheCompany")}
+                onChange={(e) => {
+                  console.log("2. ", e);
+                }}
               >
-                <Option value="1">Not Identified</Option>
+                {fields.map((field, index) => {
+                  return (
+                    <Option key={index} value={field.tenLinhVuc}>
+                      {field.tenLinhVuc}
+                    </Option>
+                  );
+                })}
               </Select>
               <br />
             </div>
@@ -64,7 +110,6 @@ const SearchCommon = () => {
               <Select
                 showSearch
                 style={{ width: "100%" }}
-                placeholder="Search to Select"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -75,8 +120,18 @@ const SearchCommon = () => {
                     .toLowerCase()
                     .localeCompare(optionB.children.toLowerCase())
                 }
+                defaultValue={t("common.allThePlaces")}
+                onChange={(e) => {
+                  console.log("3. ", e);
+                }}
               >
-                <Option value="1">Not Identified</Option>
+                {cityObjectUnikey.map((city, index) => {
+                  return (
+                    <Option key={index} value={city.diaDiem}>
+                      {city.diaDiem}
+                    </Option>
+                  );
+                })}
               </Select>
               <br />
             </div>
