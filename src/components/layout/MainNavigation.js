@@ -29,11 +29,9 @@ const MainNavigation = () => {
     return getUserProfile();
   });
   const t = useTranslation();
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("user", user);
+
   useEffect(() => {
-    console.log("Localstorage");
-    console.log("isAuthenticated", isAuthenticated);
+
     if (isAuthenticated) {
       if (user?.taiKhoan?._id) {
         setUser(getUserProfile());
@@ -42,9 +40,8 @@ const MainNavigation = () => {
       <Redirect to="/login" />;
     }
   }, []);
+  
   useEffect(() => {
-    console.log("isAuthenticated", isAuthenticated);
-    console.log("Localstorage");
     if (!isAuthenticated) {
       if (user?.taiKhoan?._id) {
         setUser(getUserProfile());

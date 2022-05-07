@@ -13,6 +13,7 @@ import ProfilePage from "./pages/ProfilePage";
 import AccountSetupPage from "./pages/User/AccountSetupPage";
 import ChangePasswordPage from "./pages/User/ChangePasswordPage";
 import { FogotPasswordPage } from "./pages/User/FogotPasswordPage";
+import JobDetailPage from "./pages/User/JobDetailPage";
 import ResetPasswordPage from "./pages/User/ResetPasswordPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -31,6 +32,7 @@ function App(props) {
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
+        <Route exact path="/jobboard/:jobId" component={JobDetailPage} />
         <ProtectedRoute
           exact
           path="/user/account/password"

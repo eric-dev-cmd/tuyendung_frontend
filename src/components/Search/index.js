@@ -17,13 +17,11 @@ const SearchCommon = () => {
               <Input
                 placeholder={t("common.placeholder.searchInput")}
                 className="fs-14"
-                size="large"
               />
               <br />
             </div>
             <div className="col-2">
               <Select
-                size="large"
                 showSearch
                 style={{ width: "100%" }}
                 placeholder="Search to Select"
@@ -44,7 +42,6 @@ const SearchCommon = () => {
             </div>
             <div className="col-2">
               <Select
-                size="large"
                 showSearch
                 style={{ width: "100%" }}
                 placeholder="Search to Select"
@@ -65,7 +62,6 @@ const SearchCommon = () => {
             </div>
             <div className="col-2">
               <Select
-                size="large"
                 showSearch
                 style={{ width: "100%" }}
                 placeholder="Search to Select"
@@ -86,7 +82,6 @@ const SearchCommon = () => {
             </div>
             <div className="col-2 text-center">
               <Button
-                size="large"
                 className="form-control d-flex align-items-center justify-content-center"
                 type="primary"
                 icon={<SearchOutlined />}
