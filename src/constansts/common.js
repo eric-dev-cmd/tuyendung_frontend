@@ -15,3 +15,15 @@ export const LINH_VUC = {
 export const VI_TRI = {
   viTri: "Quản lý",
 };
+
+const CAP_BAC = {
+  SINH_VIEN: "Sinh viên",
+  THUC_TAP: "Thực tập",
+  MOI_TOT_NGHIEP: "Mới tốt nghiệp",
+  NHAN_VIEN: "Nhân viên",
+  TRUONG_PHONG: "Trưởng phòng",
+  GIAM_SAT: "Giám sát",
+  QUAN_LY: "Quản lý",
+  PHO_GIAM_DOC: "Phó giám đốc",
+  KHAC: "Khác",
+};

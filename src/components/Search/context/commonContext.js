@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import RecruitmentApi from "../../../services/recruitmentApi";
 import CareerApi from "../../../services/careerApi";
 import FieldCompanyApi from "../../../services/fieldCompanyApi";
+import { GlobalData } from "../../../data/globalData";
+
 import {
   BAN_THOI_GIAN,
   LINH_VUC,
@@ -23,6 +25,10 @@ const CommonProvider = ({ children, ...props }) => {
   const [listCareers, setListCareers] = useState([]);
   const [recruitmentsTopNews, setRecruitmentsTopNews] = useState([]);
   const [companyFields, setCompanyFields] = useState([]);
+  const levels = GlobalData.capBacData();
+  const typeWorks = GlobalData.loaiCongViec();
+  const experiences = GlobalData.kinhNghiem();
+  const wages = GlobalData.mucLuongData();
 
   const getListData = async () => {
     try {
@@ -128,6 +134,10 @@ const CommonProvider = ({ children, ...props }) => {
         recruitmentsTopNews,
         companyFields,
         recruitments,
+        levels,
+        typeWorks,
+        experiences,
+        wages,
       }}
     >
       {children}

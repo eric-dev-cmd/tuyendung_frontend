@@ -51,7 +51,7 @@ function App(props) {
           path="/auth/verified/:token"
           component={ResetPasswordPage}
         />
-        <ProtectedRoute exact path="/ho-so" component={ProfilePage} />
+        <ProtectedRoute exact path="/user/profile" component={ProfilePage} />
         <Route path="*">
           <NotFound />
         </Route>
