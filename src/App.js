@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
+import ProductDetail from "./features/Product/pages/ProductDetail";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
@@ -33,6 +34,8 @@ function App(props) {
         <Route exact path="/sign-up" component={Register} />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
         <Route exact path="/jobboard/:jobId" component={JobDetailPage} />
+        <Route exact path="/:slug" component={ProductDetail} />
+
         <ProtectedRoute
           exact
           path="/user/account/password"

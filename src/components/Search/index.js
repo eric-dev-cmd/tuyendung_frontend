@@ -38,10 +38,10 @@ const SearchCommon = ({ careers, fields, locations }) => {
 
   return (
     <Fragment>
-      <div className="container-fluid pb-3 pt-4">
+      <div className="container pb-3 pt-4">
         <div className="bg-white">
           <div className="row">
-            <div className="col-4">
+            <div className="col-6">
               <Input
                 placeholder={t("common.placeholder.searchInput")}
                 className="fs-14"
@@ -129,6 +129,153 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   return (
                     <Option key={index} value={city.diaDiem}>
                       {city.diaDiem}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <br />
+            </div>
+          </div>
+          <div className="row mt-3">
+            <div className="col-2">
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+                defaultValue={t("common.dateSubmitted")}
+                onChange={(e) => {
+                  console.log("1. ", e);
+                }}
+              >
+                {careers.map((career, index) => {
+                  return (
+                    <Option key={index} value={career.tenNganhNghe}>
+                      {career.tenNganhNghe}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <br />
+            </div>
+            <div className="col-2">
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+                defaultValue={t("common.wage")}
+                onChange={(e) => {
+                  console.log("1. ", e);
+                }}
+              >
+                {careers.map((career, index) => {
+                  return (
+                    <Option key={index} value={career.tenNganhNghe}>
+                      {career.tenNganhNghe}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <br />
+            </div>
+            <div className="col-2">
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+                defaultValue={t("common.typeWork")}
+                onChange={(e) => {
+                  console.log("1. ", e);
+                }}
+              >
+                {careers.map((career, index) => {
+                  return (
+                    <Option key={index} value={career.tenNganhNghe}>
+                      {career.tenNganhNghe}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <br />
+            </div>
+            <div className="col-2">
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+                defaultValue={t("common.rank")}
+                onChange={(e) => {
+                  console.log("1. ", e);
+                }}
+              >
+                {careers.map((career, index) => {
+                  return (
+                    <Option key={index} value={career.tenNganhNghe}>
+                      {career.tenNganhNghe}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <br />
+            </div>
+            <div className="col-2">
+              <Select
+                showSearch
+                style={{ width: "100%" }}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+                defaultValue={t("common.experience")}
+                onChange={(e) => {
+                  console.log("1. ", e);
+                }}
+              >
+                {careers.map((career, index) => {
+                  return (
+                    <Option key={index} value={career.tenNganhNghe}>
+                      {career.tenNganhNghe}
                     </Option>
                   );
                 })}

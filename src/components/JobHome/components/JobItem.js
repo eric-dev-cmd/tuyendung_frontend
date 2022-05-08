@@ -3,6 +3,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import classes from "./JobItem.module.css";
 import clsx from "clsx";
 import { Tooltip } from "antd";
+import { Link } from "react-router-dom";
 
 const JobItem = (props) => {
   const {
@@ -12,7 +13,7 @@ const JobItem = (props) => {
     jobItemFavoriteWrapper,
   } = classes;
   const styleImage = clsx(jobItemImageWrapper, "rounded");
-  const { nhaTuyenDung, tieuDe, mucLuong, diaDiem } = props.jobs;
+  const { nhaTuyenDung, tieuDe, mucLuong, diaDiem, _id } = props.jobs;
 
   return (
     <Fragment>
@@ -21,29 +22,32 @@ const JobItem = (props) => {
           <div className="d-flex align-items-center position-relative flex-wrap">
             <div className={styleImage}>
               <Tooltip placement="top" title={nhaTuyenDung.tenCongty}>
-                <a href="#" className="text-decoration-none">
+                <Link className="text-decoration-none" to={`/${_id}`}>
                   <img
                     className={clsx([jobItemImage, "rounded"])}
                     src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/IMG_5700.JPG`}
                     alt="Logo"
                   />
-                </a>
+                </Link>
               </Tooltip>
             </div>
             <div className={clsx([jobItemParagraph, "mt-3 px-3"])}>
               <Tooltip placement="top" title={tieuDe}>
-                <a href="#" className="titleParagraphOne text-dark fw-bold">
+                <Link
+                  className="titleParagraphOne text-dark fw-bold"
+                  to={`/${_id}`}
+                >
                   <strong>{tieuDe}</strong>
-                </a>
+                </Link>
               </Tooltip>
               <Tooltip placement="top" title={nhaTuyenDung.tenCongty}>
                 <p>
-                  <a
-                    href="#"
+                  <Link
                     className="titleParagraphOne text-decoration-none text-muted"
+                    to={`/${_id}`}
                   >
                     {nhaTuyenDung.tenCongty}
-                  </a>
+                  </Link>
                 </p>
               </Tooltip>
             </div>
