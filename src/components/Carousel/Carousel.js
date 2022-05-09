@@ -6,7 +6,6 @@ import { GlobalData } from "../../data/globalData";
 
 const CarouselImage = () => {
   const images = GlobalData.carouselImage();
-  console.log("images", images);
   const settings = {
     dots: true,
     infinite: true,

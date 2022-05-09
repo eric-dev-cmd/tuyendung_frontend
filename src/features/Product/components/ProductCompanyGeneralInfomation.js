@@ -13,11 +13,11 @@ const ProductCompanyGeneralInfomation = (props) => {
             <h1 className="text-dark d-flex align-items-center">
               <BsInfoSquare />{" "}
               <span className="ps-4">
-                Thông tin CHI NHÁNH CÔNG TY TNHH MTV HÀ THÀNH
+                Thông tin {props?.companyInfo?.tenCongty}
               </span>
             </h1>
             <div>
-              <Link to="/company" target="_blank">
+              <Link to={`/company/${props?.companyInfo?._id}`} target="_blank">
                 <span className="fs-14"> Xem trang công ty</span>{" "}
                 <BsBoxArrowUpRight size={12} />
               </Link>
@@ -34,13 +34,7 @@ const ProductCompanyGeneralInfomation = (props) => {
               </Col>
               <Col span={23}>
                 <p className="fw-bolder mb-2">Giới thiệu</p>
-                <p>
-                  Chi nhánh Công ty TNHH MTV Hà Thành là chi nhánh của công ty
-                  TNHH MTV Hà Thành theo giấy phép kinh doanh số: 0100108529
-                  ngày 27/6/1996, công ty chuyên kinh doanh bán buôn máy móc,
-                  thiết bị và phụ tùng máy nông nghiệp. Sản xuất các cấu kiện
-                  kim loại, xây dựng nhà các loại, xây dựng công trình đường ...
-                </p>
+                <p>{props?.companyInfo?.moTa}</p>
               </Col>
             </Row>
           </div>
@@ -51,20 +45,52 @@ const ProductCompanyGeneralInfomation = (props) => {
               </Col>
               <Col span={23}>
                 <p className="fw-bolder mb-2">Qui mô</p>
-                <p>25-99 nhân viên</p>
+                <p>{props?.companyInfo?.quyMo} nhân viên</p>
               </Col>
             </Row>
           </div>
-
+          <div className="mb-3">
+            <Row gutter={[32, 8]}>
+              <Col span={1}>
+                <Avatar src="https://www.topcv.vn/v4/image/job-detail/icon/10.svg" />
+              </Col>
+              <Col span={23}>
+                <p className="fw-bolder mb-2">Địa điểm</p>
+                <p>
+                  35 Nguyễn An Khương, Phường 13, Quận 5, Thành Phố Hồ Chí Minh
+                </p>
+              </Col>
+            </Row>
+          </div>
+          <div className="mb-3">
+            <Row gutter={[32, 8]}>
+              <Col span={1}>
+                <Avatar src="https://www.topcv.vn/v4/image/job-detail/icon/10.svg" />
+              </Col>
+              <Col span={23}>
+                <p className="fw-bolder mb-2">Số điện thoại</p>
+                <p>{props?.companyInfo?.sdt}</p>
+              </Col>
+            </Row>
+          </div>
+          <div className="mb-3">
+            <Row gutter={[32, 8]}>
+              <Col span={1}>
+                <Avatar src="https://www.topcv.vn/v4/image/job-detail/icon/10.svg" />
+              </Col>
+              <Col span={23}>
+                <p className="fw-bolder mb-2">Email</p>
+                <p>{props?.companyInfo?.email}</p>
+              </Col>
+            </Row>
+          </div>
           <Row gutter={[32, 8]}>
             <Col span={1}>
               <Avatar src="https://www.topcv.vn/v4/image/job-detail/icon/10.svg" />
             </Col>
             <Col span={23}>
-              <p className="fw-bolder mb-2">Địa điểm</p>
-              <p>
-                35 Nguyễn An Khương, Phường 13, Quận 5, Thành Phố Hồ Chí Minh
-              </p>
+              <p className="fw-bolder mb-2">Website</p>
+              <p>{props?.companyInfo?.website}</p>
             </Col>
           </Row>
         </Col>

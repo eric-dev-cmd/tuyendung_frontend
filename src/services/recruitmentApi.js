@@ -13,6 +13,10 @@ const RecruitmentApi = {
     const url = `/tinTuyenDungs/tinNoiBat`;
     return axiosClient.get(url);
   },
+  getRecruitmentById: (id) => {
+    const url = `/tinTuyenDungs/${id}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default RecruitmentApi;

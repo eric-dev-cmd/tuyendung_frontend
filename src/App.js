@@ -35,6 +35,7 @@ function App(props) {
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
         <Route exact path="/jobboard/:jobId" component={JobDetailPage} />
         <Route exact path="/:slug" component={ProductDetail} />
+        <Route exact path="/company/:uniqueId" component={ProductDetail} />
 
         <ProtectedRoute
           exact

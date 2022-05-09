@@ -1,9 +1,8 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { Avatar, Button, Col, Row } from "antd";
 import { BiDetail, BiPaperPlane } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
-import { HeartOutlined } from "@ant-design/icons";
 import {
   FacebookIcon,
   FacebookMessengerIcon,
@@ -12,9 +11,25 @@ import {
   TwitterIcon,
 } from "react-share";
 import { Timeline } from "antd";
+import { useProductContext } from "../context/ProductContext";
 
 const ProductGeneralInfomation = (props) => {
   const { t } = useTranslation();
+  console.log(" props?.phucLoi VINH", props?.phucLoi);
+  // let phucLoiCompany = props?.phucLoi.map((item, index) => {
+  //   return (
+  //     <Timeline.Item key={index} color="gray">
+  //       {item}
+  //     </Timeline.Item>
+  //   );
+  // });
+  const [welfares, setWelfares] = useState(props.phucLoi || []);
+  console.log("welfares", welfares);
+  const context = useProductContext();
+
+  // console.log("Logger Product detail:::", detail);
+  console.log("context API", context.detail);
+
   return (
     <Fragment>
       <Row>
@@ -49,7 +64,7 @@ const ProductGeneralInfomation = (props) => {
                       {" "}
                       <strong className="mb-2">Mức lương</strong>
                     </p>
-                    <p>Trên 9 triệu</p>
+                    <p>{props?.mucLuong}</p>
                   </Col>
                 </Row>
               </Col>
@@ -65,7 +80,7 @@ const ProductGeneralInfomation = (props) => {
                       {" "}
                       <strong className="mb-2">Số lượng tuyển</strong>
                     </p>
-                    <p>1 người</p>
+                    <p>{props?.soLuongTuyen}</p>
                   </Col>
                 </Row>
               </Col>
@@ -83,7 +98,7 @@ const ProductGeneralInfomation = (props) => {
                         {" "}
                         <strong className="mb-2">Hình thức làm việc</strong>
                       </p>
-                      <p>Toàn thời gian</p>
+                      <p>{props?.hinhThucLamViec}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -99,7 +114,7 @@ const ProductGeneralInfomation = (props) => {
                         {" "}
                         <strong className="mb-2">Cấp bậc</strong>
                       </p>
-                      <p>Nhân viên</p>
+                      <p>{props?.viTri}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -118,7 +133,7 @@ const ProductGeneralInfomation = (props) => {
                         {" "}
                         <strong className="mb-2">Giới tính</strong>
                       </p>
-                      <p>Không yêu cầu</p>
+                      <p>{props?.gioiTinh}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -134,7 +149,7 @@ const ProductGeneralInfomation = (props) => {
                         {" "}
                         <strong className="mb-2">Kinh nghiệm</strong>
                       </p>
-                      <p>1 năm</p>
+                      <p>{props?.kinhNghiem}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -186,19 +201,7 @@ const ProductGeneralInfomation = (props) => {
                       <div className="mb-2">
                         <Timeline>
                           <Timeline.Item color="gray">
-                            Kiểm tra các chứng từ yêu cầu nhập / xuất hàng theo
-                            đúng quy định.
-                          </Timeline.Item>
-                          <Timeline.Item color="gray">
-                            Thực hiện việc nhập và xuất hàng cho cá nhân liên
-                            quan
-                          </Timeline.Item>
-                          <Timeline.Item color="gray">
-                            Ghi phiếu nhập, phiếu xuất kho.
-                          </Timeline.Item>
-                          <Timeline.Item color="gray">
-                            Theo dõi số lượng xuất nhập tồn hàng ngày và đối
-                            chiếu với định mức tồn kho tối thiểu.
+                            {props?.moTa}
                           </Timeline.Item>
                         </Timeline>
                       </div>
@@ -242,97 +245,6 @@ const ProductGeneralInfomation = (props) => {
               <Button className="me-2">Quận 5</Button>
               <Button className="me-2">Hồ Chí Minh</Button>
             </div>
-          </div>
-        </Col>
-      </Row>
-      {/* Mô tả công việc */}
-      <Row gutter={[32, 8]}>
-        <Col span={24}>
-          <div className="px-3 mt-3">
-            <Row>
-              <Col span={24}>
-                <p className="fw-bolder mb-3">Yêu cầu ứng viên</p>
-                <div>
-                  <div className="">
-                    <Timeline>
-                      <Timeline.Item color="gray">
-                        Kiểm tra các chứng từ yêu cầu nhập / xuất hàng theo đúng
-                        quy định.
-                      </Timeline.Item>
-                      <Timeline.Item color="gray">
-                        Thực hiện việc nhập và xuất hàng cho cá nhân liên quan
-                      </Timeline.Item>
-                      <Timeline.Item color="gray">
-                        Ghi phiếu nhập, phiếu xuất kho.
-                      </Timeline.Item>
-                      <Timeline.Item color="gray">
-                        Theo dõi số lượng xuất nhập tồn hàng ngày và đối chiếu
-                        với định mức tồn kho tối thiểu.
-                      </Timeline.Item>
-                    </Timeline>
-                  </div>
-                </div>
-                <div className="quyenloi">
-                  <p className="fw-bolder mb-3">Quyền lợi</p>
-                  <div>
-                    <div className="mb-2">
-                      <Timeline>
-                        <Timeline.Item color="gray">
-                          Kiểm tra các chứng từ yêu cầu nhập / xuất hàng theo
-                          đúng quy định.
-                        </Timeline.Item>
-                        <Timeline.Item color="gray">
-                          Thực hiện việc nhập và xuất hàng cho cá nhân liên quan
-                        </Timeline.Item>
-                        <Timeline.Item color="gray">
-                          Ghi phiếu nhập, phiếu xuất kho.
-                        </Timeline.Item>
-                        <Timeline.Item color="gray">
-                          Theo dõi số lượng xuất nhập tồn hàng ngày và đối chiếu
-                          với định mức tồn kho tối thiểu.
-                        </Timeline.Item>
-                      </Timeline>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <p className="fw-bolder mb-3">Cách thức ứng tuyển</p>
-                  <span>
-                    Ứng viên nộp hồ sơ trực tuyến bằng cách bấm{" "}
-                    <span className="text-highlight fw-bold">
-                      Ứng tuyển ngay{" "}
-                    </span>
-                    dưới đây.
-                  </span>
-                  <Row gutter={[32, 8]}>
-                    <Col span={6}>
-                      <Button
-                        className="form-control d-flex align-items-center justify-content-center py-4 my-1"
-                        type="primary"
-                        icon={<BiPaperPlane />}
-                      >
-                        <span className="ps-2">
-                          {t("productDetail.applyNow")}
-                        </span>
-                      </Button>
-                    </Col>
-
-                    <Col span={3}>
-                      <Button
-                        className="form-control d-flex align-items-center justify-content-center py-4 my-1"
-                        icon={<HeartOutlined />}
-                      >
-                        {t("productDetail.saveRecruitment")}
-                      </Button>
-                    </Col>
-                    <Col span={15}></Col>
-                    <Col span={24}>
-                      <p>Hạn nộp hồ sơ: 01/06/2022</p>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
           </div>
         </Col>
       </Row>

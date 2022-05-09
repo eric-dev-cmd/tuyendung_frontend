@@ -9,13 +9,16 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import "./i18n";
 import GlobalStyles from "./components/GlobalStyles";
 import CommonProvider from "./components/Search/context/commonContext";
+import ProductProvider from "./features/Product/context/ProductContext";
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <ErrorBoundary>
         <GlobalStyles>
           <CommonProvider>
-            <App />
+            <ProductProvider>
+              <App />
+            </ProductProvider>
           </CommonProvider>
         </GlobalStyles>
       </ErrorBoundary>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Row } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
@@ -10,9 +10,16 @@ import {
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { BiPaperPlane } from "react-icons/bi";
+import { Link } from "react-router-dom";
+import TimeUtils from "../../../utils/timeUtils";
 
 const ProductHeader = (props) => {
   const { t } = useTranslation();
+  const expirationDateFormat = TimeUtils.formatDateTime(
+    props?.ngayHetHan,
+    "DD-MM-YYYY"
+  );
+
   return (
     <>
       <Row gutter={[24, 16]}>
@@ -26,23 +33,27 @@ const ProductHeader = (props) => {
               xl: 80,
               xxl: 100,
             }}
-            src="https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png"
+            src={
+              props?.companyInfo?.avatar
+                ? `https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${props?.companyInfo?.avatar}`
+                : `https://webtuyendung.s3.ap-southeast-1.amazonaws.com/IMG_5700.JPG`
+            }
           />
         </Col>
         <Col span={17}>
           <div className="box-info-job">
-            <h1>Nhân Viên Thủ Kho (Lương Từ 9 Triệu Trở Lên)</h1>
+            <h1>{props.tieuDe}</h1>
             <div className="company-title mb-2">
-              <a href="https://www.topcv.vn/cong-ty/chi-nhanh-cong-ty-tnhh-mtv-ha-thanh/100146.html">
-                CHI NHÁNH CÔNG TY TNHH MTV HÀ THÀNH
-              </a>
+              <Link to="#">{props?.companyInfo?.tenCongty}</Link>
             </div>
 
             <div className="job-deadline d-flex">
               <div>
                 <ClockCircleOutlined />
               </div>
-              <span className="pt-3px px-1">Hạn nộp hồ sơ: 01/06/2022</span>
+              <span className="pt-3px px-1">
+                Hạn nộp hồ sơ: {expirationDateFormat}
+              </span>
             </div>
           </div>
         </Col>
