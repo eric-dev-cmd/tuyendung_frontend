@@ -112,14 +112,20 @@ const CommonProvider = ({ children, ...props }) => {
   };
 
   useEffect(() => {
-    getListData();
-    getListDataPartTime(BAN_THOI_GIAN);
-    getListDataFields(LINH_VUC);
-    getListDataPosition(VI_TRI);
-    getListDataFullTime(TOAN_THOI_GIAN);
-    getListDataCareers();
-    getListDataTopNewsRecruitments();
-    getListDataFieldsCompany();
+    let mounted = true;
+    if (mounted) {
+      getListData();
+      getListDataPartTime(BAN_THOI_GIAN);
+      getListDataFields(LINH_VUC);
+      getListDataPosition(VI_TRI);
+      getListDataFullTime(TOAN_THOI_GIAN);
+      getListDataCareers();
+      getListDataTopNewsRecruitments();
+      getListDataFieldsCompany();
+    }
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (

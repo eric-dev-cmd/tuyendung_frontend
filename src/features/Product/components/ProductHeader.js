@@ -46,7 +46,7 @@ const ProductHeader = (props) => {
       });
     } catch (error) {
       toast.error(error.response?.data.message, {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,

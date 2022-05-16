@@ -56,7 +56,7 @@ const TabAccountInformation = ({
       await portfolioApi.updateAccountById(user._id, payload);
 
       toast.success("Cập nhật thông tin thành công", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -71,7 +71,7 @@ const TabAccountInformation = ({
       const errors = err.response.data.message.split("-");
       errors.forEach((err) =>
         toast.error(err, {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,

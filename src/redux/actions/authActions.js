@@ -19,7 +19,7 @@ export const login = (payload) => async (dispatch) => {
     localStorage.setItem("token", JSON.stringify(response.token));
     dispatch({ type: USER_LOGIN_SUCCESS, payload: response });
     toast.success("Đăng nhập thành công", {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -30,7 +30,7 @@ export const login = (payload) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     toast.error(error.response?.data.message, {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,

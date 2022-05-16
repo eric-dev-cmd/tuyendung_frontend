@@ -31,7 +31,7 @@ const Login = () => {
   if (isAuthenticated) {
     return <Redirect to="/ho-so" />;
   } else {
-    <Redirect to="/dang-nhap" />;
+    <Redirect to="/login" />;
   }
 
   return (

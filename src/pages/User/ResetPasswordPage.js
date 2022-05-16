@@ -22,7 +22,7 @@ const ResetPasswordPage = (props) => {
       .resetPasword(payload.matKhau, payload.xacNhanMatKhau, param.token)
       .then((data) => {
         toast.success("Đặt lại mật khẩu thành công", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -30,11 +30,11 @@ const ResetPasswordPage = (props) => {
           draggable: true,
           progress: undefined,
         });
-        history.replace("/dang-nhap");
+        history.replace("/login");
       })
       .catch((err) => {
         toast.error("Đã xảy ra lỗi. Vui lòng thử lại.", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
