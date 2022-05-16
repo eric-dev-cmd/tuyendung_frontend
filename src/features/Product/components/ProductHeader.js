@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Modal, Row } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
@@ -12,6 +12,9 @@ import { useTranslation } from "react-i18next";
 import { BiPaperPlane } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import TimeUtils from "../../../utils/timeUtils";
+import ApplyJobModal from "./modal/ApplyJobModal";
+import CandidateApplicationForm from "../../../services/candidateApplicationForm";
+import { toast } from "react-toastify";
 
 const ProductHeader = (props) => {
   const { t } = useTranslation();
@@ -22,17 +25,54 @@ const ProductHeader = (props) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const showModal = () => {
+  const handleAddButtonClick = (e) => {
+    e.preventDefault();
     setIsShowModal(true);
   };
-
-  const handleOk = () => {
-    setIsShowModal(false);
+  const handleSubmitModal = async (payload) => {
+    console.log("Call api payload", payload);
+    try {
+      await CandidateApplicationForm.createApplicationForm(payload);
+      // setDetail(response);
+      // setIsSuccessSubmit(true);
+      toast.success("Ứng tuyển thành công", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      toast.error(error.response?.data.message, {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
-  const handleCancel = () => {
-    setIsShowModal(false);
-  };
+  const renderModalApplyJob = useMemo(() => {
+    if (!isShowModal) return null;
+
+    return (
+      <ApplyJobModal
+        showModal={isShowModal}
+        onCloseModal={() => {
+          setIsShowModal(false);
+          // clearErrors();
+        }}
+        onSubmit={handleSubmitModal}
+        // detail={detail}
+        // isEdit={isEdit}
+      />
+    );
+  }, [isShowModal]);
 
   return (
     <>
@@ -74,7 +114,7 @@ const ProductHeader = (props) => {
         <Col span={4}>
           <div>
             <Button
-              onClick={showModal}
+              onClick={handleAddButtonClick}
               className="form-control d-flex align-items-center justify-content-center py-2 my-4"
               type="primary"
               icon={<BiPaperPlane />}
@@ -91,7 +131,7 @@ const ProductHeader = (props) => {
             </Button>
           </div>
         </Col>
-        <Modal
+        {/* <Modal
           title="Ứng tuyển việc làm"
           visible={isShowModal}
           footer={[
@@ -113,7 +153,8 @@ const ProductHeader = (props) => {
           <div className="text-end">
             <Button type="primary">Hoàn thành hồ sơ của tôi</Button>
           </div>
-        </Modal>
+        </Modal> */}
+        {renderModalApplyJob}
       </Row>
     </>
   );
