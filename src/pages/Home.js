@@ -65,8 +65,9 @@ const Home = () => {
                     <CarouselImage />
                   </div>
                 </div>
-                {/* 12 tin nổi bật nhất */}
+
                 <div className="bg-white px-3 pt-1">
+                  {/* 12 tin nổi bật nhất */}
                   <div className="row mt-5">
                     <div className="col-12">
                       <h5 className="text-uppercase">
@@ -78,7 +79,7 @@ const Home = () => {
                   <div className="row mt-2">
                     <JobList recruitments={recruitmentsTopNews} />
                   </div>
-                  <div className="row mt-5">
+                  {/* <div className="row mt-5">
                     <div className="col-12">
                       <h5 className="text-uppercase">
                         <AiFillStar className="pb-1" />
@@ -88,13 +89,13 @@ const Home = () => {
                   </div>
                   <div className="row mt-2">
                     <JobList recruitments={recruitments} />
-                  </div>
+                  </div> */}
                   <div className="row mt-2">
                     <div className="col-12">
                       <CarouselCustom />
                     </div>
                   </div>
-                  <div className="my-3">
+                  {/* <div className="my-3">
                     <div className="row mt-4">
                       <div className="col-12">
                         <h5 className="text-uppercase">
@@ -106,7 +107,7 @@ const Home = () => {
                     <div className="row mt-2">
                       <JobList recruitments={recruitmentsPartTime} />
                     </div>
-                  </div>
+                  </div> */}
                   {/* Three */}
                   <div className="d-flex flex-wrap mt-4 pb-5 mb-2">
                     <div className="width-33 me-4">
@@ -134,7 +135,7 @@ const Home = () => {
                         <div className="col-12">
                           <h5 className="text-uppercase">
                             <FaUsersCog className="pb-1" /> &nbsp;
-                            {t("common.titleManagementJob")}
+                            {t("common.titlePartTimeJob")}
                           </h5>
                         </div>
                         <div
@@ -152,7 +153,7 @@ const Home = () => {
                         <div className="col-12">
                           <h5 className="text-uppercase">
                             <FaLaptopCode className="pb-1" /> &nbsp;
-                            {t("common.titleITJob")}
+                            {t("common.recruitingTrainees")}
                           </h5>
                         </div>
                         <div
@@ -160,7 +161,9 @@ const Home = () => {
                           id="custom-scrollbar"
                         >
                           <div className="col-12">
-                            <JobListFilter recruitments={fields} />
+                            <JobListFilter
+                              recruitments={recruitmentsFullTime}
+                            />
                           </div>
                         </div>
                       </div>
@@ -168,7 +171,7 @@ const Home = () => {
                   </div>
                 </div>
 
-                <div className="bg-white px-3 mt-4 mb-2 py-1">
+                {/* <div className="bg-white px-3 mt-4 mb-2 py-1">
                   <div className="d-flex flex-wrap mt-4 pb-5 mb-2">
                     <div className="width-33 me-4">
                       <div className="row mt-2">
@@ -227,7 +230,65 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                  <div className="d-flex flex-wrap mt-4 pb-5 mb-2">
+                    <div className="width-33 me-4">
+                      <div className="row mt-2">
+                        <div className="col-12">
+                          <h5 className="text-uppercase">
+                            <AiFillDollarCircle className="pb-1" /> &nbsp;
+                            {t("common.recruitingTrainees")}
+                          </h5>
+                        </div>
+                        <div
+                          className="height-405 overflow-auto"
+                          id="custom-scrollbar"
+                        >
+                          <div className="col-12">
+                            <JobListFilter
+                              recruitments={recruitmentsFullTime}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="width-33 me-4">
+                      <div className="row mt-2">
+                        <div className="col-12">
+                          <h5 className="text-uppercase">
+                            <FaUsersCog className="pb-1" /> &nbsp;
+                            {t("common.titleManagementJob")}
+                          </h5>
+                        </div>
+                        <div
+                          className="height-405 overflow-auto"
+                          id="custom-scrollbar"
+                        >
+                          <div className="col-12">
+                            <JobListFilter recruitments={position} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="width-33">
+                      <div className="row mt-2">
+                        <div className="col-12">
+                          <h5 className="text-uppercase">
+                            <FaLaptopCode className="pb-1" /> &nbsp;
+                            {t("common.titleITJob")}
+                          </h5>
+                        </div>
+                        <div
+                          className="height-405 overflow-auto"
+                          id="custom-scrollbar"
+                        >
+                          <div className="col-12">
+                            <JobListFilter recruitments={fields} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
 
                 {/* Các ngành nghề*/}
                 <div className="bg-white px-3 mt-4 mb-2">
