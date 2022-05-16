@@ -1,18 +1,53 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Layout, Select } from "antd";
 import { useTranslation } from "react-i18next";
 import { DatePicker, Space } from "antd";
 import moment from "moment";
 import { useCommonContext } from "./context/commonContext";
+import { filter, isEmpty, isUndefined } from "lodash";
+import { useHistory } from "react-router-dom";
+import queryString from "query-string";
+import axios from "axios";
+import { SearchContext } from "../../context/SearchContextProvider";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { Header, Footer, Sider, Content } = Layout;
 
 const SearchCommon = ({ careers, fields, locations }) => {
+  const { detail, setDetail } = useContext(SearchContext);
   const { t } = useTranslation();
   const [cities, setCites] = useState(() => {});
+  const history = useHistory();
+  const [keyword, setKeyword] = useState("");
+  const [results, setResults] = useState([]);
+  const [hide, setHide] = useState(true);
+  const typingTimeOutRef = useRef(null);
+  const [career, selectCareer] = useState();
+  const [filters, setFilters] = useState({
+    tieuDe: "",
+    nganhNghe: "",
+    linhVuc: "",
+    diaDiem: "",
+    soNamKinhNghiem: "",
+    viTri: "",
+    tuNgay: "",
+    denNgay: "",
+    page: 1,
+    loaiCongViec: "",
+  });
+  const paramsString = queryString.stringify(filters);
+  const [recruitmentList, setRecruitmentList] = useState([]);
+  const [isSubmitButton, setIsSubmitButton] = useState();
+  const [showItem, setShowItem] = useState(false);
+
   let cityObjectUnikey = [];
   const dateFormat = "YYYY-MM-DD";
   const { levels, typeWorks, experiences, wages } = useCommonContext();
@@ -38,7 +73,59 @@ const SearchCommon = ({ careers, fields, locations }) => {
     });
     return cityObjectUnikey;
   };
+
   getAllCity();
+
+  const [title, setTitle] = useState();
+
+  const handleKeywordChange = (event) => {
+    if (typingTimeOutRef.current) {
+      clearTimeout(typingTimeOutRef.current);
+    }
+
+    const kw = event.target.value.trim().toLowerCase();
+
+    typingTimeOutRef.current = setTimeout(() => {
+      setKeyword(kw);
+    }, 500);
+
+    setFilters({
+      ...filters,
+      tieuDe: kw,
+    });
+  };
+
+  const handleSearchClick = () => {
+    console.log("Clicked handleSearchClick");
+    setIsSubmitButton(true);
+    console.log("paramsStrng", paramsString);
+    console.log("... ttv data", recruitmentList);
+    if (recruitmentList.length === 0) {
+      setShowItem(true);
+    }
+
+    history.push(`/search?${paramsString}`);
+  };
+
+  useEffect(() => {
+    const searchProducts = async () => {
+      console.log("Call api in search");
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhieuTieuChi?${paramsString}`;
+      try {
+        // const response = await productApi.searchProducts(keyword);
+        const response = await axios.get(requestUrl);
+
+        console.log("... tttv response", response);
+        setRecruitmentList(response);
+        setDetail(response);
+        // setResults(response.products);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    searchProducts();
+  }, [isSubmitButton]);
+
   return (
     <Fragment>
       <div className="container pb-3 pt-4">
@@ -48,6 +135,10 @@ const SearchCommon = ({ careers, fields, locations }) => {
               <Input
                 placeholder={t("common.placeholder.searchInput")}
                 className="fs-14"
+                // onChange={(e) => {
+                //   setTitle(e.target.value);
+                // }}
+                onChange={handleKeywordChange}
               />
               <br />
             </div>
@@ -65,9 +156,16 @@ const SearchCommon = ({ careers, fields, locations }) => {
                     .toLowerCase()
                     .localeCompare(optionB.children.toLowerCase())
                 }
-                defaultValue={t("common.allProfessions")}
+                defaultValue="Chọn ngành nghề"
                 onChange={(e) => {
                   console.log("1. ", e);
+                  if (e) {
+                    selectCareer(e);
+                    setFilters({
+                      ...filters,
+                      nganhNghe: e,
+                    });
+                  }
                 }}
               >
                 {careers.map((career, index) => {
@@ -94,9 +192,15 @@ const SearchCommon = ({ careers, fields, locations }) => {
                     .toLowerCase()
                     .localeCompare(optionB.children.toLowerCase())
                 }
-                defaultValue={t("common.allAreasOfTheCompany")}
+                defaultValue={t("Chọn lĩnh vực công ty")}
                 onChange={(e) => {
-                  console.log("2. ", e);
+                  console.log("1. ", e);
+                  if (e) {
+                    setFilters({
+                      ...filters,
+                      linhVuc: e,
+                    });
+                  }
                 }}
               >
                 {fields.map((field, index) => {
@@ -123,9 +227,13 @@ const SearchCommon = ({ careers, fields, locations }) => {
                     .toLowerCase()
                     .localeCompare(optionB.children.toLowerCase())
                 }
-                defaultValue={t("common.allThePlaces")}
+                defaultValue="Chọn địa điểm"
                 onChange={(e) => {
                   console.log("3. ", e);
+                  setFilters({
+                    ...filters,
+                    diaDiem: e,
+                  });
                 }}
               >
                 {cityObjectUnikey.map((city, index) => {
@@ -152,9 +260,12 @@ const SearchCommon = ({ careers, fields, locations }) => {
                     .toLowerCase()
                     .localeCompare(optionB.children.toLowerCase())
                 }
-                defaultValue={t("common.rank")}
+                defaultValue="Chọn cấp bậc"
                 onChange={(e) => {
-                  console.log("1. ", e);
+                  setFilters({
+                    ...filters,
+                    viTri: e,
+                  });
                 }}
               >
                 {levels.map((level, index) => {
@@ -197,6 +308,10 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue={t("common.typeWork")}
                 onChange={(e) => {
                   console.log("1. ", e);
+                  setFilters({
+                    ...filters,
+                    loaiCongViec: e,
+                  });
                 }}
               >
                 {typeWorks.map((typeWork, index) => {
@@ -227,6 +342,10 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue={t("common.experience")}
                 onChange={(e) => {
                   console.log("1. ", e);
+                  setFilters({
+                    ...filters,
+                    soNamKinhNghiem: e,
+                  });
                 }}
               >
                 {experiences.map((experience, index) => {
@@ -239,7 +358,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
               </Select>
               <br />
             </div>
-            <div className="col-2">
+            {/* <div className="col-2">
               <Select
                 showSearch
                 style={{ width: "100%" }}
@@ -256,6 +375,10 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue={t("common.wage")}
                 onChange={(e) => {
                   console.log("1. ", e);
+                  setFilters({
+                    ...filters,
+                    linhVuc: e,
+                  });
                 }}
               >
                 {wages.map((wage, index) => {
@@ -267,13 +390,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 })}
               </Select>
               <br />
-            </div>
+            </div> */}
 
-            <div className="col-2 text-center">
+            <div className="col-4 text-center">
               <Button
                 className="form-control d-flex align-items-center justify-content-center"
                 type="primary"
                 icon={<SearchOutlined />}
+                onClick={handleSearchClick}
               >
                 Tìm kiếm
               </Button>

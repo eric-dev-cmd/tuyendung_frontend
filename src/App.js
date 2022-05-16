@@ -7,10 +7,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
+import SearchCommon from "./components/Search";
 import ProductDetail from "./features/Product/pages/ProductDetail";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
+import SearchPage from "./pages/SearchPage";
+import SeachPage from "./pages/SearchPage";
 import AccountSetupPage from "./pages/User/AccountSetupPage";
 import ChangePasswordPage from "./pages/User/ChangePasswordPage";
 import { FogotPasswordPage } from "./pages/User/FogotPasswordPage";
@@ -33,10 +36,12 @@ function App(props) {
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
-        <Route exact path="/jobboard/:jobId" component={JobDetailPage} />
-        <Route exact path="/:slug" component={ProductDetail} />
+        {/* <Route exact path="/:slug" component={ProductDetail} /> */}
+        <Route exact path="/job-detail/:slug" component={ProductDetail} />
         <Route exact path="/company/:uniqueId" component={ProductDetail} />
-
+        <Route exact path="/jobs-saved" component={ProductDetail} />
+        <Route exact path="/search" component={SearchPage} />
+        <ProtectedRoute exact path="/user/profile" component={ProfilePage} />
         <ProtectedRoute
           exact
           path="/user/account/password"
@@ -52,7 +57,7 @@ function App(props) {
           path="/auth/verified/:token"
           component={ResetPasswordPage}
         />
-        <ProtectedRoute exact path="/user/profile" component={ProfilePage} />
+
         <Route path="*">
           <NotFound />
         </Route>

@@ -44,11 +44,8 @@ const ProductDetail = (props) => {
     }
   };
   const splitRequirement = () => {
-    console.log("... logger req", yeuCaus);
     if (yeuCaus.indexOf(".") > -1) {
-      console.log("... logger req point");
       let values = yeuCaus.split(".");
-      console.log("... logger req arr", values);
       return values.map((value, index) => (
         <Timeline.Item key={index} color="gray">
           {value}
@@ -107,7 +104,8 @@ const ProductDetail = (props) => {
                           mucLuong={detail?.mucLuong}
                           hinhThucLamViec={detail?.loaiCongViec}
                           moTa={detail.moTa}
-                          // phucLoi={detail.phucLoi}
+                          diaDiem={detail.diaDiem}
+                          nganhNghe={detail.nganhNghe}
                         />
                       </div>
                       {/* Mô tả công việc */}

@@ -131,3 +131,24 @@
 .text-highlight{
   color:  #00b14f;
 }
+.profile-banner{
+  width: 100%;
+  height: 230px;
+}
+.profile-banner img{
+ width: 100%;
+  height: 100%;
+}
+.profile-avatar{
+      /* position: absolute;
+    left: 50%;
+    top: 185px; */
+    transform: translate(0, -50%);
+}
+.profile-avatar-icon{
+    bottom: 6px;
+    right: 0px;
+    background: white;
+    padding: 1px 6px;
+    border-radius: 12px;
+}

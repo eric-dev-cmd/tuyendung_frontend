@@ -11,13 +11,10 @@ import { FaUsersCog, FaLaptopCode } from "react-icons/fa";
 import FooterHome from "../components/Footer/FooterHome";
 import CareerTrends from "../components/CareerTrends";
 import { GlobalData } from "../data/globalData";
-import { Breadcrumb, Layout, Carousel } from "antd";
+import { Breadcrumb, Layout, Carousel, Modal } from "antd";
 import SearchCommon from "../components/Search";
 import JobProvider from "../components/JobHome/context/jobCommonContext";
 import JobListFilter from "../components/JobHome/components/JobListFilter";
-import CareerApi from "../services/careerApi";
-import FieldCompanyApi from "../services/fieldCompanyApi";
-import RecruitmentApi from "../services/recruitmentApi";
 
 import { useCommonContext } from "../components/Search/context/commonContext";
 
@@ -37,7 +34,7 @@ const Home = () => {
     companyFields,
     recruitments,
   } = useCommonContext();
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   return (
     <Fragment>
       <Helmet>

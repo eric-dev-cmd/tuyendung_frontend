@@ -22,7 +22,10 @@ const JobItem = (props) => {
           <div className="d-flex align-items-center position-relative flex-wrap">
             <div className={styleImage}>
               <Tooltip placement="top" title={nhaTuyenDung.tenCongty}>
-                <Link className="text-decoration-none" to={`/${_id}`}>
+                <Link
+                  className="text-decoration-none"
+                  to={`/job-detail/${_id}`}
+                >
                   <img
                     className={clsx([jobItemImage, "rounded"])}
                     src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/IMG_5700.JPG`}
@@ -35,7 +38,7 @@ const JobItem = (props) => {
               <Tooltip placement="top" title={tieuDe}>
                 <Link
                   className="titleParagraphOne text-dark fw-bold"
-                  to={`/${_id}`}
+                  to={`/job-detail/${_id}`}
                 >
                   <strong>{tieuDe}</strong>
                 </Link>
@@ -44,7 +47,7 @@ const JobItem = (props) => {
                 <p>
                   <Link
                     className="titleParagraphOne text-decoration-none text-muted"
-                    to={`/${_id}`}
+                    to={`/job-detail/${_id}`}
                   >
                     {nhaTuyenDung.tenCongty}
                   </Link>

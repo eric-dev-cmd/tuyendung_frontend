@@ -10,6 +10,8 @@ import "./i18n";
 import GlobalStyles from "./components/GlobalStyles";
 import CommonProvider from "./components/Search/context/commonContext";
 import ProductProvider from "./features/Product/context/ProductContext";
+import ProfileContextProvider from "./context/ProfileContextProvider";
+import SearchContextProvider from "./context/SearchContextProvider";
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -17,7 +19,11 @@ ReactDOM.render(
         <GlobalStyles>
           <CommonProvider>
             <ProductProvider>
-              <App />
+              <ProfileContextProvider>
+                <SearchContextProvider>
+                  <App />
+                </SearchContextProvider>
+              </ProfileContextProvider>
             </ProductProvider>
           </CommonProvider>
         </GlobalStyles>

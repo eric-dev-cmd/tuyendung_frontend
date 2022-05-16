@@ -15,21 +15,8 @@ import { useProductContext } from "../context/ProductContext";
 
 const ProductGeneralInfomation = (props) => {
   const { t } = useTranslation();
-  console.log(" props?.phucLoi VINH", props?.phucLoi);
-  // let phucLoiCompany = props?.phucLoi.map((item, index) => {
-  //   return (
-  //     <Timeline.Item key={index} color="gray">
-  //       {item}
-  //     </Timeline.Item>
-  //   );
-  // });
-  const [welfares, setWelfares] = useState(props.phucLoi || []);
-  console.log("welfares", welfares);
-  const context = useProductContext();
-
-  // console.log("Logger Product detail:::", detail);
-  console.log("context API", context.detail);
-
+  console.log("props diaDiem", props);
+  const [location, setLocation] = useState(props.diaDiem || {});
   return (
     <Fragment>
       <Row>
@@ -232,9 +219,7 @@ const ProductGeneralInfomation = (props) => {
               <strong>Ngành nghề</strong>
             </h6>
             <div className="ps-1">
-              <Button className="me-2">Xuất nhập khẩu</Button>
-              <Button className="me-2">Xây dựng</Button>
-              <Button className="me-2">Vận tải</Button>
+              <Button className="me-2">{props?.nganhNghe?.tenNganhNghe}</Button>
             </div>
           </div>
           <div className="px-2 py-3 mx-2 mt-3 border">
@@ -242,8 +227,8 @@ const ProductGeneralInfomation = (props) => {
               <strong>Khu vực</strong>
             </h6>
             <div className="ps-1">
-              <Button className="me-2">Quận 5</Button>
-              <Button className="me-2">Hồ Chí Minh</Button>
+              <Button className="me-2">{props?.diaDiem?.quanHuyen}</Button>
+              <Button className="me-2">{props?.diaDiem?.tinhThanhPho}</Button>
             </div>
           </div>
         </Col>

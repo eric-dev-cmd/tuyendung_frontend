@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Modal, Row } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import "./ProductHeader.css";
 import {
@@ -19,6 +19,20 @@ const ProductHeader = (props) => {
     props?.ngayHetHan,
     "DD-MM-YYYY"
   );
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const showModal = () => {
+    setIsShowModal(true);
+  };
+
+  const handleOk = () => {
+    setIsShowModal(false);
+  };
+
+  const handleCancel = () => {
+    setIsShowModal(false);
+  };
 
   return (
     <>
@@ -60,6 +74,7 @@ const ProductHeader = (props) => {
         <Col span={4}>
           <div>
             <Button
+              onClick={showModal}
               className="form-control d-flex align-items-center justify-content-center py-2 my-4"
               type="primary"
               icon={<BiPaperPlane />}
@@ -76,6 +91,29 @@ const ProductHeader = (props) => {
             </Button>
           </div>
         </Col>
+        <Modal
+          title="Ứng tuyển việc làm"
+          visible={isShowModal}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              Quay lại tìm việc
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              // loading={loading}
+              onClick={handleOk}
+              disabled
+            >
+              Tiếp tục
+            </Button>,
+          ]}
+        >
+          <p>Hồ sơ của tôi</p>
+          <div className="text-end">
+            <Button type="primary">Hoàn thành hồ sơ của tôi</Button>
+          </div>
+        </Modal>
       </Row>
     </>
   );

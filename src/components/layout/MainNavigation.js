@@ -31,7 +31,6 @@ const MainNavigation = () => {
   const t = useTranslation();
 
   useEffect(() => {
-
     if (isAuthenticated) {
       if (user?.taiKhoan?._id) {
         setUser(getUserProfile());
@@ -40,7 +39,7 @@ const MainNavigation = () => {
       <Redirect to="/login" />;
     }
   }, []);
-  
+
   useEffect(() => {
     if (!isAuthenticated) {
       if (user?.taiKhoan?._id) {
@@ -120,7 +119,7 @@ const MainNavigation = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/viec-lam-da-luu" className="dropdown-item">
+                    <NavLink to="/jobs-saved" className="dropdown-item">
                       Việc làm đã lưu
                     </NavLink>
                   </li>
