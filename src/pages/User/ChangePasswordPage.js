@@ -34,7 +34,7 @@ const ChangePasswordPage = (props) => {
         payload.xacNhanMatKhau
       );
       toast.success("Thay đổi mật khẩu thành công", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -47,7 +47,7 @@ const ChangePasswordPage = (props) => {
       const errors = err.response.data.message.split("-");
       errors.forEach((err) =>
         toast.error(err, {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -63,7 +63,7 @@ const ChangePasswordPage = (props) => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     toast.success("Đăng xuất thành công", {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
@@ -244,7 +244,6 @@ const ChangePasswordPage = (props) => {
         </div>
       </Layout>
       <FooterHome />
-
     </>
   );
 };

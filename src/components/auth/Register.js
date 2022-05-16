@@ -40,7 +40,7 @@ const Register = () => {
       console.log("Success");
       setIsSuccess(true);
       toast.success("Đăng ký thành công", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -55,7 +55,7 @@ const Register = () => {
       const errors = error.response;
       console.log("errors::", errors);
       toast.error(error.response?.data.message, {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,

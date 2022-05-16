@@ -9,6 +9,7 @@ import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import SearchCommon from "./components/Search";
 import ProductDetail from "./features/Product/pages/ProductDetail";
+import DashBoard from "./pages/Admin/DashBoard";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
@@ -58,12 +59,12 @@ function App(props) {
           component={ResetPasswordPage}
         />
 
+        <Route exact path="/employer/dashboard" component={DashBoard} />
+
         <Route path="*">
           <NotFound />
         </Route>
       </Switch>
-      {/* </section> */}
-      {/* </Layout> */}
       <ToastContainer autoClose={1000} hideProgressBar={true} />
       {/* Footer */}
     </Fragment>

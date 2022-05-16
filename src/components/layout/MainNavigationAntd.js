@@ -56,7 +56,7 @@ const MainNavigation = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     toast.success("Đăng xuất thành công", {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,

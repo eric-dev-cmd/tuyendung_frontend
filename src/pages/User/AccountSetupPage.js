@@ -22,7 +22,7 @@ const AccountSetupPage = (props) => {
       setIsSuccessSubmit(false);
     } catch (error) {
       toast.error(error, {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,

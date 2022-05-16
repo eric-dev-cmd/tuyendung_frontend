@@ -14,10 +14,10 @@ const NotFoundPage = () => {
                   <h1 className="text-center ">404</h1>
                 </div>
                 <div className="contant_box_404">
-                  <h3 className="h2">Look like you're lost</h3>
-                  <p>the page you are looking for not avaible!</p>
+                  <h3 className="h2">404</h3>
+                  <p>Trang này không tồn tại!</p>
                   <Link to="/" className="link_404">
-                    Go to Home
+                    Trở lại trang chủ
                   </Link>
                 </div>
               </div>

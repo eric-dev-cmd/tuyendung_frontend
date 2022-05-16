@@ -13,7 +13,7 @@ const JobItem = (props) => {
     jobItemFavoriteWrapper,
   } = classes;
   const styleImage = clsx(jobItemImageWrapper, "rounded");
-  const { nhaTuyenDung, tieuDe, mucLuong, diaDiem, _id } = props.jobs;
+  console.log("props.jobs", props.jobs);
 
   return (
     <Fragment>
@@ -21,10 +21,13 @@ const JobItem = (props) => {
         <div className="job-item-wrapper">
           <div className="d-flex align-items-center position-relative flex-wrap">
             <div className={styleImage}>
-              <Tooltip placement="top" title={nhaTuyenDung.tenCongty}>
+              <Tooltip
+                placement="top"
+                title={props?.jobs?.nhaTuyenDung?.tenCongty}
+              >
                 <Link
                   className="text-decoration-none"
-                  to={`/job-detail/${_id}`}
+                  to={`/job-detail/${props?.jobs?._id}`}
                 >
                   <img
                     className={clsx([jobItemImage, "rounded"])}
@@ -35,21 +38,24 @@ const JobItem = (props) => {
               </Tooltip>
             </div>
             <div className={clsx([jobItemParagraph, "mt-3 px-3"])}>
-              <Tooltip placement="top" title={tieuDe}>
+              <Tooltip placement="top" title={props?.jobs?.tieuDe}>
                 <Link
                   className="titleParagraphOne text-dark fw-bold"
-                  to={`/job-detail/${_id}`}
+                  to={`/job-detail/${props?.jobs?._id}`}
                 >
-                  <strong>{tieuDe}</strong>
+                  <strong>{props?.jobs?.tieuDe}</strong>
                 </Link>
               </Tooltip>
-              <Tooltip placement="top" title={nhaTuyenDung.tenCongty}>
+              <Tooltip
+                placement="top"
+                title={props?.jobs?.nhaTuyenDung?.tenCongty}
+              >
                 <p>
                   <Link
                     className="titleParagraphOne text-decoration-none text-muted"
-                    to={`/job-detail/${_id}`}
+                    to={`/job-detail/${props?.jobs?._id}`}
                   >
-                    {nhaTuyenDung.tenCongty}
+                    {props?.jobs?.nhaTuyenDung?.tenCongty}
                   </Link>
                 </p>
               </Tooltip>
@@ -62,16 +68,19 @@ const JobItem = (props) => {
           </div>
           <div className="d-flex mt-2">
             <div className="jobItemSalary cursorDefault">
-              <span className="badge bg-secondary me-3">{mucLuong}</span>
+              <span className="badge bg-secondary me-3">
+                {props?.jobs?.mucLuong}
+              </span>
             </div>
             <div className="jobItemAddress cursorDefault">
               <span>
                 <Tooltip
                   placement="top"
-                  title={`${diaDiem.tinhThanhPho} - ${diaDiem.quanHuyen}`}
+                  title={`${props?.jobs?.diaDiem.tinhThanhPho} - ${props?.jobs?.diaDiem?.quanHuyen}`}
                 >
                   <span className="titleParagraphOne">
-                    {diaDiem.tinhThanhPho} - {diaDiem.quanHuyen}
+                    {props?.jobs?.diaDiem?.tinhThanhPho} -{" "}
+                    {props?.jobs?.diaDiem?.quanHuyen}
                   </span>
                 </Tooltip>
               </span>
