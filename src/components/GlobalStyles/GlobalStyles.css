@@ -2,6 +2,13 @@
   opacity: 0.8;
   cursor: pointer;
 }
+.pointer{
+    cursor: pointer;
+}
+.drop{
+    cursor: no-drop;
+
+}
 .titleParagraphOne {
   display: -webkit-box;
   -webkit-line-clamp: 1;

@@ -7,7 +7,7 @@ import {
   UserOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FaListUl, FaUserPlus } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 import { Link } from "react-router-dom";
@@ -15,7 +15,13 @@ import { Tabs } from "antd";
 import { Select } from "antd";
 import { GrFormRefresh } from "react-icons/gr";
 import { FaEllipsisV } from "react-icons/fa";
-import { Pagination } from "antd";
+import RecruitmentApi from "../../services/recruitmentApi";
+import TimeUtils from "../../utils/timeUtils";
+import ReactPaginate from "react-paginate";
+import Pagination from "../../components/Pagination/Pagination";
+import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import queryString from "query-string";
+import axios from "axios";
 
 const { Option } = Select;
 
@@ -25,9 +31,76 @@ const { SubMenu } = Menu;
 
 const MainNavigationAdmin = () => {
   const [collapsed, setCollapsed] = React.useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(5);
+  const [totalCount, setTotalCount] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [filters, setFilters] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const [recruitments, setRecruitments] = useState([]);
+  const paramsString = queryString.stringify(filters);
+  console.log("paramsString", paramsString);
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
+  const getListData = async (pg = page, pgSize = pageSize) => {
+    try {
+      const params = {
+        page: pg,
+      };
+      const response = await RecruitmentApi.getListRecruitmentFilterParams(
+        params
+      );
+      setRecruitments(response.data);
+      setTotalCount(response.pagination.total);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  useEffect(() => {
+    let mounted = true;
+    const getDataListFilters = async () => {
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhieuTieuChi?${paramsString}`;
+      try {
+        const response = await axios.get(requestUrl);
+        console.log("responseresponse", response.data.data);
+        setRecruitments(response.data.data);
+        setTotalCount(response.pagination.total);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    if (mounted) {
+      getDataListFilters();
+    }
+    return () => {
+      mounted = false;
+      setRecruitments([]);
+    };
+  }, [filters]);
+
+  useEffect(() => {
+    getListData();
+  }, [page]);
+
+  const prevPage = async () => {
+    const pg = page === 1 ? 1 : page - 1;
+    getListData(pg);
+    setPage(pg);
+  };
+  const nextPage = async () => {
+    const pg = page < Math.ceil(totalCount / pageSize) ? page + 1 : page;
+    getListData(pg);
+    setPage(pg);
+  };
+  const handleFiltersChange = (newFilters) => {
+    console.log("New filters: ", newFilters);
+    setFilters({
+      ...filters,
+      page: 1,
+      tieuDe: newFilters.searchTerm,
+    });
   };
 
   return (
@@ -49,11 +122,11 @@ const MainNavigationAdmin = () => {
               <Link to="/employer/dashboard" />
             </Menu.Item>
             <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="2">
-              <Menu.Item key="2sub1">
+              <Menu.Item key="21">
                 Quản lý tin
                 <Link to="/employer/jobs" />
               </Menu.Item>
-              <Menu.Item key="2sub2">
+              <Menu.Item key="22">
                 Thêm mới tin
                 <Link to="/employer/job/create" />
               </Menu.Item>
@@ -64,15 +137,15 @@ const MainNavigationAdmin = () => {
               key="3"
             >
               <Link to="/employer/job/create" />
-              <Menu.Item key="3sub1">
+              <Menu.Item key="31">
                 Tất cả hồ sơ
                 <Link to="/employer/job/apply-job/all" />
               </Menu.Item>
-              <Menu.Item key="3sub2">
+              <Menu.Item key="32">
                 Hồ sơ tiềm năng
                 <Link to="/employer/job/apply-job/talent" />
               </Menu.Item>
-              <Menu.Item key="3sub3">
+              <Menu.Item key="33">
                 Mới ứng tuyển
                 <Link to="/employer/job/apply-job/new" />
               </Menu.Item>
@@ -126,10 +199,7 @@ const MainNavigationAdmin = () => {
                     <TabPane tab="Tất cả (1)" key="1">
                       <div className="row">
                         <div className="col-2">
-                          <Input
-                            className="form-control"
-                            placeholder="Tên công việc"
-                          />
+                          <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
                         <div className="col-2">
                           <Select
@@ -181,6 +251,9 @@ const MainNavigationAdmin = () => {
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
                             // icon={<GrFormRefresh />}
+                            onClick={() => {
+                              window.location.reload();
+                            }}
                           >
                             Làm mới
                           </Button>
@@ -193,165 +266,166 @@ const MainNavigationAdmin = () => {
                             <div className="card-body px-0 pt-0 pb-2">
                               <div className="table-responsive p-0">
                                 <table className="table align-items-center justify-content-center mb-0">
-                                  <thead>
+                                  <thead className="bg-dark">
                                     <tr>
-                                      <th className="text-secondary opacity-7">
-                                        <strong> ID</strong>
+                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                        <strong>STT</strong>
                                       </th>
-                                      <th className="text-secondary opacity-7 ps-2">
+                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong> Tin tuyển dụng</strong>
                                       </th>
-                                      <th className="text-secondary opacity-7 ps-2">
+                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong>Hồ sơ</strong>
                                       </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center">
+                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
                                         <strong> Trạng thái</strong>
                                       </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center">
+                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
                                         <strong>Áp dụng dịch vụ</strong>
                                       </th>
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td>
-                                        <p className="text-sm font-weight-bold mb-0">
-                                          1
-                                        </p>
-                                      </td>
-                                      <td>
-                                        <p className="text-sm fw-bold mb-0">
-                                          Nhân viên kinh doanh
-                                        </p>
-                                        <p className="text-sm mb-0">
-                                          Hà Nội: Hoàn Kiếm, Ba Đình
-                                        </p>
-                                        <p className="address">
-                                          <span className="created">
-                                            Ngày tạo: 04-05-2022 23:17:44
-                                          </span>
-                                          &nbsp;
-                                          <span className="apply-date">
-                                            Hạn nộp: 04-05-2022
-                                          </span>
-                                        </p>
-                                        <p>
-                                          <Link to="job-detail/:slug">
-                                            Xem tin đăng trên website
-                                          </Link>
-                                        </p>
-                                      </td>
-                                      <td>
-                                        <span className="text-xs font-weight-bold d-flex align-items-center">
-                                          <FaUserPlus className="text-danger" />{" "}
-                                          &nbsp; 1 hồ sơ mới
-                                        </span>
-                                      </td>
-                                      <td className="text-center">
-                                        <Select
-                                          defaultValue="Tuyển dụng"
-                                          style={{ width: 120 }}
-                                          onChange={(value) => {
-                                            console.log("value", value);
-                                          }}
-                                        >
-                                          <Option value="jack">
-                                            Tuyển dụng
-                                          </Option>
-                                          <Option value="lucy">
-                                            Dừng tuyển
-                                          </Option>
-                                          <Option value="Yiminghe">Xóa</Option>
-                                        </Select>
-                                      </td>
-                                      <td
-                                        className="text-center cursor-pointer"
-                                        onClick={(e) => {
-                                          console.log("e", e);
-                                        }}
-                                      >
-                                        <span className="text-xs font-weight-bold">
-                                          <FaEllipsisV />
-                                        </span>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <p className="text-sm font-weight-bold mb-0">
-                                          1
-                                        </p>
-                                      </td>
-                                      <td>
-                                        <p className="text-sm fw-bold mb-0">
-                                          Nhân viên kinh doanh
-                                        </p>
-                                        <p className="text-sm mb-0">
-                                          Hà Nội: Hoàn Kiếm, Ba Đình
-                                        </p>
-                                        <p className="address">
-                                          <span className="created">
-                                            Ngày tạo: 04-05-2022 23:17:44
-                                          </span>
-                                          &nbsp;
-                                          <span className="apply-date">
-                                            Hạn nộp: 04-05-2022
-                                          </span>
-                                        </p>
-                                        <p>
-                                          <Link to="job-detail/:slug">
-                                            Xem tin đăng trên website
-                                          </Link>
-                                        </p>
-                                      </td>
-                                      <td>
-                                        <span className="text-xs font-weight-bold d-flex align-items-center">
-                                          <FaUserPlus className="text-danger" />{" "}
-                                          &nbsp; 1 hồ sơ mới
-                                        </span>
-                                      </td>
-                                      <td className="text-center">
-                                        <Select
-                                          defaultValue="Tuyển dụng"
-                                          style={{ width: 120 }}
-                                          onChange={(value) => {
-                                            console.log("value", value);
-                                          }}
-                                        >
-                                          <Option value="jack">
-                                            Tuyển dụng
-                                          </Option>
-                                          <Option value="lucy">
-                                            Dừng tuyển
-                                          </Option>
-                                          <Option value="Yiminghe">Xóa</Option>
-                                        </Select>
-                                      </td>
-                                      <td
-                                        className="text-center cursor-pointer"
-                                        onClick={(e) => {
-                                          console.log("e", e);
-                                        }}
-                                      >
-                                        <span className="text-xs font-weight-bold">
-                                          <FaEllipsisV />
-                                        </span>
-                                      </td>
-                                    </tr>
+                                    {recruitments.map((item, index) => {
+                                      return (
+                                        <tr key={index}>
+                                          <td className="align-middle">
+                                            <p className="text-sm font-weight-bold mb-0 text-center">
+                                              {index}
+                                            </p>
+                                          </td>
+                                          <td>
+                                            <p className="text-sm fw-bold mb-0">
+                                              {item?.tieuDe}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              {item?.diaDiem?.tinhThanhPho} :{" "}
+                                              {item?.diaDiem?.quanHuyen}
+                                            </p>
+                                            <p className="address">
+                                              <span className="created">
+                                                Ngày tạo:{" "}
+                                                {TimeUtils.formatDateTime(
+                                                  item?.ngayTao,
+                                                  "DD-MM-YYYY"
+                                                )}
+                                              </span>
+                                              &nbsp;
+                                              <span className="apply-date">
+                                                Hạn nộp:{" "}
+                                                {TimeUtils.formatDateTime(
+                                                  item?.ngayHetHan,
+                                                  "DD-MM-YYYY"
+                                                )}
+                                              </span>
+                                            </p>
+                                            <p>
+                                              <Link
+                                                to={`/job-detail/${item._id}`}
+                                                target="_blank"
+                                              >
+                                                Xem tin đăng trên website
+                                              </Link>
+                                            </p>
+                                          </td>
+                                          <td className="align-middle">
+                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
+                                              <FaUserPlus className="text-danger" />{" "}
+                                              &nbsp; 1 hồ sơ mới
+                                            </span>
+                                          </td>
+                                          <td className="text-center align-middle">
+                                            <Select
+                                              defaultValue="Tuyển dụng"
+                                              style={{ width: 120 }}
+                                              onChange={(value) => {
+                                                console.log("value", value);
+                                              }}
+                                            >
+                                              <Option value="jack">
+                                                Tuyển dụng
+                                              </Option>
+                                              <Option value="lucy">
+                                                Dừng tuyển
+                                              </Option>
+                                              <Option value="Yiminghe">
+                                                Xóa
+                                              </Option>
+                                            </Select>
+                                          </td>
+                                          <td
+                                            className="text-center cursor-pointer align-middle pointer"
+                                            onClick={(e) => {
+                                              console.log("e", e);
+                                            }}
+                                          >
+                                            <span className="text-xs font-weight-bold pointer">
+                                              <FaEllipsisV />
+                                            </span>
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="row mt-3">
+                        {recruitments.length < 1 && (
+                          <div className="col-12">
+                            <div
+                              class="alert alert-warning text-center"
+                              role="alert"
+                            >
+                              Không có dữ liệu
+                            </div>
+                          </div>
+                        )}
+                        {/* <div className="col-12">
+                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
+                          {offset + 10 > totalCount
+                            ? totalCount
+                            : offset + pageSize}{" "}
+                          of {totalCount}
+                        </div> */}
                         <div className="col-12">
-                          <Pagination
-                            className="text-center"
-                            defaultCurrent={1}
-                            total={50}
-                          />
-                          ;
+                          <nav aria-label="Page navigation example">
+                            <ul className="pagination justify-content-center">
+                              <li
+                                className={`page-item ${
+                                  page <= 1 ? "disabled drop" : ""
+                                }`}
+                              >
+                                <button
+                                  type="button"
+                                  className="page-link"
+                                  disabled={page <= 1}
+                                  onClick={() => {
+                                    prevPage();
+                                  }}
+                                >
+                                  Trang truớc
+                                </button>
+                              </li>
+                              <li
+                                className={`page-item ${
+                                  page >= totalCount ? "disabled drop" : ""
+                                }`}
+                              >
+                                <button
+                                  className="page-link"
+                                  type="button"
+                                  disabled={page >= totalCount}
+                                  onClick={() => {
+                                    nextPage();
+                                  }}
+                                >
+                                  Trang sau
+                                </button>
+                              </li>
+                            </ul>
+                          </nav>
                         </div>
                       </div>
                     </TabPane>

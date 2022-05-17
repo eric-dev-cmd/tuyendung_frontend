@@ -109,7 +109,6 @@ const SearchCommon = ({ careers, fields, locations }) => {
 
   useEffect(() => {
     const searchProducts = async () => {
-      console.log("Call api in search");
       const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhieuTieuChi?${paramsString}`;
       try {
         // const response = await productApi.searchProducts(keyword);
