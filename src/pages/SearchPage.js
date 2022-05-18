@@ -73,15 +73,20 @@ const SearchPage = (props) => {
         <Layout>
           <JobProvider>
             <div className="container pt-2 bottom-footer bg-white my-4">
+              <div className="row">
+                <div className="col-12 pt-1 border-bottom">
+                  {results?.data?.length >= 1 ? (
+                    <p>
+                      Tìm thấy <strong>{results?.data?.length}</strong> việc làm
+                      phù hợp với yêu cầu của bạn
+                    </p>
+                  ) : (
+                    <p>Không tìm thấy dữ liệu</p>
+                  )}
+                </div>
+              </div>
               <Content>
-                {isHide && (
-                  <div className="row mt-2">
-                    <div className="col-12 col-sm-4 col-lg-3 ">
-                      <p>Không tim thấy dữ liệu</p>
-                    </div>
-                  </div>
-                )}
-                <div className="row mt-2">
+                <div className="row mt-3">
                   <JobList recruitments={results.data} />
                 </div>
                 <div className="my-3"></div>

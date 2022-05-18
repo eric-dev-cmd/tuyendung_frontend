@@ -1,26 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Layout } from "antd";
+import React, { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import CarouselImage from "../components/Carousel/Carousel";
-import CarouselCustom from "../components/Carousel/CarouselCustom";
-import MainNavigation from "../components/Layout/MainNavigation";
-import JobList from "../components/JobHome/components/JobList";
-import { AiFillStar, AiFillDollarCircle } from "react-icons/ai";
-import { FaUsersCog, FaLaptopCode } from "react-icons/fa";
-import FooterHome from "../components/Footer/FooterHome";
-import CareerTrends from "../components/CareerTrends";
-import { GlobalData } from "../data/globalData";
-import { Breadcrumb, Layout, Carousel, Modal, PageHeader } from "antd";
-import SearchCommon from "../components/Search";
-import JobProvider from "../components/JobHome/context/jobCommonContext";
-import JobListFilter from "../components/JobHome/components/JobListFilter";
-
-import { useCommonContext } from "../components/Search/context/commonContext";
-import { useHistory } from "react-router-dom";
-import JobItem from "../components/JobHome/components/JobItem";
-import InterestedJobApi from "../services/interestedJobApi";
 import { toast } from "react-toastify";
+import FooterHome from "../components/Footer/FooterHome";
+import JobList from "../components/JobHome/components/JobList";
+import JobProvider from "../components/JobHome/context/jobCommonContext";
+import MainNavigation from "../components/Layout/MainNavigation";
 import AppliedJobApi from "../services/appliedJobApi";
 
 const { Header, Footer, Sider, Content } = Layout;

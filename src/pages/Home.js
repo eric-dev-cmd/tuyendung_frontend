@@ -1,28 +1,28 @@
+import { Layout } from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { AiFillDollarCircle, AiFillStar } from "react-icons/ai";
+import { FaLaptopCode, FaUsersCog } from "react-icons/fa";
+import CareerTrends from "../components/CareerTrends";
 import CarouselImage from "../components/Carousel/Carousel";
 import CarouselCustom from "../components/Carousel/CarouselCustom";
-import MainNavigation from "../components/Layout/MainNavigation";
-import JobList from "../components/JobHome/components/JobList";
-import { AiFillStar, AiFillDollarCircle } from "react-icons/ai";
-import { FaUsersCog, FaLaptopCode } from "react-icons/fa";
 import FooterHome from "../components/Footer/FooterHome";
-import CareerTrends from "../components/CareerTrends";
-import { GlobalData } from "../data/globalData";
-import { Breadcrumb, Layout, Carousel, Modal } from "antd";
-import SearchCommon from "../components/Search";
-import JobProvider from "../components/JobHome/context/jobCommonContext";
+import JobList from "../components/JobHome/components/JobList";
 import JobListFilter from "../components/JobHome/components/JobListFilter";
-
+import JobProvider from "../components/JobHome/context/jobCommonContext";
+import MainNavigation from "../components/Layout/MainNavigation";
+import SearchCommon from "../components/Search";
 import { useCommonContext } from "../components/Search/context/commonContext";
+import { GlobalData } from "../data/globalData";
+import CareerApi from "../services/careerApi";
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const Home = () => {
   const { t } = useTranslation();
   const careers = GlobalData.xuHuongNgheNghiep();
+  const [careersTrends, setCareersTrends] = useState([]);
   const {
     location,
     recruitmentsPartTime,
@@ -34,7 +34,20 @@ const Home = () => {
     companyFields,
     recruitments,
   } = useCommonContext();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  useEffect(() => {
+    const getListCareerTrends = async () => {
+      try {
+        const response = await CareerApi.getListCareerTrends();
+        console.log("getListCareerTrends", response);
+        setCareersTrends(response.data);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    getListCareerTrends();
+  }, []);
+
   return (
     <Fragment>
       <Helmet>
@@ -299,7 +312,7 @@ const Home = () => {
                         {t("common.careers")}
                       </h5>
                     </div>
-                    <CareerTrends careers={careers} />
+                    <CareerTrends careers={careersTrends} />
                   </div>
                 </div>
               </Content>
