@@ -4,6 +4,9 @@ import classes from "./JobItem.module.css";
 import clsx from "clsx";
 import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
+import { getUserProfile } from "../../../utils/localStorage";
+import InterestedJobApi from "../../../services/interestedJobApi";
+import { toast } from "react-toastify";
 
 const JobItem = (props) => {
   const {
@@ -14,6 +17,32 @@ const JobItem = (props) => {
   } = classes;
   const styleImage = clsx(jobItemImageWrapper, "rounded");
   console.log("props.jobs", props.jobs);
+  const user = getUserProfile();
+  const handleSubmitFavorite = async () => {
+    const payload = {
+      tinTuyenDung: props?.jobs?._id,
+      ungTuyenVien: user.taiKhoan._id,
+    };
+    try {
+      const response = await InterestedJobApi.creatInterestedJob(payload);
+      console.log("response", response);
+      if (response.status === "success") {
+        toast.success("Lưu việc làm quan tâm thành công", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      console.log(error.response);
+    }
+  };
 
   return (
     <Fragment>
@@ -60,7 +89,14 @@ const JobItem = (props) => {
                 </p>
               </Tooltip>
             </div>
-            <div className={jobItemFavoriteWrapper}>
+            <div
+              className={jobItemFavoriteWrapper}
+              onClick={(e) => {
+                console.log("Click favorite");
+                e.preventDefault();
+                handleSubmitFavorite();
+              }}
+            >
               <div className="jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark">
                 <AiOutlineHeart className="fs-12" />
               </div>

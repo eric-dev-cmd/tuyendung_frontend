@@ -13,6 +13,7 @@ import DashBoard from "./pages/Admin/DashBoard";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
+import SavedJobsPage from "./pages/SavedJobsPage";
 import SearchPage from "./pages/SearchPage";
 import SeachPage from "./pages/SearchPage";
 import AccountSetupPage from "./pages/User/AccountSetupPage";
@@ -36,10 +37,9 @@ function App(props) {
         <Route path="/" component={Home} exact />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />
-        {/* <Route exact path="/appled-jobs" component={AppliedJobsPage} />
-        <Route exact path="/saved-jobs" component={SavedJobsPage} /> */}
+        {/* <Route exact path="/appled-jobs" component={AppliedJobsPage} />*/}
+        <Route exact path="/jobs/saved-jobs" component={SavedJobsPage} />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
-        {/* <Route exact path="/:slug" component={ProductDetail} /> */}
         <Route exact path="/job-detail/:slug" component={ProductDetail} />
         <Route exact path="/company/:uniqueId" component={ProductDetail} />
         <Route exact path="/jobs-saved" component={ProductDetail} />

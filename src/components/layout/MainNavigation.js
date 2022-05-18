@@ -119,7 +119,7 @@ const MainNavigation = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/jobs-saved" className="dropdown-item">
+                    <NavLink to="/jobs/saved-jobs" className="dropdown-item">
                       Việc làm đã lưu
                     </NavLink>
                   </li>
