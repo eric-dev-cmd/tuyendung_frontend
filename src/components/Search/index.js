@@ -91,14 +91,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
 
     setFilters({
       ...filters,
+      page: 1,
       tieuDe: kw,
     });
   };
 
   const handleSearchClick = () => {
-    console.log("Clicked handleSearchClick");
     setIsSubmitButton(true);
-    console.log("paramsStrng", paramsString);
+    console.log("RESULT", paramsString);
     console.log("... ttv data", recruitmentList);
     if (recruitmentList.length === 0) {
       setShowItem(true);
@@ -162,6 +162,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                     selectCareer(e);
                     setFilters({
                       ...filters,
+                      page: 1,
                       nganhNghe: e,
                     });
                   }
@@ -197,6 +198,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   if (e) {
                     setFilters({
                       ...filters,
+                      page: 1,
                       linhVuc: e,
                     });
                   }
@@ -231,6 +233,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   console.log("3. ", e);
                   setFilters({
                     ...filters,
+                    page: 1,
                     diaDiem: e,
                   });
                 }}
@@ -263,6 +266,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 onChange={(e) => {
                   setFilters({
                     ...filters,
+                    page: 1,
                     viTri: e,
                   });
                 }}
@@ -309,6 +313,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   console.log("1. ", e);
                   setFilters({
                     ...filters,
+                    page: 1,
                     loaiCongViec: e,
                   });
                 }}
@@ -343,6 +348,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   console.log("1. ", e);
                   setFilters({
                     ...filters,
+                    page: 1,
                     soNamKinhNghiem: e,
                   });
                 }}

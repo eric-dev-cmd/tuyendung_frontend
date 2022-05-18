@@ -72,7 +72,7 @@ const SearchPage = (props) => {
         />
         <Layout>
           <JobProvider>
-            <div className="container pt-5 bottom-footer">
+            <div className="container pt-2 bottom-footer bg-white my-4">
               <Content>
                 {isHide && (
                   <div className="row mt-2">

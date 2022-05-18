@@ -16,6 +16,9 @@ import ProductGeneralInfomation from "../components/ProductGeneralInfomation";
 import ProductHeader from "../components/ProductHeader";
 import { ProductContext, useProductContext } from "../context/ProductContext";
 import { HeartOutlined } from "@ant-design/icons";
+import InterestedJobApi from "../../../services/interestedJobApi";
+import { toast } from "react-toastify";
+import { getUserProfile } from "../../../utils/localStorage";
 
 const { TabPane } = Tabs;
 
@@ -51,6 +54,32 @@ const ProductDetail = (props) => {
           {value}
         </Timeline.Item>
       ));
+    }
+  };
+  const user = getUserProfile();
+  const handleSubmitFavorite = async () => {
+    const payload = {
+      tinTuyenDung: props?.jobs?._id,
+      ungTuyenVien: user.taiKhoan._id,
+    };
+    try {
+      const response = await InterestedJobApi.creatInterestedJob(payload);
+      console.log("response", response);
+      if (response.status === "success") {
+        toast.success("Lưu việc làm quan tâm thành công", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      console.log(error.response);
     }
   };
 
@@ -169,6 +198,9 @@ const ProductDetail = (props) => {
                                         <Button
                                           className="form-control d-flex align-items-center justify-content-center py-4 my-2"
                                           icon={<HeartOutlined />}
+                                          onClick={() => {
+                                            handleSubmitFavorite();
+                                          }}
                                         >
                                           {t("productDetail.saveRecruitment")}
                                         </Button>
