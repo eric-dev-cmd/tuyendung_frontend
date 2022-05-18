@@ -62,7 +62,8 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
         onCancel={() => {
           onCloseModal(false);
         }}
-        width={800}
+        className="mt-78"
+        // width={800}
         footer={[
           <Button
             key="back"

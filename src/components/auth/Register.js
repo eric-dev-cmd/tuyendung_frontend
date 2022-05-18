@@ -9,11 +9,13 @@ import { logoStyle, maxWH } from "../../utils/style";
 import "./Login.css";
 import Logo from "../../assets/logo/logo_remove_bg.png";
 import { IMAGE_LOGO } from "../../constansts/common";
+import { RegisterAccountSuccess } from "../../pages/User/components/RegisterAccountSuccess";
 
 const Register = () => {
   const { register, errors, watch, handleSubmit } = useForm({});
   const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("")
   const history = useHistory();
 
   const password = useRef({});
@@ -29,6 +31,7 @@ const Register = () => {
     const { tenDangNhap, email, matKhau, xacNhanMatKhau, loaiTaiKhoan } =
       payload;
     console.log("payload:::", payload);
+    setEmail(email)
     try {
       await authService.registerUser(
         tenDangNhap,
@@ -39,7 +42,7 @@ const Register = () => {
       );
       console.log("Success");
       setIsSuccess(true);
-      toast.success("Đăng ký thành công", {
+      toast.success("Đăng ký thành công. Vui lòng kiểm tra mail", {
         position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -49,7 +52,6 @@ const Register = () => {
         progress: undefined,
       });
       setLoading(false);
-      history.push("/dang-nhap");
     } catch (error) {
       console.log("Fail");
       const errors = error.response;
@@ -77,7 +79,8 @@ const Register = () => {
         <meta charSet="utf-8" />
         <title>Đăng Ký Tài Khoản | 123job.org</title>
       </Helmet>
-      <div className="container mt-5">
+
+      {!isSuccess && <div className="container mt-5">
         <div className="row">
           <div className="col-12">
             <div className="d-flex justify-content-center">
@@ -229,7 +232,8 @@ const Register = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+      {isSuccess && <RegisterAccountSuccess email={email} />}
     </Fragment>
   );
 };

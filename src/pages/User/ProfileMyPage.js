@@ -32,6 +32,7 @@ const ProfileMyPage = ({ ...props }) => {
   const [isHideButtonIntroduce, setIsHideButtonIntroduce] = useState(false);
   const [isMounted, setIsMounted] = useState(0);
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log("detail?.data?.avatar", detail?.data?.avatar)
 
   const getProfileDetail = async () => {
     try {
@@ -241,6 +242,31 @@ const ProfileMyPage = ({ ...props }) => {
       />
     );
   }, [isShowModalSkill]);
+  const [selectedFile, setSelectedFile] = useState();
+	const [isFilePicked, setIsFilePicked] = useState(false);
+  const onHandleUploadImage = async (e)=>{
+    setSelectedFile(e.target.files[0]);
+    const formData = new FormData();
+
+		formData.append('file', selectedFile);
+
+    console.log("change image", selectedFile)
+    fetch(
+			'http://localhost:4000/ungtuyenviens/capNhatAvatar',
+			{
+				method: 'POST',
+				body: formData,
+			}
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				alert('Success:', result);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+
+  }
 
   return (
     <Fragment>
@@ -254,7 +280,7 @@ const ProfileMyPage = ({ ...props }) => {
             <div className="position-relative  cursor-pointer">
               <Avatar
                 size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-                icon={<AntDesignOutlined />}
+                src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/helianthus-yellow-flower-pixabay_11863.jpg`}
               />
               <label htmlFor="icon-button-file" className="cursor-pointer">
                 <span className="position-absolute profile-avatar-icon">
@@ -267,7 +293,9 @@ const ProfileMyPage = ({ ...props }) => {
             accept="image/*"
             id="icon-button-file"
             type="file"
+            name="file"
             style={{ display: "none" }}
+            onChange={onHandleUploadImage}
           />
         </div>
       </div>

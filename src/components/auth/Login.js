@@ -29,7 +29,7 @@ const Login = () => {
   }, []);
 
   if (isAuthenticated) {
-    return <Redirect to="/ho-so" />;
+    return <Redirect to="/" />;
   } else {
     <Redirect to="/login" />;
   }

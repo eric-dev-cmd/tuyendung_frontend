@@ -159,3 +159,12 @@
     padding: 1px 6px;
     border-radius: 12px;
 }
+.job-item-wrapper{
+  padding: 7px 7px;
+    border: 1px solid #e1d7d7;
+    border-radius: 8px;
+    margin: 7px 0px;
+}
+.mt-78{
+  margin-top: 78px;
+}

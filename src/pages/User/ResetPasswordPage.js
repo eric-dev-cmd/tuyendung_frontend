@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Helmet from "react-helmet";
 import { useForm } from "react-hook-form";
 import { Link, useHistory, useParams } from "react-router-dom";
@@ -134,7 +134,7 @@ const ResetPasswordPage = (props) => {
           </form>
           <p className="pt-3 text-center">
             Bạn đã có tài khoản?{" "}
-            <Link to="/dang-nhap" className="text-decoration-none">
+            <Link to="/login" className="text-decoration-none">
               Hãy đăng nhập
             </Link>
           </p>

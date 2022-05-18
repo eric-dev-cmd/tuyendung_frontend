@@ -31,7 +31,7 @@ const JobItem = (props) => {
                 >
                   <img
                     className={clsx([jobItemImage, "rounded"])}
-                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/IMG_5700.JPG`}
+                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${props?.jobs?.nhaTuyenDung?.avatar}`}
                     alt="Logo"
                   />
                 </Link>
