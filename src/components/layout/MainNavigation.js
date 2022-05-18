@@ -114,7 +114,7 @@ const MainNavigation = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/viec-lam-ung-tuyen" className="dropdown-item">
+                    <NavLink to="/jobs/applied-jobs" className="dropdown-item">
                       Việc làm đã ứng tuyển
                     </NavLink>
                   </li>
