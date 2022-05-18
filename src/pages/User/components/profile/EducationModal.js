@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Modal, DatePicker } from "antd";
+import { Button, Input, Modal, DatePicker, Select, Checkbox } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import { Select } from "antd";
-import { Checkbox } from "antd";
 import moment from "moment";
+import { use } from "i18next";
+import TimeUtils from "../../../../utils/timeUtils";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const dateFormat = "YYYY-MM-DD";
 
-const EducationModal = ({ showModal, onCloseModal, ...props }) => {
+const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
+  const [degree, setDegree] = useState("");
+  const [typeDegree, setTypeDegree] = useState("");
+  const [school, setSchool] = useState("");
+  const [specialized, setSpecialized] = useState("");
+  const [description, setDescription] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+
   const resetValue = () => {
     console.log("3. Reset value");
     // setValue(`${prefixName}.name`, null);
@@ -18,10 +28,26 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
   };
   const save = () => {
     // let data = watch(prefixName);
-    console.log("running save()");
+    // console.log("running save()");
     // onSubmitCreate(payload);
-    onSubmitCreate();
-    console.log("Add success");
+    const payload = {
+      // bangCap: degree,
+      loaiBang: typeDegree,
+      donViDaoTao: school,
+      chuyenNganh: specialized,
+      moTa: description,
+      tuNgay: fromDate,
+      denNgay: toDate,
+    };
+    console.log("payload", payload);
+    if (isEdit) {
+      console.log("Call update");
+    } else {
+      console.log("Call create");
+      onSubmitCreate(payload);
+    }
+    // onSubmitCreate();
+    // console.log("Add success");
   };
   const onSubmitCreate = (payload) => {
     props.onSubmit(payload);
@@ -29,7 +55,7 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
     onCloseModal();
   };
   function handleChange(value) {
-    console.log(`selected ${value}`);
+    setTypeDegree(value);
   }
   return (
     <div>
@@ -43,6 +69,7 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
         onCancel={() => {
           onCloseModal(false);
         }}
+        className="mt-78"
         width={800}
         footer={[
           <Button
@@ -72,10 +99,14 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
           <Input
             // showCount
             // maxLength={20}
+            placeholder="Ví dụ: Cử nhân công nghệ thông tin"
             onChange={(e) => {
               console.log("value", e.target.value);
+              setDegree(e.target.value);
             }}
-            size="large"
+            value={degree}
+            size="default"
+            // defaultValue={}
           />
         </div>
         <div className="pb-3">
@@ -86,13 +117,17 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
             defaultValue="Chọn loại"
             style={{ width: "100%" }}
             onChange={handleChange}
-            size="large"
+            size="default"
           >
-            <Option value="0">Cao học</Option>
-            <Option value="1">Đại học</Option>
-            <Option value="2">Cao đẳng</Option>
-            <Option value="3">Trung cấp</Option>
-            <Option value="4">Phổ thông</Option>
+            <Option value="SAU_DAI_HOC">Cao học</Option>
+            <Option value="DAI_HOC">Đại học</Option>
+            <Option value="CAO_DANG">Cao đẳng</Option>
+            <Option value="TRUNG_CAP">Trung cấp</Option>
+            <Option value="PHO_THONG">Phổ thông</Option>
+            <Option value="TRUNG_HOC">Trung học</Option>
+            <Option value="CHUA_TOT_NGHIEP">Chưa tốt nghiệp</Option>
+            <Option value="NGHE">Nghề</Option>
+            <Option value="KHAC">Khác</Option>
           </Select>
         </div>
         <div className="pb-3">
@@ -103,9 +138,10 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
             // showCount
             // maxLength={20}
             onChange={(e) => {
-              console.log("value", e.target.value);
+              setSchool(e.target.value);
             }}
-            size="large"
+            value={school}
+            size="default"
           />
         </div>
         <div className="pb-3">
@@ -118,14 +154,22 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
             // maxLength={20}
             onChange={(e) => {
               console.log("value", e.target.value);
+              setSpecialized(e.target.value);
             }}
-            size="large"
+            value={specialized}
+            size="default"
+            placeholder="Ví dụ: Công nghệ thông tin, Kinh tế, ..."
           />
         </div>
         <div className="pb-3">
           <Checkbox
             onChange={(e) => {
               console.log(`checked = ${e.target.checked}`);
+              if (e.target.checked) {
+                setIsChecked(true);
+              } else {
+                setIsChecked(false);
+              }
             }}
           >
             <strong>Tôi hiện đang học tại đây</strong>
@@ -134,37 +178,34 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
         <div className="pb-3">
           <span className="pe-2">
             <DatePicker
+              format={dateFormat}
               onChange={(date, dateString) => {
-                console.log(date, dateString);
+                console.log(date);
+                console.log(dateString);
+                setFromDate(dateString);
               }}
-              picker="month"
             />
           </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="year"
-            />
-          </span>
-          <span className="px-2"> to </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="month"
-            />
-          </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="year"
-            />
-          </span>
+          {/* Đến */}
+          <span className="px-2"> đến </span>
+          {/* Đến */}
+          {isChecked ? (
+            <span>
+              <strong>Hiện tại</strong>
+            </span>
+          ) : (
+            <>
+              <span className="pe-2">
+                <DatePicker
+                  format={dateFormat}
+                  onChange={(date, dateString) => {
+                    console.log(date, dateString);
+                    setToDate(dateString);
+                  }}
+                />
+              </span>
+            </>
+          )}
         </div>
         <div className="pb-3">
           <p>
@@ -176,7 +217,9 @@ const EducationModal = ({ showModal, onCloseModal, ...props }) => {
             style={{ height: 120 }}
             onChange={(e) => {
               console.log("Change:", e.target.value);
+              setDescription(e.target.value);
             }}
+            value={description}
           />
         </div>
         <span>

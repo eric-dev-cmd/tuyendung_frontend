@@ -431,6 +431,7 @@ const MainNavigationAdmin = () => {
                     </TabPane>
                     <TabPane tab="Đang tuyển (2)" key="2">
                       Content of Tab Pane 2
+                      
                     </TabPane>
                     <TabPane tab="Chờ duyệt (3)" key="3">
                       Content of Tab Pane 3

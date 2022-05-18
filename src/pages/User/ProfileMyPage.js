@@ -1,3 +1,4 @@
+import { Avatar, Button, Card, Tabs, Timeline } from "antd";
 import React, {
   Fragment,
   useContext,
@@ -5,20 +6,23 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import PropTypes from "prop-types";
-import { Avatar, Button, Card, Modal, Tabs, Timeline } from "antd";
-import { AntDesignOutlined } from "@ant-design/icons";
-import { AiFillCamera, AiOutlinePlusCircle } from "react-icons/ai";
-import { Input } from "antd";
+import {
+  AiFillCamera,
+  AiFillDelete,
+  AiOutlinePlusCircle,
+} from "react-icons/ai";
 import { FaUserEdit } from "react-icons/fa";
-import IntroduceModal from "./components/profile/IntroduceModal.js";
+import { toast } from "react-toastify";
+import ConfirmDelete from "../../components/ConfirmDelete/index.js";
+import { ProfileContext } from "../../context/ProfileContextProvider.js";
+import profileApi from "../../services/profileApi.js";
+import RecruitmentApplicantApi from "../../services/recruitmentApplicant.js";
+import TimeUtils from "../../utils/timeUtils.js";
+import CertificatedModal from "./components/profile/CertificatedModal.js";
 import EducationModal from "./components/profile/EducationModal.js";
 import ExperienceModal from "./components/profile/ExprerienceModal.js";
-import CertificatedModal from "./components/profile/CertificatedModal.js";
+import IntroduceModal from "./components/profile/IntroduceModal.js";
 import SkillModal from "./components/profile/SkillModal.js";
-import { ProfileContext } from "../../context/ProfileContextProvider.js";
-import RecruitmentApplicantApi from "../../services/recruitmentApplicant.js";
-import { toast } from "react-toastify";
 
 const ProfileMyPage = ({ ...props }) => {
   const { TabPane } = Tabs;
@@ -27,12 +31,22 @@ const ProfileMyPage = ({ ...props }) => {
   const [isShowModalExperience, setIsShowModalExperience] = useState(false);
   const [isShowModalCertificated, setIsShowModalCertificated] = useState(false);
   const [isShowModalSkill, setIsShowModalSkill] = useState(false);
-  const { detail, setDetail, isEdit, setIsEdit } = useContext(ProfileContext);
+  const { detail, setDetail, isEdit, setIsEdit, isEditStudy, setIsEditStudy } =
+    useContext(ProfileContext);
   const [isSuccessSubmit, setIsSuccessSubmit] = useState(false);
   const [isHideButtonIntroduce, setIsHideButtonIntroduce] = useState(false);
   const [isMounted, setIsMounted] = useState(0);
+  const [isShowModalUpdateEducation, setIsShowModalUpdateEducation] =
+    useState(false);
+  const [educationDetail, setEducationDetail] = useState({});
+  const [isShowModalConfirmDelete, setIsShowModalConfirmDelete] =
+    useState(false);
+
+  useEffect(() => {
+    console.log("detail", detail);
+  }, [detail]);
+
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("detail?.data?.avatar", detail?.data?.avatar)
 
   const getProfileDetail = async () => {
     try {
@@ -62,16 +76,7 @@ const ProfileMyPage = ({ ...props }) => {
     console.log("Data get profile by detail", detail);
   }, []);
 
-  useEffect(() => {
-    if (isEdit) {
-      console.log("Call api have data");
-      getProfileDetail();
-    }
-  }, []);
-
   // Handle Introduce
-
-  console.log("isEditisEdit", isEdit);
 
   const handleSubmitModal = async (data) => {
     if (isEdit) {
@@ -137,17 +142,40 @@ const ProfileMyPage = ({ ...props }) => {
         isEdit={isEdit}
       />
     );
-  }, [isShowModal]);
+  }, [isShowModal, isEdit]);
 
   // Handle Education
 
   const handleSubmitModalEducation = async (data) => {
-    console.log("Submit modal educarion");
+    console.log("create study", data);
+    try {
+      const response = await profileApi.createStudy(data);
+      console.log("response", response);
+      if (response.status === "success") {
+        toast.success("Thêm học vấn và bằng cấp thành công", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        getProfileDetail();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
   };
+
   const handleAddButtonClickEducation = (e) => {
     e.preventDefault();
     console.log("SHOW MODAL Education");
     setIsShowModalEducation(true);
+    setIsEditStudy(false);
   };
 
   const renderModalEducation = useMemo(() => {
@@ -161,9 +189,10 @@ const ProfileMyPage = ({ ...props }) => {
           // clearErrors();
         }}
         onSubmit={handleSubmitModalEducation}
+        isEdit={isEditStudy}
       />
     );
-  }, [isShowModalEducation]);
+  }, [isShowModalEducation, isEditStudy]);
 
   // Handle Experience
 
@@ -242,32 +271,49 @@ const ProfileMyPage = ({ ...props }) => {
       />
     );
   }, [isShowModalSkill]);
-  const [selectedFile, setSelectedFile] = useState();
-	const [isFilePicked, setIsFilePicked] = useState(false);
-  const onHandleUploadImage = async (e)=>{
-    setSelectedFile(e.target.files[0]);
-    const formData = new FormData();
 
-		formData.append('file', selectedFile);
+  const handleAddButtonClickUpdateEducation = (id) => {
+    console.log("ID", id);
+    setIsShowModalEducation(true);
+  };
+  // const renderModalDelete = useMemo(() => {
+  //   if (!isShowModalConfirmDelete) return null;
 
-    console.log("change image", selectedFile)
-    fetch(
-			'http://localhost:4000/ungtuyenviens/capNhatAvatar',
-			{
-				method: 'POST',
-				body: formData,
-			}
-		)
-			.then((response) => response.json())
-			.then((result) => {
-				alert('Success:', result);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
+  //   return (
+  //     <ConfirmDelete
+  //       showModal={isShowModalConfirmDelete}
+  //       onCloseModal={() => {
+  //         setIsShowModalConfirmDelete(false);
+  //         // clearErrors();
+  //       }}
+  //       onSubmit={handleSubmitDelete}
+  //     />
+  //   );
+  // }, [isShowModalConfirmDelete]);
+  const handleDeleteStudy = async (id) => {
+    console.log("Delete by 1", id);
+    try {
+      console.log("Delete by 2", id);
+      const response = await profileApi.deletStudy({ idHocVan: id });
+      console.log("response", response);
 
-  }
-
+      toast.success("Xóa học vấn và bằng cấp thành công", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      getProfileDetail();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
+  };
   return (
     <Fragment>
       {" "}
@@ -295,7 +341,6 @@ const ProfileMyPage = ({ ...props }) => {
             type="file"
             name="file"
             style={{ display: "none" }}
-            onChange={onHandleUploadImage}
           />
         </div>
       </div>
@@ -323,30 +368,13 @@ const ProfileMyPage = ({ ...props }) => {
                             }}
                             className="form-control d-flex align-items-center justify-content-center"
                             icon={<FaUserEdit />}
-                            size="large"
+                            size="default"
                           >
                             <span className="ps-2">Chỉnh sửa</span>
                           </Button>
                         )}
                       </div>
                     </div>
-                    {/* {isHideButtonIntroduce && (
-                      <div className="row">
-                        <div className="col-3"></div>
-                        <div className="col-6">
-                          <Button
-                            onClick={(e) => handleAddButtonClick(e)}
-                            className="form-control d-flex align-items-center justify-content-center py-2 my-4"
-                            type="primary"
-                            icon={<AiOutlinePlusCircle />}
-                            size="large"
-                          >
-                            <span className="ps-2">Thêm giới thiệu</span>
-                          </Button>
-                        </div>
-                        <div className="col-3"></div>
-                      </div>
-                    )} */}
                     <div className="row">
                       <div className="col-3"></div>
                       <div className="col-6">
@@ -356,7 +384,7 @@ const ProfileMyPage = ({ ...props }) => {
                             className="form-control d-flex align-items-center justify-content-center py-2 my-4"
                             type="primary"
                             icon={<AiOutlinePlusCircle />}
-                            size="large"
+                            size="default"
                           >
                             <span className="ps-2">Thêm giới thiệu</span>
                           </Button>
@@ -370,50 +398,109 @@ const ProfileMyPage = ({ ...props }) => {
                     type="inner"
                     title="Học vấn và bằng cấp"
                   >
-                    <div className="row">
-                      <div className="col-10">
-                        <Timeline mode="left">
-                          <div className="row">
-                            <div className="col-12">
-                              <Timeline.Item>
-                                <p>
-                                  <strong>Cử nhân - CNTT</strong>
-                                </p>
-                                <p>Cao học - Đại học lâm nghiệp Việt Nam</p>
-                                <p>1/2021 - 2/2021</p>
-                                <p>Mô tả thêm</p>
-                              </Timeline.Item>
+                    {detail?.data?.dsHocVan ? (
+                      <>
+                        {detail?.data?.dsHocVan.map((item, index) => {
+                          return (
+                            <div className="row" key={index}>
+                              <div className="col-10">
+                                <Timeline mode="left">
+                                  <div className="row">
+                                    <div className="col-12">
+                                      {/* {detail?.data?.dsHocVan ? (
+                                <>
+                                  {detail?.data?.dsHocVan.map((item, index) => {
+                                    return ( */}
+                                      <Timeline.Item>
+                                        <p>
+                                          <strong>
+                                            {item?.bangCap} -{" "}
+                                            {item?.chuyenNganh}
+                                          </strong>
+                                        </p>
+                                        <p>
+                                          {item?.loaiBang} - {item?.donViDaoTao}
+                                        </p>
+                                        <p>
+                                          {TimeUtils.formatDateTime(
+                                            item?.tuNgay,
+                                            "DD-MM-YYYY"
+                                          )}{" "}
+                                          -{" "}
+                                          {TimeUtils.formatDateTime(
+                                            item?.denNgay,
+                                            "DD-MM-YYYY"
+                                          )}
+                                        </p>
+                                        <p>{item?.moTa}</p>
+                                      </Timeline.Item>
+                                    </div>
+                                  </div>
+                                </Timeline>
+                              </div>
+                              <div className="col-2">
+                                {detail?.data?.dsHocVan?.length > 0 && (
+                                  <>
+                                    <span>
+                                      <Button
+                                        onClick={(e) => {
+                                          handleAddButtonClickUpdateEducation(
+                                            item?._id
+                                          );
+                                        }}
+                                        className="form-control d-flex align-items-center justify-content-center mb-3"
+                                        icon={<FaUserEdit />}
+                                        size="default"
+                                      >
+                                        <span className="ps-2">Chỉnh sửa</span>
+                                      </Button>
+                                    </span>
+
+                                    <span>
+                                      <Button
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          handleDeleteStudy(item?._id);
+                                        }}
+                                        className="form-control d-flex align-items-center justify-content-center bg-danger text-white"
+                                        icon={<AiFillDelete />}
+                                        size="default"
+                                      >
+                                        <span className="ps-2">Xóa</span>
+                                      </Button>
+                                    </span>
+                                  </>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </Timeline>
-                      </div>
-                      <div className="col-2">
-                        <Button
-                          onClick={(e) => {
-                            handleAddButtonClickEducation(e);
-                          }}
-                          className="form-control d-flex align-items-center justify-content-center"
-                          icon={<FaUserEdit />}
-                          size="large"
-                        >
-                          <span className="ps-2">Chỉnh sửa</span>
-                        </Button>
-                      </div>
-                    </div>
+                          );
+                        })}
+                      </>
+                    ) : (
+                      <p className="text-start">
+                        Hãy giúp nhà tuyển dụng hiểu rõ hơn về bạn. Thông tin về
+                        quá trình học vấn sẽ giúp tăng cơ hội phỏng vấn của bạn
+                        đến 23%.
+                      </p>
+                    )}
                     <div className="row">
-                      <div className="col-3"></div>
-                      <div className="col-6">
-                        <Button
-                          onClick={(e) => handleAddButtonClickEducation(e)}
-                          className="form-control d-flex align-items-center justify-content-center py-2 my-4"
-                          type="primary"
-                          icon={<AiOutlinePlusCircle />}
-                          size="large"
-                        >
-                          <span className="ps-2">Thêm học vấn và bằng cấp</span>
-                        </Button>
+                      <div className="col-4"></div>
+                      <div className="col-4">
+                        {!isEditStudy && (
+                          <Button
+                            onClick={(e) => handleAddButtonClickEducation(e)}
+                            className="form-control d-flex align-items-center justify-content-center py-2 my-4"
+                            type="primary"
+                            icon={<AiOutlinePlusCircle />}
+                            size="default"
+                          >
+                            <span className="ps-2">
+                              Thêm học vấn và bằng cấp
+                            </span>
+                          </Button>
+                        )}
                       </div>
-                      <div className="col-3"></div>
+                      <div className="col-4"></div>
                     </div>
                   </Card>
                   <Card
@@ -445,28 +532,28 @@ const ProfileMyPage = ({ ...props }) => {
                           }}
                           className="form-control d-flex align-items-center justify-content-center"
                           icon={<FaUserEdit />}
-                          size="large"
+                          size="default"
                         >
                           <span className="ps-2">Chỉnh sửa</span>
                         </Button>
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-3"></div>
-                      <div className="col-6">
+                      <div className="col-4"></div>
+                      <div className="col-4">
                         <Button
                           onClick={(e) => handleAddButtonClickExperience(e)}
                           className="form-control d-flex align-items-center justify-content-center py-2 my-4"
                           type="primary"
                           icon={<AiOutlinePlusCircle />}
-                          size="large"
+                          size="default"
                         >
                           <span className="ps-2">
                             Thêm kinh nghiệm làm việc
                           </span>
                         </Button>
                       </div>
-                      <div className="col-3"></div>
+                      <div className="col-4"></div>
                     </div>
                   </Card>
                   <Card
@@ -490,26 +577,26 @@ const ProfileMyPage = ({ ...props }) => {
                           }}
                           className="form-control d-flex align-items-center justify-content-center"
                           icon={<FaUserEdit />}
-                          size="large"
+                          size="default"
                         >
                           <span className="ps-2">Chỉnh sửa</span>
                         </Button>
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-3"></div>
-                      <div className="col-6">
+                      <div className="col-4"></div>
+                      <div className="col-4">
                         <Button
                           onClick={(e) => handleAddButtonClickSkill(e)}
                           className="form-control d-flex align-items-center justify-content-center py-2 my-4"
                           type="primary"
                           icon={<AiOutlinePlusCircle />}
-                          size="large"
+                          size="default"
                         >
                           <span className="ps-2">Thêm kỹ năng</span>
                         </Button>
                       </div>
-                      <div className="col-3"></div>
+                      <div className="col-4"></div>
                     </div>
                   </Card>
                   <Card
@@ -531,26 +618,26 @@ const ProfileMyPage = ({ ...props }) => {
                           }}
                           className="form-control d-flex align-items-center justify-content-center"
                           icon={<FaUserEdit />}
-                          size="large"
+                          size="default"
                         >
                           <span className="ps-2">Chỉnh sửa</span>
                         </Button>
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-3"></div>
-                      <div className="col-6">
+                      <div className="col-4"></div>
+                      <div className="col-4">
                         <Button
                           onClick={(e) => handleAddButtonClickCertificated(e)}
                           className="form-control d-flex align-items-center justify-content-center py-2 my-4"
                           type="primary"
                           icon={<AiOutlinePlusCircle />}
-                          size="large"
+                          size="default"
                         >
                           <span className="ps-2">Thêm mới chứng chỉ</span>
                         </Button>
                       </div>
-                      <div className="col-3"></div>
+                      <div className="col-4"></div>
                     </div>
                   </Card>
                   {/* </Card> */}
@@ -565,6 +652,7 @@ const ProfileMyPage = ({ ...props }) => {
       {renderModalExperience}
       {renderModalCertificated}
       {renderModalSkill}
+      {/* {renderModalDelete} */}
     </Fragment>
   );
 };

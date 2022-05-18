@@ -36,6 +36,8 @@ function App(props) {
         <Route path="/" component={Home} exact />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />
+        {/* <Route exact path="/appled-jobs" component={AppliedJobsPage} />
+        <Route exact path="/saved-jobs" component={SavedJobsPage} /> */}
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
         {/* <Route exact path="/:slug" component={ProductDetail} /> */}
         <Route exact path="/job-detail/:slug" component={ProductDetail} />

@@ -7,6 +7,7 @@ const ProfileContextProvider = (props) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isRefresh, setIsRefresh] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [isEditStudy, setIsEditStudy] = useState(false);
   const [detail, setDetail] = useState({});
 
   return (
@@ -22,6 +23,8 @@ const ProfileContextProvider = (props) => {
         setDetail,
         isEdit,
         setIsEdit,
+        isEditStudy,
+        setIsEditStudy,
       }}
     >
       {props.children}

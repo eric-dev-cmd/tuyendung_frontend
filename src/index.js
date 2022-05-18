@@ -12,6 +12,8 @@ import CommonProvider from "./components/Search/context/commonContext";
 import ProductProvider from "./features/Product/context/ProductContext";
 import ProfileContextProvider from "./context/ProfileContextProvider";
 import SearchContextProvider from "./context/SearchContextProvider";
+import { ConfigProvider } from "antd";
+import vi_VN from "antd/lib/locale/vi_VN";
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -21,7 +23,9 @@ ReactDOM.render(
             <ProductProvider>
               <ProfileContextProvider>
                 <SearchContextProvider>
-                  <App />
+                  <ConfigProvider locale={vi_VN}>
+                    <App />
+                  </ConfigProvider>
                 </SearchContextProvider>
               </ProfileContextProvider>
             </ProductProvider>

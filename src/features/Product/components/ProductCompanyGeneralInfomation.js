@@ -17,7 +17,7 @@ const ProductCompanyGeneralInfomation = (props) => {
               </span>
             </h1>
             <div>
-              <Link to={`/company/${props?.companyInfo?._id}`} target="_blank">
+              <Link to={`/company/${props?.companyInfo?.slug}`} target="_blank">
                 <span className="fs-14"> Xem trang công ty</span>{" "}
                 <BsBoxArrowUpRight size={12} />
               </Link>

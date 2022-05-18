@@ -128,14 +128,14 @@ const ProductDetail = (props) => {
                                     <div>
                                       <div className="mb-2">
                                         <Timeline>
-                                          {phucLois.map((item, index) => (
+                                          {/* {phucLois.map((item, index) => (
                                             <Timeline.Item
                                               key={index}
                                               color="gray"
                                             >
                                               {item.tenPhucLoi}
                                             </Timeline.Item>
-                                          ))}
+                                          ))} */}
                                         </Timeline>
                                       </div>
                                     </div>

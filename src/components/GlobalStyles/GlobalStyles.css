@@ -168,3 +168,9 @@
 .mt-78{
   margin-top: 78px;
 }
+.btn-study:hover + .btn-none{
+  display: block !important;
+}
+.btn-none{
+  display: none;
+}
