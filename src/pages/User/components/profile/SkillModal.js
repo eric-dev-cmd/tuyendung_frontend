@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 
 const SkillModal = ({ showModal, onCloseModal, ...props }) => {
+  const [skill, setSkill] = useState("");
   const resetValue = () => {
     console.log("3. Reset value");
     // setValue(`${prefixName}.name`, null);
@@ -13,9 +14,12 @@ const SkillModal = ({ showModal, onCloseModal, ...props }) => {
   const save = () => {
     // let data = watch(prefixName);
     console.log("running save()");
+    console.log("payload skill", skill);
+    const payload = {
+      tenKyNang: skill.trim(),
+    };
     // onSubmitCreate(payload);
-    onSubmitCreate();
-    console.log("Add success");
+    onSubmitCreate(payload);
   };
   const onSubmitCreate = (payload) => {
     props.onSubmit(payload);
@@ -25,7 +29,7 @@ const SkillModal = ({ showModal, onCloseModal, ...props }) => {
   return (
     <div>
       <Modal
-        title="Kỹ năng"
+        title="Thêm kỹ năng"
         centered
         visible={showModal}
         // onOk={() => {
@@ -57,14 +61,16 @@ const SkillModal = ({ showModal, onCloseModal, ...props }) => {
         ]}
       >
         <p>
-          <strong>Kỹ năng</strong>
+          <strong>Tên kỹ năng</strong>
         </p>
         <TextArea
           showCount
           maxLength={500}
           style={{ height: 120 }}
+          value={skill}
           onChange={(e) => {
             console.log("Change:", e.target.value);
+            setSkill(e.target.value);
           }}
         />
       </Modal>

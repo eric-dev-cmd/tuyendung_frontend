@@ -25,7 +25,7 @@ const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
   return (
     <div>
       <Modal
-        title="Giới Chứng chỉ / giấy chứng nhận"
+        title="Thêm Chứng chỉ / giấy chứng nhận"
         centered
         visible={showModal}
         // onOk={() => {
@@ -124,7 +124,7 @@ const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
             style={{ height: 120 }}
             onChange={(e) => {
               console.log("Change:", e.target.value);
-            }}  
+            }}
           />
         </div>
       </Modal>

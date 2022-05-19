@@ -10,7 +10,13 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY-MM-DD";
 
-const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
+const UpdateEducationModal = ({
+  showModal,
+  onCloseModal,
+  isEdit,
+  ...props
+}) => {
+  const [degree, setDegree] = useState("");
   const [typeDegree, setTypeDegree] = useState("");
   const [school, setSchool] = useState("");
   const [specialized, setSpecialized] = useState("");
@@ -30,7 +36,8 @@ const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
     // console.log("running save()");
     // onSubmitCreate(payload);
     const payload = {
-      bangCap: typeDegree,
+      // bangCap: degree,
+      loaiBang: typeDegree,
       donViDaoTao: school,
       chuyenNganh: specialized,
       moTa: description,
@@ -58,7 +65,7 @@ const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
   return (
     <div>
       <Modal
-        title="Thêm học vấn bằng cấp"
+        title="Chỉnh sửa học vấn bằng cấp"
         centered
         visible={showModal}
         // onOk={() => {
@@ -90,7 +97,7 @@ const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
           </Button>,
         ]}
       >
-        {/* <div className="pb-3">
+        <div className="pb-3">
           <p>
             <strong>Bằng cấp</strong> <span className="text-danger">(*)</span>
           </p>
@@ -106,10 +113,10 @@ const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
             size="default"
             // defaultValue={}
           />
-        </div> */}
+        </div>
         <div className="pb-3">
           <p>
-            <strong>Bằng cấp</strong> <span className="text-danger">(*)</span>
+            <strong>Loại bằng</strong> <span className="text-danger">(*)</span>
           </p>
           <Select
             defaultValue="Chọn loại"
@@ -117,15 +124,15 @@ const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
             onChange={handleChange}
             size="default"
           >
-            <Option value="Sau đại học">Sau đại học</Option>
-            <Option value="Đại học">Đại học</Option>
-            <Option value="Cao Đẳng">Cao Đẳng</Option>
-            <Option value="Trung cấp">Trung cấp</Option>
+            <Option value="SAU_DAI_HOC">Cao học</Option>
+            <Option value="DAI_HOC">Đại học</Option>
+            <Option value="CAO_DANG">Cao đẳng</Option>
+            <Option value="TRUNG_CAP">Trung cấp</Option>
             <Option value="PHO_THONG">Phổ thông</Option>
-            <Option value="Trung học">Trung học</Option>
-            <Option value="Chưa tốt nghiệp">Chưa tốt nghiệp</Option>
-            <Option value="Nghề">Nghề</Option>
-            <Option value="Khác">Khác</Option>
+            <Option value="TRUNG_HOC">Trung học</Option>
+            <Option value="CHUA_TOT_NGHIEP">Chưa tốt nghiệp</Option>
+            <Option value="NGHE">Nghề</Option>
+            <Option value="KHAC">Khác</Option>
           </Select>
         </div>
         <div className="pb-3">
@@ -165,7 +172,6 @@ const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
               console.log(`checked = ${e.target.checked}`);
               if (e.target.checked) {
                 setIsChecked(true);
-                setToDate(new Date());
               } else {
                 setIsChecked(false);
               }
@@ -229,6 +235,6 @@ const EducationModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
   );
 };
 
-EducationModal.propTypes = {};
+UpdateEducationModal.propTypes = {};
 
-export default EducationModal;
+export default UpdateEducationModal;

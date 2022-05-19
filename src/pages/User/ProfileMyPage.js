@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Tabs, Timeline } from "antd";
+import { Avatar, Button, Card, Tabs, Tag, Timeline } from "antd";
 import React, {
   Fragment,
   useContext,
@@ -13,7 +13,6 @@ import {
 } from "react-icons/ai";
 import { FaUserEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
-import ConfirmDelete from "../../components/ConfirmDelete/index.js";
 import { ProfileContext } from "../../context/ProfileContextProvider.js";
 import profileApi from "../../services/profileApi.js";
 import RecruitmentApplicantApi from "../../services/recruitmentApplicant.js";
@@ -75,9 +74,7 @@ const ProfileMyPage = ({ ...props }) => {
     getProfileDetail();
     console.log("Data get profile by detail", detail);
   }, []);
-
-  // Handle Introduce
-
+  // Giới thiệu
   const handleSubmitModal = async (data) => {
     if (isEdit) {
       console.log("Call api update");
@@ -144,8 +141,7 @@ const ProfileMyPage = ({ ...props }) => {
     );
   }, [isShowModal, isEdit]);
 
-  // Handle Education
-
+  // Học tập
   const handleSubmitModalEducation = async (data) => {
     console.log("create study", data);
     try {
@@ -198,6 +194,28 @@ const ProfileMyPage = ({ ...props }) => {
 
   const handleSubmitModalExperience = async (data) => {
     console.log("Submit modal handleSubmitModalExperience");
+    console.log("create study", data);
+    try {
+      const response = await profileApi.createExperience(data);
+      console.log("response", response);
+      if (response.status === "success") {
+        toast.success("Thêm kinh nghiệm làm việc thành công", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        getProfileDetail();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
   };
   const handleAddButtonClickExperience = (e) => {
     e.preventDefault();
@@ -224,6 +242,28 @@ const ProfileMyPage = ({ ...props }) => {
 
   const handleSubmitModalCertificated = async (data) => {
     console.log("Submit modal handleSubmitModalExperience");
+    console.log("create study", data);
+    try {
+      const response = await profileApi.createCertificated(data);
+      console.log("response", response);
+      if (response.status === "success") {
+        toast.success("Thêm mới chứng chỉ thành công", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        getProfileDetail();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
   };
   const handleAddButtonClickCertificated = (e) => {
     e.preventDefault();
@@ -249,7 +289,28 @@ const ProfileMyPage = ({ ...props }) => {
   // Handle Skill
 
   const handleSubmitModalSkill = async (data) => {
-    console.log("Submit modal handleSubmitModalSkill");
+    console.log("create skill", data);
+    try {
+      const response = await profileApi.createSkill(data);
+      console.log("response", response);
+      if (response.status === "success") {
+        toast.success("Thêm kỹ năng thành công", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        getProfileDetail();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
   };
   const handleAddButtonClickSkill = (e) => {
     e.preventDefault();
@@ -294,10 +355,32 @@ const ProfileMyPage = ({ ...props }) => {
     console.log("Delete by 1", id);
     try {
       console.log("Delete by 2", id);
-      const response = await profileApi.deletStudy({ idHocVan: id });
+      const response = await profileApi.deleteStudy({ idHocVan: id });
       console.log("response", response);
 
       toast.success("Xóa học vấn và bằng cấp thành công", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      getProfileDetail();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
+  };
+  const handleAddButtonClickDeleteSkill = async (id) => {
+    try {
+      const response = await profileApi.deleteSkill({ idKyNang: id });
+      console.log("response", response);
+
+      toast.success("Xóa kỹ năng thành công", {
         position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -398,7 +481,7 @@ const ProfileMyPage = ({ ...props }) => {
                     type="inner"
                     title="Học vấn và bằng cấp"
                   >
-                    {detail?.data?.dsHocVan ? (
+                    {detail?.data?.dsHocVan.length > 0 ? (
                       <>
                         {detail?.data?.dsHocVan.map((item, index) => {
                           return (
@@ -407,10 +490,6 @@ const ProfileMyPage = ({ ...props }) => {
                                 <Timeline mode="left">
                                   <div className="row">
                                     <div className="col-12">
-                                      {/* {detail?.data?.dsHocVan ? (
-                                <>
-                                  {detail?.data?.dsHocVan.map((item, index) => {
-                                    return ( */}
                                       <Timeline.Item>
                                         <p>
                                           <strong>
@@ -418,9 +497,7 @@ const ProfileMyPage = ({ ...props }) => {
                                             {item?.chuyenNganh}
                                           </strong>
                                         </p>
-                                        <p>
-                                          {item?.loaiBang} - {item?.donViDaoTao}
-                                        </p>
+                                        <p>{item?.donViDaoTao}</p>
                                         <p>
                                           {TimeUtils.formatDateTime(
                                             item?.tuNgay,
@@ -526,16 +603,38 @@ const ProfileMyPage = ({ ...props }) => {
                         </Timeline>
                       </div>
                       <div className="col-2">
-                        <Button
-                          onClick={(e) => {
-                            handleAddButtonClickExperience(e);
-                          }}
-                          className="form-control d-flex align-items-center justify-content-center"
-                          icon={<FaUserEdit />}
-                          size="default"
-                        >
-                          <span className="ps-2">Chỉnh sửa</span>
-                        </Button>
+                        {detail?.data?.dsKyNang?.length > 0 && (
+                          <>
+                            <span>
+                              <Button
+                                onClick={(e) => {
+                                  // handleAddButtonClickUpdateEducation(
+                                  //   item?._id
+                                  // );
+                                }}
+                                className="form-control d-flex align-items-center justify-content-center mb-3"
+                                icon={<FaUserEdit />}
+                                size="default"
+                              >
+                                <span className="ps-2">Chỉnh sửa</span>
+                              </Button>
+                            </span>
+
+                            <span>
+                              <Button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  // handleDeleteStudy(item?._id);
+                                }}
+                                className="form-control d-flex align-items-center justify-content-center bg-danger text-white"
+                                icon={<AiFillDelete />}
+                                size="default"
+                              >
+                                <span className="ps-2">Xóa</span>
+                              </Button>
+                            </span>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div className="row">
@@ -562,26 +661,58 @@ const ProfileMyPage = ({ ...props }) => {
                     title="Kỹ năng chuyên môn"
                   >
                     <div className="row">
-                      <div className="col-10">
+                      {detail?.data?.dsKyNang.length > 0 ? (
+                        <>
+                          {detail?.data?.dsKyNang.map((item, index) => {
+                            return (
+                              <div key={index}>
+                                <div className="col-10">
+                                  <Tag
+                                    closable
+                                    onClose={(e) => {
+                                      e.preventDefault();
+                                      handleAddButtonClickDeleteSkill(
+                                        item?._id
+                                      );
+                                    }}
+                                    className="d-flex align-items-center justify-content-between"
+                                    style={{
+                                      fontSize: "14px",
+                                      width: "100%",
+                                      padding: "6px",
+                                    }}
+                                  >
+                                    {item?.tenKyNang}
+                                  </Tag>
+                                </div>
+                                <div className="col-2">
+                                  <span>
+                                    <Button
+                                      onClick={(e) => {
+                                        // handleAddButtonClickDeleteSkill(
+                                        //   item?._id
+                                        // );
+                                      }}
+                                      className="form-control d-flex align-items-center justify-content-center mb-3"
+                                      icon={<FaUserEdit />}
+                                      size="default"
+                                    >
+                                      <span className="ps-2">Chỉnh sửa</span>
+                                    </Button>
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </>
+                      ) : (
                         <span className="text-center">
                           {" "}
                           Giờ không phải là lúc tỏ ra khiêm nhường. Hãy chia sẻ
                           những điểm mạnh nhất của bạn để thu hút những nhà
                           tuyển dụng hàng đầu.
                         </span>
-                      </div>
-                      <div className="col-2">
-                        <Button
-                          onClick={(e) => {
-                            handleAddButtonClickSkill(e);
-                          }}
-                          className="form-control d-flex align-items-center justify-content-center"
-                          icon={<FaUserEdit />}
-                          size="default"
-                        >
-                          <span className="ps-2">Chỉnh sửa</span>
-                        </Button>
-                      </div>
+                      )}
                     </div>
                     <div className="row">
                       <div className="col-4"></div>
