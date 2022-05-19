@@ -9,6 +9,8 @@ import {
 import React, { Fragment } from "react";
 import { FaListUl } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
+import { Link } from "react-router-dom";
+
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 const MainNavigationAdmin = () => {
@@ -36,7 +38,9 @@ const MainNavigationAdmin = () => {
               Trang chủ
             </Menu.Item>
             <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="2">
-              <Menu.Item key="2sub1">Quản lý tin</Menu.Item>
+              <Menu.Item key="2sub1">
+                <Link to={"/employer/dashboard"}>Quản lý tin</Link>
+              </Menu.Item>
               <Menu.Item key="2sub2">Thêm mới tin</Menu.Item>
             </Menu.SubMenu>
             <Menu.SubMenu

@@ -10,6 +10,7 @@ import Register from "./components/Auth/Register";
 import SearchCommon from "./components/Search";
 import ProductDetail from "./features/Product/pages/ProductDetail";
 import DashBoard from "./pages/Admin/DashBoard";
+import NewJob from "./pages/Admin/NewJob";
 import AppliedJobsPage from "./pages/AppliedJobsPage";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
@@ -50,6 +51,7 @@ function App(props) {
           component={AppliedJobsPage}
         />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
+        <Route exact path="/employer/job/create" component={NewJob} />
         <Route exact path="/job-detail/:slug" component={ProductDetail} />
         <Route exact path="/company/:uniqueId" component={ProductDetail} />
         <Route exact path="/search" component={SearchPage} />

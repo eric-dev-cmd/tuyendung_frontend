@@ -88,13 +88,30 @@ const SearchCommon = ({ careers, fields, locations }) => {
     typingTimeOutRef.current = setTimeout(() => {
       setKeyword(kw);
     }, 500);
-
+    delete filters.nganhNghe;
+    delete filters.linhVuc;
+    delete filters.diaDiem;
+    delete filters.soNamKinhNghiem;
+    delete filters.tuNgay;
+    delete filters.denNgay;
+    delete filters.viTri;
+    delete filters.loaiCongViec;
     setFilters({
       ...filters,
       page: 1,
       tieuDe: kw,
     });
   };
+  //   tieuDe: "",
+  // nganhNghe: "",
+  // linhVuc: "",
+  // diaDiem: "",
+  // soNamKinhNghiem: "",
+  // viTri: "",
+  // tuNgay: "",
+  // denNgay: "",
+  // page: 1,
+  // loaiCongViec: "",
 
   const handleSearchClick = () => {
     setIsSubmitButton(true);
@@ -160,6 +177,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   console.log("1. ", e);
                   if (e) {
                     selectCareer(e);
+                    delete filters.tieuDe;
+                    delete filters.linhVuc;
+                    delete filters.diaDiem;
+                    delete filters.soNamKinhNghiem;
+                    delete filters.tuNgay;
+                    delete filters.denNgay;
+                    delete filters.viTri;
+                    delete filters.loaiCongViec;
                     setFilters({
                       ...filters,
                       page: 1,
@@ -196,6 +221,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 onChange={(e) => {
                   console.log("1. ", e);
                   if (e) {
+                    delete filters.tieuDe;
+                    delete filters.nganhNghe;
+                    delete filters.diaDiem;
+                    delete filters.soNamKinhNghiem;
+                    delete filters.tuNgay;
+                    delete filters.denNgay;
+                    delete filters.viTri;
+                    delete filters.loaiCongViec;
                     setFilters({
                       ...filters,
                       page: 1,
@@ -231,6 +264,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue="Chọn địa điểm"
                 onChange={(e) => {
                   console.log("3. ", e);
+                  delete filters.tieuDe;
+                  delete filters.nganhNghe;
+                  delete filters.linhVuc;
+                  delete filters.soNamKinhNghiem;
+                  delete filters.tuNgay;
+                  delete filters.denNgay;
+                  delete filters.viTri;
+                  delete filters.loaiCongViec;
                   setFilters({
                     ...filters,
                     page: 1,
@@ -264,6 +305,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 }
                 defaultValue="Chọn cấp bậc"
                 onChange={(e) => {
+                  delete filters.tieuDe;
+                  delete filters.nganhNghe;
+                  delete filters.linhVuc;
+                  delete filters.soNamKinhNghiem;
+                  delete filters.tuNgay;
+                  delete filters.denNgay;
+                  delete filters.diaDiem;
+                  delete filters.loaiCongViec;
                   setFilters({
                     ...filters,
                     page: 1,
@@ -311,6 +360,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue={t("common.typeWork")}
                 onChange={(e) => {
                   console.log("1. ", e);
+                  delete filters.tieuDe;
+                  delete filters.nganhNghe;
+                  delete filters.linhVuc;
+                  delete filters.soNamKinhNghiem;
+                  delete filters.tuNgay;
+                  delete filters.denNgay;
+                  delete filters.viTri;
+                  delete filters.diaDiem;
                   setFilters({
                     ...filters,
                     page: 1,
@@ -346,6 +403,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue={t("common.experience")}
                 onChange={(e) => {
                   console.log("1. ", e);
+                  delete filters.tieuDe;
+                  delete filters.nganhNghe;
+                  delete filters.linhVuc;
+                  delete filters.loaiCongViec;
+                  delete filters.tuNgay;
+                  delete filters.denNgay;
+                  delete filters.viTri;
+                  delete filters.diaDiem;
                   setFilters({
                     ...filters,
                     page: 1,
