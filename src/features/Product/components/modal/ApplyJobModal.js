@@ -30,6 +30,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
 
     setIsEntered(true);
   };
+  console.log("userrr", props.user);
   const save = () => {
     const payload = {
       ungTuyenVien: uniqueId,
@@ -94,6 +95,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
         ]}
       >
         {/* Modal 1 */}
+
         {!isEntered ? (
           <Fragment>
             <div className="pb-2">
@@ -117,7 +119,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-                defaultValue={name}
+                defaultValue={props?.user?.ten}
               />
             </div>
             <div className="pb-2">
@@ -134,7 +136,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 }}
                 size="large"
                 placeholder="0987079079"
-                defaultValue={phone}
+                defaultValue={props?.user?.sdt}
               />
             </div>
             <div className="pb-2">
@@ -151,7 +153,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 }}
                 size="large"
                 placeholder="zunggzing@gmail.com"
-                defaultValue={email}
+                defaultValue={props?.user?.taiKhoan?.email}
               />
             </div>
             <div className="pb-2">

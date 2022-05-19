@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Modal, Row } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
@@ -16,9 +16,12 @@ import ApplyJobModal from "./modal/ApplyJobModal";
 import CandidateApplicationForm from "../../../services/candidateApplicationForm";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import profileApi from "../../../services/profileApi";
 
 const ProductHeader = (props) => {
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
+  const users = useSelector((state) => state?.userLogin);
+  const userId = users.user.taiKhoan._id;
   const history = useHistory();
   const { t } = useTranslation();
   const expirationDateFormat = TimeUtils.formatDateTime(
@@ -27,16 +30,56 @@ const ProductHeader = (props) => {
   );
   const [isShowModal, setIsShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const getProfileDetail = async () => {
+      try {
+        console.log("userIduserId", userId);
+        const response = await profileApi.getUngTuyenVien(userId);
+        setUser(response?.data);
+        console.log("response?.dataresponse?.data", response?.data);
+      } catch (error) {
+        toast.error(error, {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    };
+    getProfileDetail();
+  }, [userId]);
+  const [isShowLinkUpdateProfile, setIsShowLinkUpdateProfile] = useState(false);
   const handleAddButtonClick = (e) => {
     e.preventDefault();
     console.log("isAuthenticated", isAuthenticated);
     if (isAuthenticated) {
-      setIsShowModal(true);
+      console.log("USER", user);
+      if (
+        user.dsChungChi.length === 0 ||
+        user.dsHocVan.length === 0 ||
+        user.dsKinhNghiemLamViec.length === 0 ||
+        user.dsKyNang.length === 0 ||
+        user.taiKhoan.email === ""
+      ) {
+        setIsShowModal(false);
+        setIsShowLinkUpdateProfile(true);
+      } else {
+        setIsShowModal(true);
+        setIsShowLinkUpdateProfile(false);
+      }
     } else {
       history.replace("/login");
     }
   };
+  {
+    isShowLinkUpdateProfile && (
+      <>{alert("Vui long cap nhat tai khoan de thuc hien ung tuyen")}</>
+    );
+  }
   const handleSubmitModal = async (payload) => {
     console.log("Call api payload", payload);
     try {
@@ -53,15 +96,18 @@ const ProductHeader = (props) => {
         progress: undefined,
       });
     } catch (error) {
-      toast.error(error.response?.data.message, {
-        position: "bottom-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      console.log("error", { error });
+      console.log("error", error.response);
+      console.log("error", error.response.data);
+      // toast.error(error.response?.data.message, {
+      //   position: "bottom-right",
+      //   autoClose: 1000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
     }
   };
 
@@ -78,6 +124,8 @@ const ProductHeader = (props) => {
         onSubmit={handleSubmitModal}
         // detail={detail}
         // isEdit={isEdit}
+        user={user}
+        isShowLinkUpdateProfile={isShowLinkUpdateProfile}
       />
     );
   }, [isShowModal]);

@@ -20,6 +20,7 @@ import TimeUtils from "../../utils/timeUtils.js";
 import CertificatedModal from "./components/profile/CertificatedModal.js";
 import EducationModal from "./components/profile/EducationModal.js";
 import ExperienceModal from "./components/profile/ExprerienceModal.js";
+import InformationPersonal from "./components/profile/InformationPersonal.js";
 import IntroduceModal from "./components/profile/IntroduceModal.js";
 import SkillModal from "./components/profile/SkillModal.js";
 
@@ -337,6 +338,56 @@ const ProfileMyPage = ({ ...props }) => {
     console.log("ID", id);
     setIsShowModalEducation(true);
   };
+  const handleSubmitModalInformationPersonal = async (data) => {
+    try {
+      console.log("data vinh", data);
+      const response = await profileApi.updateUngTuyenVien(data);
+      console.log("response", response);
+      toast.success("Cập nhật thông tin thành công", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      getProfileDetail();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
+  };
+
+  const [isShowModalInformationPersonal, setIsShowModalInformationPersonal] =
+    useState(false);
+  const handleAddButtonClickInformation = (e) => {
+    console.log("E", e);
+    e.preventDefault();
+    setIsShowModalInformationPersonal(true);
+  };
+
+  const renderModalInformationPersonal = useMemo(() => {
+    if (!isShowModalInformationPersonal) return null;
+
+    return (
+      <InformationPersonal
+        showModal={isShowModalInformationPersonal}
+        onCloseModal={() => {
+          setIsShowModalInformationPersonal(false);
+          // clearErrors();
+        }}
+        onSubmit={handleSubmitModalInformationPersonal}
+      />
+    );
+  }, [isShowModalInformationPersonal]);
+
+  // const handleAddButtonClickUpdateEducation = (id) => {
+  //   console.log("ID", id);
+  //   setIsShowModalEducation(true);
+  // };
   // const renderModalDelete = useMemo(() => {
   //   if (!isShowModalConfirmDelete) return null;
 
@@ -1011,6 +1062,35 @@ const ProfileMyPage = ({ ...props }) => {
                 </div>
               </div>
             </TabPane>
+            <TabPane tab="Thông tin" key="2">
+              <div className="row">
+                <div className="col-12">
+                  {/* <Card> */}
+                  <Card type="inner" title="Thông tin">
+                    <div className="row">
+                      <div className="col-12">
+                        <h4>
+                          <Button
+                            type="primary"
+                            className="rounded me-2"
+                            onClick={handleAddButtonClickInformation}
+                          >
+                            Thông tin cá nhân
+                          </Button>
+                          <Button
+                            type="danger"
+                            className="ms-2 rounded"
+                            style={{ width: "150px" }}
+                          >
+                            Xem thêm
+                          </Button>
+                        </h4>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            </TabPane>
           </Tabs>
         </div>
       </div>
@@ -1019,6 +1099,7 @@ const ProfileMyPage = ({ ...props }) => {
       {renderModalExperience}
       {renderModalCertificated}
       {renderModalSkill}
+      {renderModalInformationPersonal}
       {/* {renderModalDelete} */}
     </Fragment>
   );

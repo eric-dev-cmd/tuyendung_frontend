@@ -50,6 +50,14 @@ const profileApi = {
     const url = `/ungtuyenviens/xoaChungChi`;
     return axiosClient.patch(url, id);
   },
+  updateUngTuyenVien: (payload) => {
+    const url = `/ungtuyenviens/${payload.taiKhoan}`;
+    return axiosClient.patch(url, payload);
+  },
+  getUngTuyenVien: (userId) => {
+    const url = `/ungtuyenviens/${userId}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default profileApi;
