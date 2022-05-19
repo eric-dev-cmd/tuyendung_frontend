@@ -16,7 +16,6 @@ const JobItem = (props) => {
     jobItemFavoriteWrapper,
   } = classes;
   const styleImage = clsx(jobItemImageWrapper, "rounded");
-  console.log("props.jobs", props.jobs);
   const user = getUserProfile();
   const handleSubmitFavorite = async () => {
     const payload = {
@@ -25,7 +24,6 @@ const JobItem = (props) => {
     };
     try {
       const response = await InterestedJobApi.creatInterestedJob(payload);
-      console.log("response", response);
       if (response.status === "success") {
         toast.success("Lưu việc làm quan tâm thành công", {
           position: "bottom-right",
@@ -92,7 +90,6 @@ const JobItem = (props) => {
             <div
               className={jobItemFavoriteWrapper}
               onClick={(e) => {
-                console.log("Click favorite");
                 e.preventDefault();
                 handleSubmitFavorite();
               }}

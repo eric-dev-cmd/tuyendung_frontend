@@ -1,10 +1,16 @@
 import { Button, Col, Layout, Row, Tabs, Timeline } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { BiPaperPlane } from "react-icons/bi";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 import FooterHome from "../../../components/Footer/FooterHome";
 import JobProvider from "../../../components/JobHome/context/jobCommonContext";
 import MainNavigation from "../../../components/Layout/MainNavigation";
@@ -19,6 +25,9 @@ import { HeartOutlined } from "@ant-design/icons";
 import InterestedJobApi from "../../../services/interestedJobApi";
 import { toast } from "react-toastify";
 import { getUserProfile } from "../../../utils/localStorage";
+import ApplyJobModal from "../components/modal/ApplyJobModal";
+import CandidateApplicationForm from "../../../services/candidateApplicationForm";
+import { useSelector } from "react-redux";
 
 const { TabPane } = Tabs;
 
@@ -31,6 +40,21 @@ const ProductDetail = (props) => {
   const { location, listCareers, companyFields } = useCommonContext();
   const [phucLois, setPhucLois] = useState(detail.phucLoi || []);
   const [yeuCaus, setYeuCaus] = useState(detail.yeuCau || "");
+  const [isShowModal, setIsShowModal] = useState(false);
+  const history = useHistory();
+  const { isAuthenticated } = useSelector((state) => state?.userLogin);
+  const userId = useSelector((state) => state?.userLogin?.user?.taiKhoan._id);
+
+  useEffect(() => {
+    
+  }, [userId]);
+
+  useEffect(() => {
+    console.log(
+      "🚀 ~ file: ProductDetail.js ~ line 48 ~ ProductDetail ~ isAuthenticated",
+      isAuthenticated
+    );
+  }, [isAuthenticated]);
 
   //CALL API
   const getRecruitmentById = async () => {
@@ -94,6 +118,60 @@ const ProductDetail = (props) => {
 
   console.log("... logger detail", detail);
   console.log("... logger phucLois", phucLois);
+  const handleSubmitModal = async (payload) => {
+    console.log("Call api payload", payload);
+    try {
+      await CandidateApplicationForm.createApplicationForm(payload);
+      // setDetail(response);
+      // setIsSuccessSubmit(true);
+      toast.success("Ứng tuyển thành công", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      toast.error(error.response?.data.message, {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  const renderModalApplyJob = useMemo(() => {
+    if (!isShowModal) return null;
+
+    return (
+      <ApplyJobModal
+        showModal={isShowModal}
+        onCloseModal={() => {
+          setIsShowModal(false);
+          // clearErrors();
+        }}
+        onSubmit={handleSubmitModal}
+        // detail={detail}
+        // isEdit={isEdit}
+      />
+    );
+  }, [isShowModal]);
+
+  const handleAddButtonClick = (e) => {
+    e.preventDefault();
+    console.log("isAuthenticated", isAuthenticated);
+    if (isAuthenticated) {
+      setIsShowModal(true);
+    } else {
+      history.replace("/login");
+    }
+  };
 
   return (
     <Fragment>
@@ -184,9 +262,12 @@ const ProductDetail = (props) => {
                                     <Row gutter={[32, 8]}>
                                       <Col span={6}>
                                         <Button
-                                          className="form-control d-flex align-items-center justify-content-center py-4 my-2"
+                                          className="form-control d-flex align-items-center justify-content-center py-4 my-4"
                                           type="primary"
                                           icon={<BiPaperPlane />}
+                                          onClick={() => {
+                                            handleAddButtonClick();
+                                          }}
                                         >
                                           <span className="ps-2">
                                             {t("productDetail.applyNow")}
@@ -196,7 +277,7 @@ const ProductDetail = (props) => {
 
                                       <Col span={3}>
                                         <Button
-                                          className="form-control d-flex align-items-center justify-content-center py-4 my-2"
+                                          className="form-control d-flex align-items-center justify-content-center py-4 my-4"
                                           icon={<HeartOutlined />}
                                           onClick={() => {
                                             handleSubmitFavorite();
@@ -233,6 +314,7 @@ const ProductDetail = (props) => {
               </div>
             </Content>
           </div>
+          {renderModalApplyJob}
         </JobProvider>
       </Layout>
       <FooterHome />

@@ -10,13 +10,16 @@ import {
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { BiPaperPlane } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import TimeUtils from "../../../utils/timeUtils";
 import ApplyJobModal from "./modal/ApplyJobModal";
 import CandidateApplicationForm from "../../../services/candidateApplicationForm";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const ProductHeader = (props) => {
+  const { isAuthenticated } = useSelector((state) => state?.userLogin);
+  const history = useHistory();
   const { t } = useTranslation();
   const expirationDateFormat = TimeUtils.formatDateTime(
     props?.ngayHetHan,
@@ -27,7 +30,12 @@ const ProductHeader = (props) => {
 
   const handleAddButtonClick = (e) => {
     e.preventDefault();
-    setIsShowModal(true);
+    console.log("isAuthenticated", isAuthenticated);
+    if (isAuthenticated) {
+      setIsShowModal(true);
+    } else {
+      history.replace("/login");
+    }
   };
   const handleSubmitModal = async (payload) => {
     console.log("Call api payload", payload);
