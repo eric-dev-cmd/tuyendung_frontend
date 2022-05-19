@@ -156,7 +156,9 @@ const Home = () => {
                           id="custom-scrollbar"
                         >
                           <div className="col-12">
-                            <JobListFilter recruitments={position} />
+                            <JobListFilter
+                              recruitments={recruitmentsPartTime}
+                            />
                           </div>
                         </div>
                       </div>
