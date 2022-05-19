@@ -375,12 +375,59 @@ const ProfileMyPage = ({ ...props }) => {
       console.log(error.response);
     }
   };
+  const handleDeleteExperience = async (id) => {
+    try {
+      const response = await profileApi.deleteExperience({
+        idKinhNghiemLamViec: id,
+      });
+      console.log("response", response);
+      toast.success("Xóa kinh nghiệm làm việc thành công thành công", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      getProfileDetail();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
+  };
   const handleAddButtonClickDeleteSkill = async (id) => {
     try {
       const response = await profileApi.deleteSkill({ idKyNang: id });
       console.log("response", response);
 
       toast.success("Xóa kỹ năng thành công", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      getProfileDetail();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response);
+      // setLoading(false);
+      console.log(error.response);
+    }
+  };
+  const handleAddButtonClickDeleteCertificated = async (id) => {
+    try {
+      const response = await profileApi.deleteCertificated({
+        idChungChi: id,
+      });
+      console.log("response", response);
+
+      toast.success("Xóa chứng chỉ/giấy xác nhận thành công", {
         position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -438,9 +485,13 @@ const ProfileMyPage = ({ ...props }) => {
                     <div className="row">
                       <div className="col-10">
                         <span>
-                          {isEdit
-                            ? detail?.data?.loiGioiThieu
-                            : "Giới thiệu bản thân của bạn"}
+                          {isEdit ? (
+                            detail?.data?.loiGioiThieu
+                          ) : (
+                            <p className="text-center">
+                              Giới thiệu bản thân của bạn
+                            </p>
+                          )}
                         </span>
                       </div>
                       <div className="col-2">
@@ -554,7 +605,7 @@ const ProfileMyPage = ({ ...props }) => {
                         })}
                       </>
                     ) : (
-                      <p className="text-start">
+                      <p className="text-center">
                         Hãy giúp nhà tuyển dụng hiểu rõ hơn về bạn. Thông tin về
                         quá trình học vấn sẽ giúp tăng cơ hội phỏng vấn của bạn
                         đến 23%.
@@ -585,7 +636,7 @@ const ProfileMyPage = ({ ...props }) => {
                     type="inner"
                     title="Kinh nghiệm làm việc"
                   >
-                    <div className="row">
+                    {/* <div className="row">
                       <div className="col-10">
                         <Timeline mode="left">
                           <div className="row">
@@ -637,23 +688,109 @@ const ProfileMyPage = ({ ...props }) => {
                         )}
                       </div>
                     </div>
-                    <div className="row">
-                      <div className="col-4"></div>
-                      <div className="col-4">
-                        <Button
-                          onClick={(e) => handleAddButtonClickExperience(e)}
-                          className="form-control d-flex align-items-center justify-content-center py-2 my-4"
-                          type="primary"
-                          icon={<AiOutlinePlusCircle />}
-                          size="default"
-                        >
-                          <span className="ps-2">
-                            Thêm kinh nghiệm làm việc
-                          </span>
-                        </Button>
+                   */}
+                    {detail?.data?.dsKinhNghiemLamViec.length > 0 && (
+                      <>
+                        {detail?.data?.dsKinhNghiemLamViec.map(
+                          (item, index) => {
+                            return (
+                              <div className="row" key={index}>
+                                <div className="col-10">
+                                  <Timeline mode="left">
+                                    <div className="row">
+                                      <div className="col-12">
+                                        <Timeline.Item>
+                                          <p>
+                                            <strong>{item?.viTri}</strong>
+                                          </p>
+                                          <p>{item?.congTy}</p>
+                                          <p>
+                                            {TimeUtils.formatDateTime(
+                                              item?.tuNgay,
+                                              "DD-MM-YYYY"
+                                            )}{" "}
+                                            -{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.denNgay,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </p>
+                                          <p>{item?.moTa}</p>
+                                        </Timeline.Item>
+                                      </div>
+                                    </div>
+                                  </Timeline>
+                                </div>
+                                <div className="col-2">
+                                  {detail?.data?.dsKinhNghiemLamViec?.length >
+                                    0 && (
+                                    <>
+                                      <span>
+                                        <Button
+                                          onClick={(e) => {
+                                            // handleAddButtonClickUpdateEducation(
+                                            //   item?._id
+                                            // );
+                                          }}
+                                          className="form-control d-flex align-items-center justify-content-center mb-3"
+                                          icon={<FaUserEdit />}
+                                          size="default"
+                                        >
+                                          <span className="ps-2">
+                                            Chỉnh sửa
+                                          </span>
+                                        </Button>
+                                      </span>
+
+                                      <span>
+                                        <Button
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            handleDeleteExperience(item?._id);
+                                          }}
+                                          className="form-control d-flex align-items-center justify-content-center bg-danger text-white"
+                                          icon={<AiFillDelete />}
+                                          size="default"
+                                        >
+                                          <span className="ps-2">Xóa</span>
+                                        </Button>
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          }
+                        )}
+                      </>
+                    )}{" "}
+                    {detail?.data?.dsKinhNghiemLamViec.length < 1 && (
+                      <p className="text-start">
+                        77,9% nhà tuyển dụng được khảo sát coi kinh nghiệm làm
+                        việc là dữ liệu quan trọng trong các trong các hồ sơ ứng
+                        tuyển. Vì vậy, hãy chắc chắn điền vào phần này để đảm
+                        bảo tăng cơ hội được phỏng vấn
+                      </p>
+                    )}
+                    {detail?.data?.dsKinhNghiemLamViec.length < 1 && (
+                      <div className="row">
+                        <div className="col-4"></div>
+                        <div className="col-4">
+                          <Button
+                            onClick={(e) => handleAddButtonClickExperience(e)}
+                            className="form-control d-flex align-items-center justify-content-center py-2 my-4"
+                            type="primary"
+                            icon={<AiOutlinePlusCircle />}
+                            size="default"
+                          >
+                            <span className="ps-2">
+                              Thêm kinh nghiệm làm việc
+                            </span>
+                          </Button>
+                        </div>
+                        <div className="col-4"></div>
                       </div>
-                      <div className="col-4"></div>
-                    </div>
+                    )}
                   </Card>
                   <Card
                     style={{ marginTop: 16 }}
@@ -661,7 +798,7 @@ const ProfileMyPage = ({ ...props }) => {
                     title="Kỹ năng chuyên môn"
                   >
                     <div className="row">
-                      {detail?.data?.dsKyNang.length > 0 ? (
+                      {detail?.data?.dsKyNang.length > 0 && (
                         <>
                           {detail?.data?.dsKyNang.map((item, index) => {
                             return (
@@ -705,7 +842,8 @@ const ProfileMyPage = ({ ...props }) => {
                             );
                           })}
                         </>
-                      ) : (
+                      )}
+                      {detail?.data?.dsKyNang.length < 1 && (
                         <span className="text-center">
                           {" "}
                           Giờ không phải là lúc tỏ ra khiêm nhường. Hãy chia sẻ
@@ -735,11 +873,109 @@ const ProfileMyPage = ({ ...props }) => {
                     type="inner"
                     title="Chứng chỉ / Giấy chứng nhận"
                   >
+                    {detail?.data?.dsHocVan.length > 0 && (
+                      <>
+                        {detail?.data?.dsChungChi.map((item, index) => {
+                          return (
+                            <div className="row" key={index}>
+                              <div className="col-10">
+                                <Timeline mode="left">
+                                  <div className="row">
+                                    <div className="col-12">
+                                      <Timeline.Item>
+                                        <p>
+                                          <strong>
+                                            {item?.tenChungChi} -{" "}
+                                            {item?.donViCungCap}
+                                          </strong>
+                                        </p>
+                                        <p>
+                                          {TimeUtils.formatDateTime(
+                                            item?.ngayCap,
+                                            "DD-MM-YYYY"
+                                          )}{" "}
+                                          -{" "}
+                                          {TimeUtils.formatDateTime(
+                                            item?.ngayHetHan,
+                                            "DD-MM-YYYY"
+                                          )}
+                                        </p>
+                                      </Timeline.Item>
+                                    </div>
+                                  </div>
+                                </Timeline>
+                              </div>
+                              <div className="col-2">
+                                {detail?.data?.dsChungChi?.length > 0 && (
+                                  <>
+                                    <span>
+                                      <Button
+                                        onClick={(e) => {
+                                          // handleAddButtonClickUpdateEducation(
+                                          //   item?._id
+                                          // );
+                                        }}
+                                        className="form-control d-flex align-items-center justify-content-center mb-3"
+                                        icon={<FaUserEdit />}
+                                        size="default"
+                                      >
+                                        <span className="ps-2">Chỉnh sửa</span>
+                                      </Button>
+                                    </span>
+
+                                    <span>
+                                      <Button
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          handleAddButtonClickDeleteCertificated(
+                                            item?._id
+                                          );
+                                        }}
+                                        className="form-control d-flex align-items-center justify-content-center bg-danger text-white"
+                                        icon={<AiFillDelete />}
+                                        size="default"
+                                      >
+                                        <span className="ps-2">Xóa</span>
+                                      </Button>
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
+
+                    {detail?.data?.dsChungChi.length < 1 && (
+                      <p className="text-center">
+                        Chứng chỉ về ngoại ngữ, kỹ năng quản lý, ...
+                      </p>
+                    )}
+
                     <div className="row">
+                      <div className="col-4"></div>
+                      <div className="col-4">
+                        <Button
+                          onClick={(e) => handleAddButtonClickCertificated(e)}
+                          className="form-control d-flex align-items-center justify-content-center py-2 my-4"
+                          type="primary"
+                          icon={<AiOutlinePlusCircle />}
+                          size="default"
+                        >
+                          <span className="ps-2">Thêm mới chứng chỉ</span>
+                        </Button>
+                      </div>
+                      <div className="col-4"></div>
+                    </div>
+                    {/* <div className="row">
+                      {detail?.data?.dsChungChi.length > 0 ?
+                      
+                    }
                       <div className="col-10">
                         <span>
                           {" "}
-                          Chứng chỉ về ngoại ngữ, kỹ năng quản lý, ...
+                          
                         </span>
                       </div>
                       <div className="col-2">
@@ -769,7 +1005,7 @@ const ProfileMyPage = ({ ...props }) => {
                         </Button>
                       </div>
                       <div className="col-4"></div>
-                    </div>
+                    </div> */}
                   </Card>
                   {/* </Card> */}
                 </div>

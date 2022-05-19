@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Checkbox, DatePicker, Input, Modal } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 
 const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
+  const [name, setName] = useState("");
+  const [department, setDepartment] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const dateFormat = "YYYY-MM-DD";
+
   const resetValue = () => {
     console.log("3. Reset value");
     // setValue(`${prefixName}.name`, null);
@@ -14,14 +21,20 @@ const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
     // let data = watch(prefixName);
     console.log("running save()");
     // onSubmitCreate(payload);
-    onSubmitCreate();
-    console.log("Add success");
+    const payload = {
+      tenChungChi: name,
+      donViCungCap: department,
+      ngayCap: fromDate,
+      ngayHetHan: toDate,
+    };
+    onSubmitCreate(payload);
   };
   const onSubmitCreate = (payload) => {
     props.onSubmit(payload);
     resetValue();
     onCloseModal();
   };
+
   return (
     <div>
       <Modal
@@ -34,7 +47,7 @@ const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
         onCancel={() => {
           onCloseModal(false);
         }}
-        width={800}
+        width={700}
         footer={[
           <Button
             key="back"
@@ -58,22 +71,48 @@ const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
       >
         <div className="pb-3">
           <p>
-            <strong>Tiêu đề</strong> <span className="text-danger">(*)</span>
+            <strong>Tên chứng chỉ</strong>{" "}
+            <span className="text-danger">(*)</span>
           </p>
           <Input
             // showCount
             // maxLength={20}
             onChange={(e) => {
               console.log("value", e.target.value);
+              setName(e.target.value);
             }}
-            size="large"
+            value={name}
+            size="default"
             placeholder="Toeic 990, IELTS6.5"
+          />
+        </div>
+        <div className="pb-3">
+          <p>
+            <strong>Đơn vị cung cấp</strong>{" "}
+            <span className="text-danger">(*)</span>
+          </p>
+          <Input
+            // showCount
+            // maxLength={20}
+            onChange={(e) => {
+              console.log("value", e.target.value);
+              setDepartment(e.target.value);
+            }}
+            value={department}
+            size="default"
+            placeholder="Ví dụ: IIG"
           />
         </div>
         <div className="pb-3">
           <Checkbox
             onChange={(e) => {
               console.log(`checked = ${e.target.checked}`);
+              if (e.target.checked) {
+                setIsChecked(true);
+                setToDate(new Date());
+              } else {
+                setIsChecked(false);
+              }
             }}
           >
             <strong>Chứng chỉ này chưa hết hạn</strong>
@@ -82,39 +121,37 @@ const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
         <div className="pb-3">
           <span className="pe-2">
             <DatePicker
+              format={""}
               onChange={(date, dateString) => {
-                console.log(date, dateString);
+                console.log(date);
+                console.log(dateString);
+                setFromDate(dateString);
               }}
-              picker="month"
             />
           </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="year"
-            />
-          </span>
-          <span className="px-2"> to </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="month"
-            />
-          </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="year"
-            />
-          </span>
+
+          {/* Đến */}
+          <span className="px-2"> đến </span>
+          {/* Đến */}
+          {isChecked ? (
+            <span>
+              <strong>Hiện tại</strong>
+            </span>
+          ) : (
+            <>
+              <span className="pe-2">
+                <DatePicker
+                  format={dateFormat}
+                  onChange={(date, dateString) => {
+                    console.log(date, dateString);
+                    setToDate(dateString);
+                  }}
+                />
+              </span>
+            </>
+          )}
         </div>
-        <div className="pb-3">
+        {/* <div className="pb-3">
           <p>
             <strong>Mô tả chứng chỉ</strong>
           </p>
@@ -126,7 +163,7 @@ const CertificatedModal = ({ showModal, onCloseModal, ...props }) => {
               console.log("Change:", e.target.value);
             }}
           />
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

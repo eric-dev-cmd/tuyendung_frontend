@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Input, Modal, DatePicker } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -10,6 +10,14 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
+  const [company, setCompany] = useState("");
+  const [position, setPosition] = useState("");
+  const [description, setDescription] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const dateFormat = "YYYY-MM-DD";
+
   const resetValue = () => {
     console.log("3. Reset value");
     // setValue(`${prefixName}.name`, null);
@@ -20,27 +28,31 @@ const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
     // let data = watch(prefixName);
     console.log("running save()");
     // onSubmitCreate(payload);
-    onSubmitCreate();
-    console.log("Add success");
+    const payload = {
+      congTy: company,
+      viTri: position,
+      moTa: description,
+      tuNgay: fromDate,
+      denNgay: toDate,
+    };
+    onSubmitCreate(payload);
   };
   const onSubmitCreate = (payload) => {
     props.onSubmit(payload);
     resetValue();
     onCloseModal();
   };
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
   return (
     <div>
       <Modal
         title="Kinh nghiệm làm việc"
         centered
+        className="mt-78"
         visible={showModal}
         onCancel={() => {
           onCloseModal(false);
         }}
-        width={800}
+        width={700}
         footer={[
           <Button
             key="back"
@@ -62,7 +74,7 @@ const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
           </Button>,
         ]}
       >
-        <div className="pb-3">
+        {/* <div className="pb-3">
           <p>
             <strong>Chức danh việc làm</strong>{" "}
             <span className="text-danger">(*)</span>
@@ -72,10 +84,36 @@ const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
             // maxLength={20}
             onChange={(e) => {
               console.log("value", e.target.value);
+              setPosition(e.target.value);
             }}
-            size="large"
+            value={position}
+            size="default"
             placeholder="Ví dụ: Nhân viên kinh doanh"
           />
+        </div> */}
+        <div className="pb-3">
+          <p>
+            <strong>Chức danh việc làm</strong>{" "}
+            <span className="text-danger">(*)</span>
+          </p>
+          <Select
+            defaultValue="Chọn vị trí"
+            style={{ width: "100%" }}
+            onChange={(value) => {
+              setPosition(value);
+            }}
+            size="default"
+          >
+            <Option value="Sinh viên">Sinh viên</Option>
+            <Option value="Thực tập">Thực tập</Option>
+            <Option value="Mới tốt nghiệp">Mới tốt nghiệp</Option>
+            <Option value="Nhân viên">Nhân viên</Option>
+            <Option value="Trưởng phòng">Trưởng phòng</Option>
+            <Option value="Giám sát">Giám sát</Option>
+            <Option value="Quản lý">Quản lý</Option>
+            <Option value="Phó giám đốc">Phó giám đốc</Option>
+            <Option value="Khác">Khác</Option>
+          </Select>
         </div>
         <div className="pb-3">
           <p>
@@ -87,17 +125,19 @@ const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
             // maxLength={20}
             onChange={(e) => {
               console.log("value", e.target.value);
+              setCompany(e.target.value);
             }}
-            size="large"
+            value={company}
+            size="default"
             placeholder="Ví dụ: Công ty cổ phẩn Alpaca"
           />
         </div>
-        <div className="pb-3">
+        {/* <div className="pb-3">
           <p>
             <strong>Địa điểm</strong> <span className="text-danger">(*)</span>
           </p>
           <Select
-            size="large"
+            size="default"
             showSearch
             style={{ width: "100%" }}
             placeholder="Search to Select"
@@ -114,11 +154,17 @@ const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
             <Option value="1">Hồ Chí Minh</Option>
             <Option value="2">Hà Nội</Option>
           </Select>
-        </div>
+        </div> */}
         <div className="pb-3">
           <Checkbox
             onChange={(e) => {
               console.log(`checked = ${e.target.checked}`);
+              if (e.target.checked) {
+                setIsChecked(true);
+                setToDate(new Date());
+              } else {
+                setIsChecked(false);
+              }
             }}
           >
             <strong>Tôi hiện đang làm việc tại đây</strong>
@@ -128,37 +174,32 @@ const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
         <div className="pb-3">
           <span className="pe-2">
             <DatePicker
+              format={""}
               onChange={(date, dateString) => {
-                console.log(date, dateString);
+                console.log(date);
+                console.log(dateString);
+                setFromDate(dateString);
               }}
-              picker="month"
             />
           </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="year"
-            />
-          </span>
-          <span className="px-2"> to </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="month"
-            />
-          </span>
-          <span className="pe-2">
-            <DatePicker
-              onChange={(date, dateString) => {
-                console.log(date, dateString);
-              }}
-              picker="year"
-            />
-          </span>
+          <span className="px-2"> đến </span>
+          {isChecked ? (
+            <span>
+              <strong>Hiện tại</strong>
+            </span>
+          ) : (
+            <>
+              <span className="pe-2">
+                <DatePicker
+                  format={dateFormat}
+                  onChange={(date, dateString) => {
+                    console.log(date, dateString);
+                    setToDate(dateString);
+                  }}
+                />
+              </span>
+            </>
+          )}
         </div>
         <div className="pb-3">
           <p>
@@ -170,6 +211,7 @@ const ExperienceModal = ({ showModal, onCloseModal, ...props }) => {
             style={{ height: 120 }}
             onChange={(e) => {
               console.log("Change:", e.target.value);
+              setDescription(e.target.value);
             }}
             placeholder="Mô tả việc làm tại đây"
           />
