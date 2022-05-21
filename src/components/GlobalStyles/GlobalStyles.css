@@ -174,3 +174,7 @@
 .btn-none{
   display: none;
 }
+.bg-title{
+  background: #e8e0e0;
+    padding-top: 10px;
+}

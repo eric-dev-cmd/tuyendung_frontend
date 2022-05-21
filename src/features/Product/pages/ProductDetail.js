@@ -45,9 +45,7 @@ const ProductDetail = (props) => {
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
   const userId = useSelector((state) => state?.userLogin?.user?.taiKhoan._id);
 
-  useEffect(() => {
-    
-  }, [userId]);
+  useEffect(() => {}, [userId]);
 
   useEffect(() => {
     console.log(
@@ -265,9 +263,7 @@ const ProductDetail = (props) => {
                                           className="form-control d-flex align-items-center justify-content-center py-4 my-4"
                                           type="primary"
                                           icon={<BiPaperPlane />}
-                                          onClick={() => {
-                                            handleAddButtonClick();
-                                          }}
+                                          onClick={handleAddButtonClick}
                                         >
                                           <span className="ps-2">
                                             {t("productDetail.applyNow")}

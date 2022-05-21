@@ -1,32 +1,44 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Input } from "antd";
+import { Button, Input, Select } from "antd";
 
-const FormPostNew1 = ({ onHandleHideForm1, onHandleShowForm1 }) => {
+const FormPostNew1 = () => {
+  const [title, setTitle] = useState("");
+  console.log("title", title);
   return (
     <Fragment>
       <div>
         <div className="row text-center">
-          <h5>
-            <strong>Tiêu đề tuyển dụng</strong>
-          </h5>
+          <div className="col-12 border-bottom mb-2 bg-title">
+            <h4>
+              <strong>Tiêu đề tuyển dụng</strong>
+            </h4>
+          </div>
         </div>
 
         <div className="row">
-          <div className="col-3 my-2"></div>
-          <div className="col-6 my-2">
+          <div className="col-2 my-2"></div>
+          <div className="col-8 my-2">
             <p>
               <strong>
-                Tiêu đề tuyển dụng<span>*</span>
+                Tiêu đề tuyển dụng<span className="text-danger ps-1">*</span>
               </strong>
             </p>
             <p>
-              <Input placeholder="Ví dụ tuyển nhân viên kinh doanh" />
+              <Input
+                placeholder="Ví dụ tuyển nhân viên kinh doanh"
+                size="large"
+                value={title}
+                onChange={(e) => {
+                  console.log("eeeeee", e.target.value);
+                  setTitle(e.target.value);
+                }}
+              />
             </p>
           </div>
-          <div className="col-3 my-2"></div>
-          <div className="col-3 my-2"></div>
-          <div className="col-6 my-2 bg-black">
+          <div className="col-2 my-2"></div>
+          <div className="col-2 my-2"></div>
+          <div className="col-8 my-2 bg-black">
             <div className="bg-secondary px-2 py-3 rounded text-white">
               <p className="text-underline">
                 <strong>Ví dụ:</strong> Tuyển nhân viên kinh doanh không yêu cầu
@@ -51,10 +63,7 @@ const FormPostNew1 = ({ onHandleHideForm1, onHandleShowForm1 }) => {
               </ul>
             </div>
           </div>
-          <div className="col-3 my-2 text-white"></div>
-          <div className="col-3 my-2 text-white"></div>
-          <div className="col-6 my-2 text-white"></div>
-          <div className="col-3 my-2 text-white"></div>
+          <div className="col-2 my-2 text-white"></div>
         </div>
       </div>
     </Fragment>

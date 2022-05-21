@@ -1,326 +1,338 @@
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Select } from "antd";
+import { Button, DatePicker, Input, InputNumber, Select } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
+import TextArea from "antd/lib/input/TextArea";
+import { FaAngleDoubleRight } from "react-icons/fa";
+import { useCommonContext } from "../../../../components/Search/context/commonContext";
 const { Option } = Select;
 const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
+const AGES = [
+  {
+    1: 1,
+  },
+];
 
-const FormPostNew2 = ({ onHandleHideForm1 }) => {
+const FormPostNew4 = ({ onHandleHideForm1 }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [salary, setSalary] = useState(1);
-  const handleChange = (selectedItems) => {
-    setSelectedItems(selectedItems);
-  };
+  const [experience, setExperience] = useState("");
+  const [degree, setDegree] = useState("");
+  const [gender, setGender] = useState("");
+  const [ageTo, setAgeTo] = useState();
+  const [ageFrom, setAgeFrom] = useState();
+  const [desDesReq, setDesReq] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+  const [quyenLoi, setQuyenLoi] = useState("");
+  const [contact, setContact] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
+  const { experiences } = useCommonContext();
+  // const handleChange = (selectedItems) => {
+  //   setSelectedItems(selectedItems);
+  // };
   const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
   return (
     <Fragment>
       <>
         <div className="row text-center">
-          <div className="col-4 text-center"></div>
-          <div className="col-4 text-center my-3">
-            <h5>
-              <strong>Thông tin công việc</strong>
-            </h5>
+          <div className="col-12 border-bottom mb-2 mt-3 bg-title">
+            <h4>
+              <strong>Yêu cầu ứng viên</strong>
+            </h4>
           </div>
-          <div className="col-4 text-center"></div>
         </div>
 
         <div className="row">
-          <div className="col-3 my-2">
+          <div className="col-6 my-2">
             <p>
               <strong>
-                Nơi làm việc<span>*</span>
+                Kinh nghiệm<span className="text-danger ps-1">*</span>
               </strong>
             </p>
             <p>
               <Select
-                style={{ width: "100%" }}
-                showSearch
-                placeholder="Select a person"
-                optionFilterProp="children"
+                size="large"
+                placeholder="Chọn kinh nghiệm"
+                // value={selectedItems}
                 onChange={(value) => {
-                  console.log("value onchange", value);
+                  console.log("Value kinh nghiem", value);
+                  setExperience(value);
                 }}
-                onSearch={(value) => {
-                  console.log("value onsearch", value);
-                }}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
+                style={{ width: "100%" }}
               >
-                <Option value="Hà Nội">Hà Nội</Option>
-                <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
+                {experiences.map((experience, index) => {
+                  return (
+                    <Option key={index} value={experience.kinhNghiem}>
+                      {experience.kinhNghiem}
+                    </Option>
+                  );
+                })}
               </Select>
             </p>
           </div>
-          <div className="col-3 my-2">
+          <div className="col-6 my-2">
             <p>
               <strong>
-                Quận/Huyện<span>*</span>
+                Bằng cấp<span className="text-danger ps-1">*</span>
               </strong>
             </p>
             <p>
               <Select
-                mode="multiple"
-                placeholder="Quận/Huyện"
-                value={selectedItems}
-                onChange={handleChange}
-                style={{ width: "100%" }}
-              >
-                {filteredOptions.map((item) => (
-                  <Select.Option key={item} value={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
-            </p>
-          </div>
-          <div className="col-3 my-2">
-            <p>
-              <strong>
-                Ngành nghề chính<span>*</span>
-              </strong>
-            </p>
-            <p>
-              <Select
-                style={{ width: "100%" }}
-                showSearch
-                placeholder="Select a person"
-                optionFilterProp="children"
+                size="large"
+                placeholder="Chọn bằng cấp"
+                // value={selectedItems}
                 onChange={(value) => {
-                  console.log("value onchange", value);
+                  console.log("Value bang cap", value);
+                  setDegree(value);
                 }}
-                onSearch={(value) => {
-                  console.log("value onsearch", value);
-                }}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
+                style={{ width: "100%" }}
               >
-                <Option value="Hà Nội">Hà Nội</Option>
-                <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
+                <Option value="Sau đại học">Sau đại học</Option>
+                <Option value="Đại học">Đại học</Option>
+                <Option value="Cao Đẳng">Cao Đẳng</Option>
+                <Option value="Trung cấp">Trung cấp</Option>
+                <Option value="PHO_THONG">Phổ thông</Option>
+                <Option value="Trung học">Trung học</Option>
+                <Option value="Chưa tốt nghiệp">Chưa tốt nghiệp</Option>
+                <Option value="Nghề">Nghề</Option>
+                <Option value="Khác">Khác</Option>
               </Select>
             </p>
           </div>
-          <div className="col-3 my-2">
+          <div className="col-6 my-2">
             <p>
               <strong>
-                Ngành nghề phụ<span>*</span>
+                Giới tính<span className="text-danger ps-1">*</span>
               </strong>
             </p>
             <p>
               <Select
-                mode="multiple"
-                placeholder="Quận/Huyện"
-                value={selectedItems}
-                onChange={handleChange}
+                placeholder="Chọn giới tính"
                 style={{ width: "100%" }}
-              >
-                {filteredOptions.map((item) => (
-                  <Select.Option key={item} value={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
-            </p>
-          </div>
-        </div>
-        {/* 1. */}
-        <div className="row">
-          <div className="col-3 my-2">
-            <p>
-              <strong>
-                Cấp bậc<span>*</span>
-              </strong>
-            </p>
-            <p>
-              <Select
-                style={{ width: "100%" }}
-                showSearch
-                placeholder="Select a person"
-                optionFilterProp="children"
                 onChange={(value) => {
-                  console.log("value onchange", value);
+                  console.log("Chon gioi tinh: ", value);
+                  setGender(value);
                 }}
-                onSearch={(value) => {
-                  console.log("value onsearch", value);
-                }}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
+                size="large"
               >
-                <Option value="Hà Nội">Hà Nội</Option>
-                <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
+                <Option value="Nam">Nam</Option>
+                <Option value="Nữ">Nữ</Option>
+                <Option value="Khác">Khác</Option>
               </Select>
             </p>
           </div>
-          <div className="col-3 my-2">
+          <div className="col-6 my-2">
             <p>
               <strong>
-                Số lượng tuyển<span>*</span>
+                Ngày hết hạn<span className="text-danger ps-1">*</span>
               </strong>
             </p>
             <p>
-              <Input placeholder="123" />
-            </p>
-          </div>
-          <div className="col-3 my-2">
-            <p>
-              <strong>
-                Loại hình công việc<span>*</span>
-              </strong>
-            </p>
-            <p>
-              <Select
+              <DatePicker
+                size="large"
                 style={{ width: "100%" }}
-                showSearch
-                placeholder="Select a person"
-                optionFilterProp="children"
-                onChange={(value) => {
-                  console.log("value onchange", value);
+                placeholder="Chọn ngày hết hạn"
+                format={"DD-MM-YYYY"}
+                onChange={(date, dateString) => {
+                  console.log(date);
+                  console.log(dateString);
+                  setExpirationDate(dateString);
                 }}
-                onSearch={(value) => {
-                  console.log("value onsearch", value);
-                }}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
-              >
-                <Option value="Hà Nội">Hà Nội</Option>
-                <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
-              </Select>
-            </p>
-          </div>
-          <div className="col-3 my-2">
-            <p>
-              <strong>
-                Ngành nghề phụ<span>*</span>
-              </strong>
-            </p>
-            <p>
-              <Select
-                style={{ width: "100%" }}
-                showSearch
-                placeholder="Select a person"
-                optionFilterProp="children"
-                onChange={(value) => {
-                  console.log("value onchange", value);
-                }}
-                onSearch={(value) => {
-                  console.log("value onsearch", value);
-                }}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
-              >
-                <Option value="Hà Nội">Hà Nội</Option>
-                <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
-              </Select>
-            </p>
-          </div>
-        </div>
-        {/* 2 */}
-        <div className="row">
-          <div className="col-3">
-            <p>
-              <strong>
-                Mức lương<span>*</span>
-              </strong>
-            </p>
-            <Select
-              style={{ width: "100%" }}
-              defaultValue="Thỏa thuận"
-              onChange={(e) => {
-                console.log("E", e);
-                if (e) {
-                  setSalary(e);
-                } else {
-                  e = null;
-                }
-              }}
-            >
-              <Option value="1">Thỏa thuận</Option>
-              <Option value="0">Cố định</Option>
-              <Option value="-1">Trong khoảng</Option>
-            </Select>
-          </div>
-          {salary == 1 && (
-            <div className="col-9">
-              <p>
-                <strong>
-                  Hiển thị<span>*</span>
-                </strong>
-              </p>
-              <Input
-                style={{ width: "100%" }}
-                placeholder="Thỏa thuận"
-                disabled
               />
+            </p>
+          </div>
+          <div className="col-6 my-2">
+            <p>
+              <strong>Tuổi từ:</strong>
+            </p>
+            <p>
+              <InputNumber
+                size="large"
+                style={{ width: "100%" }}
+                min={18}
+                max={60}
+                placeholder={18}
+                onChange={(e) => {
+                  console.log("age", e);
+                  setAgeFrom(e);
+                }}
+              />
+            </p>
+          </div>
+          <div className="col-6 my-2">
+            <p>
+              <strong>Đến:</strong>
+            </p>
+            <p>
+              <InputNumber
+                size="large"
+                style={{ width: "100%" }}
+                min={18}
+                max={60}
+                placeholder={18}
+                onChange={(e) => {
+                  console.log("age", e);
+                  setAgeTo(e);
+                }}
+              />
+            </p>
+          </div>
+
+          <div className="col-12 my-2">
+            <p>
+              <strong>
+                Mô tả yêu cầu<span className="text-danger ps-1">*</span>
+              </strong>
+            </p>
+            <p>
+              <TextArea
+                rows={6}
+                placeholder=""
+                maxLength={1000}
+                onChange={(e) => {
+                  console.log("mo ta yc", e);
+                  setDesReq(e.target.value);
+                }}
+              />
+            </p>
+          </div>
+          <div className="col-12 my-2 bg-black">
+            <div className="bg-secondary px-2 py-3 rounded text-white">
+              <p className="text-underline">
+                Các kỹ năng chuyên môn của ứng viên để đáp ứng nhu cầu công
+                việc, các kỹ năng được ưu tiên của ứng viên... vv
+              </p>
+              <p className="text-underline">
+                <strong>Ví dụ:</strong>{" "}
+                <ul>
+                  <li>
+                    Kinh nghiệm vận hành, bảo trì sửa chữa nhà xưởng, tòa nhà
+                    trên 2 năm.
+                  </li>
+                  <li>Kinh nghiệm chuyên ngành Cơ điện trên 5 năm</li>
+                  <li>
+                    Tận dụng kiến thức kỹ thuật, đưa ra quyết định nhanh chóng
+                    và giải quyết vấn đề. Tận dụng kinh nghiệm đã tích lũy xác
+                    định vấn đề tiềm ẩn và giải quyết mọi vấn đề càng sớm càng
+                    tốt
+                  </li>
+                </ul>
+              </p>
             </div>
-          )}
-          {salary == 0 && (
-            <>
-              <div className="col-3">
-                <p>
-                  <strong>
-                    Tối thiểu<span>*</span>
-                  </strong>
-                </p>
-                <Input addonAfter="triệu" />
-              </div>
-              <div className="col-3">
-                <p>
-                  <strong>
-                    Hiển thị<span>*</span>
-                  </strong>
-                </p>
-                <Input addonAfter="triệu" disabled />
-              </div>
-            </>
-          )}
-          {salary == -1 && (
-            <>
-              <div className="col-3">
-                <p>
-                  <strong>
-                    Tối thiểu<span>*</span>
-                  </strong>
-                </p>
-                <Input addonAfter="triệu" />;
-              </div>
-              <div className="col-3">
-                <p>
-                  <strong>
-                    Tối đa<span>*</span>
-                  </strong>
-                </p>
-                <Input addonAfter="triệu" />;
-              </div>
-              <div className="col-3">
-                <p>
-                  <strong>
-                    Hiển thị<span>*</span>
-                  </strong>
-                </p>
-                <Input
-                  style={{ width: "100%" }}
-                  placeholder="Thỏa thuận"
-                  disabled
-                />
-              </div>
-            </>
-          )}
+          </div>
+          <div className="col-12 my-2">
+            <p>
+              <strong>
+                Quyền lợi ứng viên:<span className="text-danger ps-1">*</span>
+              </strong>
+            </p>
+            <p>
+              <TextArea
+                rows={6}
+                placeholder=""
+                maxLength={1000}
+                onChange={(e) => {
+                  setQuyenLoi(e.target.value);
+                }}
+              />
+            </p>
+          </div>
+          <div className="col-12 my-2 bg-black">
+            <div className="bg-secondary px-2 py-3 rounded text-white">
+              <p className="text-underline">
+                <strong>
+                  Những phúc lợi khi ứng viên tham gia vào công ty:
+                </strong>{" "}
+                <ul>
+                  <li>Đóng BHXH, BHYT theo bộ luật lao động.</li>
+                  <li>Chế độ nghỉ lễ Tết, đi du lịch hằng năm </li>
+                  <li>
+                    Được làm việc trong môi trường năng động, trẻ trung, đầy
+                    nhiệt huyết.
+                  </li>
+                  <li>
+                    Được tham gia các hoạt động team building và sự kiện lớn
+                    trong năm độc đáo, hấp dẫn.{" "}
+                  </li>
+
+                  <li>Cơ hội thăng tiến, phát triển cao. </li>
+                </ul>
+              </p>
+            </div>
+          </div>
+          <div className="col-12 border-bottom mb-2 text-center mt-3 bg-title">
+            <h4>
+              <strong>Thông tin liên hệ</strong>
+            </h4>
+          </div>
+          <div className="col-4 my-2">
+            <p>
+              <strong>
+                Người liên hệ <span className="text-danger ps-1">*</span>
+              </strong>
+            </p>
+            <p>
+              <Input
+                placeholder="Trung Vinh"
+                size="large"
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setContact(e.target.value);
+                }}
+              />
+            </p>
+          </div>
+          <div className="col-4 my-2">
+            <p>
+              <strong>
+                Số điện thoại <span>*</span>
+              </strong>
+            </p>
+            <p>
+              <Input
+                placeholder="0987999888"
+                size="large"
+                onChange={(e) => {
+                  console.log(e.target.value);
+
+                  setPhone(e.target.value);
+                }}
+              />
+            </p>
+          </div>
+          <div className="col-4 my-2">
+            <p>
+              <strong>
+                Email nhận hồ sơ <span>*</span>
+              </strong>
+            </p>
+            <p>
+              <Input
+                placeholder="nhatuyendung@gmail.com"
+                size="large"
+                onChange={(e) => {
+                  console.log(e.target.value);
+
+                  setEmail(e.target.value);
+                }}
+              />
+            </p>
+          </div>
+          {/* <div className="col-4 my-2"></div> */}
+          <div className="col-12 my-2">
+            <Button size="large" style={{ width: "100%" }} type="primary">
+              Tiếp tục <FaAngleDoubleRight className="ps-1" />
+            </Button>
+          </div>
+          {/* <div className="col-4 my-2"></div> */}
         </div>
       </>
     </Fragment>
   );
 };
 
-FormPostNew2.propTypes = {};
+FormPostNew4.propTypes = {};
 
-export default FormPostNew2;
+export default FormPostNew4;
