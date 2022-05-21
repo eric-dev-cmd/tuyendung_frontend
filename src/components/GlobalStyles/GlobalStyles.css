@@ -178,3 +178,27 @@
   background: #e8e0e0;
     padding-top: 10px;
 }
+.px-4-8{
+  padding: 4px 8px;
+}
+.text-core{
+  color :#001529
+}
+.bg-core{
+  background-color: #4e83a6;
+}
+.bg-cv{
+  background-color: #e6e6e6;
+}
+.text-cv-8{
+  color: rgb(54 58 60)
+}
+.pt-20{
+  padding-top: 20px;
+}
+.pb-30{
+  padding-bottom: 30px;
+}
+.fs-18{
+  font-size: 18px;
+}

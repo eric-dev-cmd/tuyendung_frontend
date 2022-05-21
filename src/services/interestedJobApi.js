@@ -1,9 +1,10 @@
 import axiosClient from "./axiosClient";
 
 const InterestedJobApi = {
-  creatInterestedJob: ({ tinTuyenDung, ungTuyenVien }) => {
-    const url = `/viecLamQuanTams`;
-    return axiosClient.post(url, { tinTuyenDung, ungTuyenVien });
+  creatInterestedJob: ({ tinTuyenDung }) => {
+    console.log("tinTuyenDung", tinTuyenDung);
+    const url = `/tinTuyenDungs/luuTinTuyenDung/${tinTuyenDung}`;
+    return axiosClient.patch(url);
   },
   getListInterestedJob: () => {
     const url = `/viecLamQuanTams/timTheoUngTuyenVien`;

@@ -6,7 +6,7 @@ const PostFiltersForm = (props) => {
   const { onSubmit } = props;
   const [searchTerm, setSearchTerm] = useState("");
   const typingTimeoutRef = useRef(null);
-  
+
   const handleSearchTermChange = (e) => {
     const value = e.target.value;
     setSearchTerm(e.target.value);
@@ -25,7 +25,7 @@ const PostFiltersForm = (props) => {
     <Fragment>
       <Input
         className="form-control"
-        placeholder="Tên công việc"
+        placeholder={props.title ? props.title : "Tên công việc"}
         type="text"
         value={searchTerm}
         onChange={handleSearchTermChange}

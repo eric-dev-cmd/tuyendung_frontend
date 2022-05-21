@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { AiOutlineHeart } from "react-icons/ai";
+import React, { Fragment, useEffect, useState } from "react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import classes from "./JobItem.module.css";
 import clsx from "clsx";
 import { Tooltip } from "antd";
@@ -17,7 +17,32 @@ const JobItem = (props) => {
   } = classes;
   const styleImage = clsx(jobItemImageWrapper, "rounded");
   const user = getUserProfile();
+  const userId = user?.taiKhoan?._id;
+  const [favorite, setFavorite] = useState(props?.jobs?.dsViecLamDaLuu);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const checkIsFavorite = () => {
+    favorite.map((item, index) => {
+      if (item?.ungTuyenVien === userId) {
+        setIsFavorite(true);
+      } else {
+        setIsFavorite(false);
+      }
+    });
+  };
+
+  useEffect(() => {
+    checkIsFavorite();
+  }, [props?.jobs?.dsViecLamDaLuu]);
+
+  useEffect(() => {
+    checkIsFavorite();
+  }, []);
+  console.log("favoritefavorite", favorite);
   const handleSubmitFavorite = async () => {
+    console.log("dsViecLamDaLuu", props);
+    setFavorite(true);
+
     const payload = {
       tinTuyenDung: props?.jobs?._id,
       ungTuyenVien: user.taiKhoan._id,
@@ -94,8 +119,14 @@ const JobItem = (props) => {
                 handleSubmitFavorite();
               }}
             >
-              <div className="jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark">
-                <AiOutlineHeart className="fs-12" />
+              <div
+                className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${
+                  isFavorite ? "text-danger" : ""
+                }`}
+              >
+                <AiFillHeart
+                  className={`fs-18 ${isFavorite ? "text-danger" : ""}`}
+                />
               </div>
             </div>
           </div>

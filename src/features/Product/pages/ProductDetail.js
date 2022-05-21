@@ -1,4 +1,14 @@
-import { Button, Col, Layout, Row, Tabs, Timeline } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  Comment,
+  Layout,
+  Row,
+  Tabs,
+  Timeline,
+  Tooltip,
+} from "antd";
 import { Content } from "antd/lib/layout/layout";
 import React, {
   Fragment,
@@ -28,6 +38,12 @@ import { getUserProfile } from "../../../utils/localStorage";
 import ApplyJobModal from "../components/modal/ApplyJobModal";
 import CandidateApplicationForm from "../../../services/candidateApplicationForm";
 import { useSelector } from "react-redux";
+import moment from "moment";
+import { AiFillStar } from "react-icons/ai";
+import ReviewApi from "../../../services/reviewApi";
+import TimeUtils from "../../../utils/timeUtils";
+import queryString from "query-string";
+import axios from "axios";
 
 const { TabPane } = Tabs;
 
@@ -44,15 +60,53 @@ const ProductDetail = (props) => {
   const history = useHistory();
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
   const userId = useSelector((state) => state?.userLogin?.user?.taiKhoan._id);
+  const [reviews, setReviews] = useState([]);
+  const [filterReview, setFilterReview] = useState({});
 
-  useEffect(() => {}, [userId]);
+  const paramsString = queryString.stringify(filterReview);
+  const getListTabReveiew = async () => {
+    try {
+      const params = {
+        paramsString,
+      };
+      console.log("params paramsString", params);
+
+      console.log("params paramsString", paramsString);
+
+      const response = await ReviewApi.getReviewFilterById(
+        slug,
+        params.paramsString
+      );
+
+      console.log("response ReviewApi", response);
+      setReviews(response);
+      // setRecruitments(response.data);
+      // setTotalCount(response.pagination.total);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  useEffect(() => {
+    getListTabReveiew();
+  }, [filterReview]);
+
+  //CALL API
+  const getListReviewById = async () => {
+    // setLoading(true);
+    try {
+      const response = await ReviewApi.getReviewById(slug);
+      console.log("response?.data review", response);
+      setReviews(response);
+      // setLoading(false);
+    } catch (error) {
+      // setLoading(false);
+      console.log("error", error);
+    }
+  };
 
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: ProductDetail.js ~ line 48 ~ ProductDetail ~ isAuthenticated",
-      isAuthenticated
-    );
-  }, [isAuthenticated]);
+    getListReviewById();
+  }, []);
 
   //CALL API
   const getRecruitmentById = async () => {
@@ -170,6 +224,32 @@ const ProductDetail = (props) => {
       history.replace("/login");
     }
   };
+  const [totalFirstStar, setTotalFirstStar] = useState();
+  const [totalSecondStar, setTotalSecondStar] = useState();
+  const [totalThreeStar, setTotalThreeStar] = useState();
+  const [totalFourStar, setTotalFourStar] = useState();
+  const [totalFiveStar, setTotalFiveStar] = useState();
+  useEffect(() => {
+    const getTotalStatus = async () => {
+      const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai`;
+      try {
+        const response = await axios.get(requestUrl).then((res) => {
+          res.data.data.map((item) => {
+            if (item.xepLoai == 1) setTotalFirstStar(item.tong);
+            if (item.xepLoai == 2) setTotalSecondStar(item.tong);
+            if (item.xepLoai == 3) setTotalThreeStar(item.tong);
+            if (item.xepLoai == 4) setTotalFourStar(item.tong);
+            if (item.xepLoai == 5) setTotalFiveStar(item.tong);
+          });
+        });
+        console.log("responseresponse", response);
+        // setTotalStatus(response.data.data);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    getTotalStatus();
+  }, []);
 
   return (
     <Fragment>
@@ -306,6 +386,772 @@ const ProductDetail = (props) => {
                       <p>Việc làm liên quan</p>
                     </TabPane>
                   </Tabs>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-12">
+                  <div className="bg-white rounded px-4 py-3">
+                    <div>
+                      <h4 className="fw-bold">Đánh giá tin tuyển dụng</h4>
+                    </div>
+
+                    <Tabs
+                      defaultActiveKey="7"
+                      onChange={(key) => {
+                        console.log(key);
+                        if (key == 7) {
+                          setFilterReview({
+                            ...filterReview,
+                            xepLoai: null,
+                          });
+                        } else {
+                          setFilterReview({
+                            ...filterReview,
+                            xepLoai: key,
+                          });
+                        }
+                      }}
+                    >
+                      <TabPane tab="Tất cả" key="7">
+                        {reviews?.data &&
+                          reviews?.data.map((item, index) => {
+                            return (
+                              <Comment
+                                key={index}
+                                // actions={actions}
+                                author={<a>{`${item?.danhGiaBoi.ten}`}</a>}
+                                avatar={
+                                  <Avatar
+                                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${item?.danhGiaBoi.avatar}`}
+                                    alt={`${item?.danhGiaBoi.ten}`}
+                                  />
+                                }
+                                content={
+                                  <>
+                                    {
+                                      item?.xepLoai == 1 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 2 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 3 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 4 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 5 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                          </span>
+                                        </>
+                                      ) : null
+                                      // onHandleStarReview(1)
+                                    }
+                                    <p>{`${item?.noiDung}`}</p>
+                                  </>
+                                }
+                                datetime={
+                                  <Tooltip
+                                    title={TimeUtils.formatDateTime(
+                                      `${item?.ngay}`,
+                                      "DD-MMM-YYYY HH:mm:ss"
+                                    )}
+                                  >
+                                    <span>
+                                      {TimeUtils.formatDateTime(
+                                        `${item?.ngay}`,
+                                        "DD-MMM-YYYY HH:mm:ss"
+                                      )}
+                                    </span>
+                                  </Tooltip>
+                                }
+                              />
+                            );
+                          })}
+                        {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
+                      </TabPane>
+                      <TabPane tab="5 sao" key="5">
+                        {reviews?.data &&
+                          reviews?.data.map((item, index) => {
+                            return (
+                              <Comment
+                                key={index}
+                                // actions={actions}
+                                author={<a>{`${item?.danhGiaBoi.ten}`}</a>}
+                                avatar={
+                                  <Avatar
+                                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${item?.danhGiaBoi.avatar}`}
+                                    alt={`${item?.danhGiaBoi.ten}`}
+                                  />
+                                }
+                                content={
+                                  <>
+                                    {
+                                      item?.xepLoai == 1 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 2 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 3 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 4 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 5 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                          </span>
+                                        </>
+                                      ) : null
+                                      // onHandleStarReview(1)
+                                    }
+                                    <p>{`${item?.noiDung}`}</p>
+                                  </>
+                                }
+                                datetime={
+                                  <Tooltip
+                                    title={TimeUtils.formatDateTime(
+                                      `${item?.ngay}`,
+                                      "DD-MMM-YYYY HH:mm:ss"
+                                    )}
+                                  >
+                                    <span>
+                                      {TimeUtils.formatDateTime(
+                                        `${item?.ngay}`,
+                                        "DD-MMM-YYYY HH:mm:ss"
+                                      )}
+                                    </span>
+                                  </Tooltip>
+                                }
+                              />
+                            );
+                          })}
+                        {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
+                      </TabPane>
+                      <TabPane tab="4 sao" key="4">
+                        {reviews?.data &&
+                          reviews?.data.map((item, index) => {
+                            return (
+                              <Comment
+                                key={index}
+                                // actions={actions}
+                                author={<a>{`${item?.danhGiaBoi.ten}`}</a>}
+                                avatar={
+                                  <Avatar
+                                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${item?.danhGiaBoi.avatar}`}
+                                    alt={`${item?.danhGiaBoi.ten}`}
+                                  />
+                                }
+                                content={
+                                  <>
+                                    {
+                                      item?.xepLoai == 1 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 2 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 3 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 4 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 5 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                          </span>
+                                        </>
+                                      ) : null
+                                      // onHandleStarReview(1)
+                                    }
+                                    <p>{`${item?.noiDung}`}</p>
+                                  </>
+                                }
+                                datetime={
+                                  <Tooltip
+                                    title={TimeUtils.formatDateTime(
+                                      `${item?.ngay}`,
+                                      "DD-MMM-YYYY HH:mm:ss"
+                                    )}
+                                  >
+                                    <span>
+                                      {TimeUtils.formatDateTime(
+                                        `${item?.ngay}`,
+                                        "DD-MMM-YYYY HH:mm:ss"
+                                      )}
+                                    </span>
+                                  </Tooltip>
+                                }
+                              />
+                            );
+                          })}
+                        {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
+                      </TabPane>
+                      <TabPane tab="3 sao" key="3">
+                        {reviews?.data &&
+                          reviews?.data.map((item, index) => {
+                            return (
+                              <Comment
+                                key={index}
+                                // actions={actions}
+                                author={<a>{`${item?.danhGiaBoi.ten}`}</a>}
+                                avatar={
+                                  <Avatar
+                                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${item?.danhGiaBoi.avatar}`}
+                                    alt={`${item?.danhGiaBoi.ten}`}
+                                  />
+                                }
+                                content={
+                                  <>
+                                    {
+                                      item?.xepLoai == 1 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 2 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 3 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 4 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 5 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                          </span>
+                                        </>
+                                      ) : null
+                                      // onHandleStarReview(1)
+                                    }
+                                    <p>{`${item?.noiDung}`}</p>
+                                  </>
+                                }
+                                datetime={
+                                  <Tooltip
+                                    title={TimeUtils.formatDateTime(
+                                      `${item?.ngay}`,
+                                      "DD-MMM-YYYY HH:mm:ss"
+                                    )}
+                                  >
+                                    <span>
+                                      {TimeUtils.formatDateTime(
+                                        `${item?.ngay}`,
+                                        "DD-MMM-YYYY HH:mm:ss"
+                                      )}
+                                    </span>
+                                  </Tooltip>
+                                }
+                              />
+                            );
+                          })}
+                        {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
+                      </TabPane>
+                      <TabPane tab="2 sao" key="2">
+                        {reviews?.data &&
+                          reviews?.data.map((item, index) => {
+                            return (
+                              <Comment
+                                key={index}
+                                // actions={actions}
+                                author={<a>{`${item?.danhGiaBoi.ten}`}</a>}
+                                avatar={
+                                  <Avatar
+                                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${item?.danhGiaBoi.avatar}`}
+                                    alt={`${item?.danhGiaBoi.ten}`}
+                                  />
+                                }
+                                content={
+                                  <>
+                                    {
+                                      item?.xepLoai == 1 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 2 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 3 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 4 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 5 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                          </span>
+                                        </>
+                                      ) : null
+                                      // onHandleStarReview(1)
+                                    }
+                                    <p>{`${item?.noiDung}`}</p>
+                                  </>
+                                }
+                                datetime={
+                                  <Tooltip
+                                    title={TimeUtils.formatDateTime(
+                                      `${item?.ngay}`,
+                                      "DD-MMM-YYYY HH:mm:ss"
+                                    )}
+                                  >
+                                    <span>
+                                      {TimeUtils.formatDateTime(
+                                        `${item?.ngay}`,
+                                        "DD-MMM-YYYY HH:mm:ss"
+                                      )}
+                                    </span>
+                                  </Tooltip>
+                                }
+                              />
+                            );
+                          })}
+                        {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
+                      </TabPane>
+                      <TabPane tab="1 sao" key="1">
+                        {reviews?.data &&
+                          reviews?.data.map((item, index) => {
+                            return (
+                              <Comment
+                                key={index}
+                                // actions={actions}
+                                author={<a>{`${item?.danhGiaBoi.ten}`}</a>}
+                                avatar={
+                                  <Avatar
+                                    src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${item?.danhGiaBoi.avatar}`}
+                                    alt={`${item?.danhGiaBoi.ten}`}
+                                  />
+                                }
+                                content={
+                                  <>
+                                    {
+                                      item?.xepLoai == 1 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 2 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 3 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 4 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar />
+                                          </span>
+                                        </>
+                                      ) : item?.xepLoai == 5 ? (
+                                        <>
+                                          <span className="fs-18">
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                            <AiFillStar
+                                              style={{ color: "#ee4d2d" }}
+                                            />
+                                          </span>
+                                        </>
+                                      ) : null
+                                      // onHandleStarReview(1)
+                                    }
+                                    <p>{`${item?.noiDung}`}</p>
+                                  </>
+                                }
+                                datetime={
+                                  <Tooltip
+                                    title={TimeUtils.formatDateTime(
+                                      `${item?.ngay}`,
+                                      "DD-MMM-YYYY HH:mm:ss"
+                                    )}
+                                  >
+                                    <span>
+                                      {TimeUtils.formatDateTime(
+                                        `${item?.ngay}`,
+                                        "DD-MMM-YYYY HH:mm:ss"
+                                      )}
+                                    </span>
+                                  </Tooltip>
+                                }
+                              />
+                            );
+                          })}
+                        {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
+                      </TabPane>
+                    </Tabs>
+                  </div>
                 </div>
               </div>
             </Content>

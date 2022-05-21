@@ -17,6 +17,10 @@ const RecruitmentApi = {
     const url = `/tinTuyenDungs/${id}`;
     return axiosClient.get(url);
   },
+  getListProfile: ({ params }) => {
+    const url = `donUngTuyens/timKiemTheoNhaTuyenDung?${params}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default RecruitmentApi;
