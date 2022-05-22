@@ -170,7 +170,11 @@ const NewJob = () => {
           onCollapse={() => setCollapsed(!collapsed)}
         >
           <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+          <Menu
+            theme="dark"
+            //  defaultSelectedKeys={["1"]}
+            mode="inline"
+          >
             <Menu.Item icon={<DesktopOutlined />} key="1">
               Trang chủ
               <Link to="/employer/dashboard" />

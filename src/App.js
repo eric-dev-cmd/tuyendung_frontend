@@ -10,12 +10,14 @@ import Register from "./components/Auth/Register";
 import SearchCommon from "./components/Search";
 import ProductDetail from "./features/Product/pages/ProductDetail";
 import AllProfilePage from "./pages/Admin/AllProfilePage";
+import AllProfileTalentPage from "./pages/Admin/AllProfileTalentPage";
 import DashBoard from "./pages/Admin/DashBoard";
 import NewJob from "./pages/Admin/NewJob";
 import AppliedJobsPage from "./pages/AppliedJobsPage";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
+import DashBoardQTV from "./pages/QTV/DashBoardQTV";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import SearchPage from "./pages/SearchPage";
 import SeachPage from "./pages/SearchPage";
@@ -58,6 +60,11 @@ function App(props) {
           path="/employer/job/apply-job/all"
           component={AllProfilePage}
         />
+        <Route
+          exact
+          path="/employer/job/apply-job/talent"
+          component={AllProfileTalentPage}
+        />
         <Route exact path="/job-detail/:slug" component={ProductDetail} />
         <Route exact path="/company/:uniqueId" component={ProductDetail} />
         <Route exact path="/search" component={SearchPage} />
@@ -77,6 +84,7 @@ function App(props) {
           path="/auth/verified/:token"
           component={ResetPasswordPage}
         />
+        <Route exact path="/admin/dashboard" component={DashBoardQTV} />
 
         <Route exact path="/employer/dashboard" component={DashBoard} />
 

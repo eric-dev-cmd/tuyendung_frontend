@@ -38,7 +38,7 @@ const { TabPane } = Tabs;
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-const AllProfilePage = () => {
+const AllProfileTalentPage = () => {
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
@@ -206,7 +206,7 @@ const AllProfilePage = () => {
           >
             <Menu.Item icon={<DesktopOutlined />} key="1">
               Trang chủ
-              <Link to="/employer/dashboard" />
+              {/* <Link to="/employer/dashboard" /> */}
             </Menu.Item>
             <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="2">
               <Menu.Item key="21">
@@ -265,7 +265,8 @@ const AllProfilePage = () => {
               }}
             >
               <Breadcrumb.Item>Tổng quan</Breadcrumb.Item>
-              <Breadcrumb.Item>Tất cả đơn ứng tuyển</Breadcrumb.Item>
+              <Breadcrumb.Item>Hồ sơ ứng tuyển</Breadcrumb.Item>
+              <Breadcrumb.Item>Hồ sơ tiềm năng</Breadcrumb.Item>
             </Breadcrumb>
             <div
               className="site-layout-background bg-white"
@@ -274,7 +275,7 @@ const AllProfilePage = () => {
                 minHeight: 360,
               }}
             >
-              <strong>Tất cả đơn ứng tuyển</strong>
+              <strong>Hồ sơ tiềm năng</strong>
               <div className="row">
                 <div className="col-12">
                   <Tabs
@@ -1237,4 +1238,4 @@ const AllProfilePage = () => {
     </Fragment>
   );
 };
-export default AllProfilePage;
+export default AllProfileTalentPage;
