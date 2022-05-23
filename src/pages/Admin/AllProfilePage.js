@@ -47,71 +47,50 @@ const AllProfilePage = () => {
   const [filters, setFilters] = useState({
     page: 1,
     limit: 5,
+    trangThai: 6,
   });
 
   const [recruitments, setRecruitments] = useState([]);
-  const paramsString = queryString.stringify(filters);
-  console.log("paramsString", paramsString);
+
+  // console.log("paramsString", paramsString);
   const [type, setType] = useState();
-  const onHandleChangeType = (value) => {
-    setType(value);
-  };
   const [value, setValue] = useState(0);
-
-  const getListData = async (pg = page, pgSize = pageSize) => {
-    try {
-      const params = {
-        page: pg,
-        limit: 15,
-        // tieuDe: "",
-        trangThai: "",
-      };
-      console.log("params", params);
-
-      const response = await RecruitmentApi.getListProfile(params);
-
-      console.log("response::: aaa", response.data);
-      setRecruitments(response.data);
-      setTotalCount(response.pagination.total);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
-  // useEffect(() => {
-  //   let mounted = true;
-  //   const getDataListFilters = async () => {
-  //     const requestUrl = `http://localhost:4000/donUngTuyens/timKiemTheoNhaTuyenDung?${paramsString}`;
-  //     try {
-  //       const response = await axios.get(requestUrl);
-  //       console.log("responseresponse getDataListFilters", response.data.data);
-  //       setRecruitments(response.data.data);
-  //       setTotalCount(response.pagination.total);
-  //     } catch (error) {
-  //       console.log(error.response);
-  //     }
-  //   };
-  //   if (mounted) {
-  //     getDataListFilters();
-  //   }
-  //   return () => {
-  //     mounted = false;
-  //     setRecruitments([]);
-  //   };
-  // }, [filters]);
+  useEffect(() => {
+    console.log("filters", filters);
+    const paramsString = queryString.stringify(filters);
+    console.log("filters paramsString", paramsString);
+  }, [filters]);
 
   useEffect(() => {
-    getListData();
-  }, [page]);
+    let mounted = true;
+    const getDataListFilters = async () => {
+      const paramsString = queryString.stringify(filters);
+      try {
+        const response = await RecruitmentApi.getListProfile(paramsString);
+        console.log("data by trung vinh", response.data);
+        setRecruitments(response.data);
+        // setTotalCount(response.pagination.total);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    if (mounted) {
+      getDataListFilters();
+    }
+    return () => {
+      mounted = false;
+      setRecruitments([]);
+    };
+  }, [filters]);
 
   const prevPage = async () => {
     const pg = page === 1 ? 1 : page - 1;
-    getListData(pg);
+    // getListData(pg);
     setPage(pg);
   };
   const nextPage = async () => {
     const pg = page < Math.ceil(totalCount / pageSize) ? page + 1 : page;
-    getListData(pg);
+    // getListData(pg);
     setPage(pg);
   };
   const handleFiltersStatusChange = (newFilters) => {
@@ -286,7 +265,7 @@ const AllProfilePage = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalCount})`} key="6">
+                    <TabPane tab={`Tất cả (${totalCount})`} key="4">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm
@@ -416,12 +395,16 @@ const AllProfilePage = () => {
                                               </span>
                                             </p>
                                             <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
+                                              <span
+                                                className="text-success pointer"
+                                                onClick={() => {
+                                                  handleAddButtonClickProfile(
+                                                    item
+                                                  );
+                                                }}
                                               >
                                                 Xem thông tin ứng tuyến viên
-                                              </Link>
+                                              </span>
                                             </p>
                                           </td>
                                           <td className="">
@@ -651,71 +634,138 @@ const AllProfilePage = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Chi tiết</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {recruitments.map((item, index) => {
+                                      const {
+                                        ungTuyenVien,
+                                        tinTuyenDung,
+                                        trangThai,
+                                      } = item?.donTuyenDung;
+                                      console.log(
+                                        "v item?.donTuyenDung",
+                                        item?.donTuyenDung
+                                      );
                                       return (
-                                        <tr key={index + 1}>
+                                        <tr key={index}>
                                           <td className="align-middle">
                                             <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
+                                              {index + 1}
                                             </p>
                                           </td>
                                           <td>
                                             <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
+                                              {ungTuyenVien?.ten}
                                             </p>
                                             <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
+                                              {ungTuyenVien?.sdt}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              {ungTuyenVien?.taiKhoan?.email}
                                             </p>
                                             <p className="address">
                                               <span className="created">
-                                                Ngày tạo:{" "}
+                                                Ngày nộp:{" "}
                                                 {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
+                                                  item?.ngayUngTuyen,
                                                   "DD-MM-YYYY"
                                                 )}
                                               </span>
                                             </p>
                                             <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
+                                              <span
+                                                className="text-success pointer"
+                                                onClick={() => {
+                                                  handleAddButtonClickProfile(
+                                                    item
+                                                  );
+                                                }}
                                               >
                                                 Xem thông tin ứng tuyến viên
-                                              </Link>
+                                              </span>
                                             </p>
                                           </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
+                                          <td className="">
+                                            <p className="text-sm fw-bold mb-0">
+                                              {tinTuyenDung?.tieuDe}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Số lượng tuyển :{" "}
+                                              {tinTuyenDung?.soLuongTuyen}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Số lượng đã tuyển:{" "}
+                                              {tinTuyenDung?.soLuongDaTuyen}
+                                            </p>
+
+                                            <p className="text-sm mb-0">
+                                              Khu vực:{" "}
+                                              {tinTuyenDung?.diaDiem
+                                                ?.tinhThanhPho +
+                                                "-" +
+                                                tinTuyenDung?.diaDiem
+                                                  ?.quanHuyen}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Ngày hết hạn:{" "}
+                                              {TimeUtils.formatDateTime(
+                                                tinTuyenDung?.ngayHetHan,
+                                                "DD-MM-YYYY"
+                                              )}{" "}
+                                            </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
+                                            <span>{trangThai}</span>
                                           </td>
                                           <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
+                                            className=" cursor-pointer pointer align-middle"
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
-                                            <span className="text-xs font-weight-bold pointer">
+                                            {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
-                                            </span>
+                                            </span> */}
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickProfile(
+                                                      item
+                                                    );
+                                                  }}
+                                                >
+                                                  <span class="dropdown-item">
+                                                    Xem
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Ứng tuyển viên năng
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -867,74 +917,138 @@ const AllProfilePage = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Chi tiết</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {recruitments.map((item, index) => {
+                                      const {
+                                        ungTuyenVien,
+                                        tinTuyenDung,
+                                        trangThai,
+                                      } = item?.donTuyenDung;
+                                      console.log(
+                                        "v item?.donTuyenDung",
+                                        item?.donTuyenDung
+                                      );
                                       return (
-                                        <tr key={index + 1}>
+                                        <tr key={index}>
                                           <td className="align-middle">
                                             <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
+                                              {index + 1}
                                             </p>
                                           </td>
                                           <td>
                                             <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
+                                              {ungTuyenVien?.ten}
                                             </p>
                                             <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
+                                              {ungTuyenVien?.sdt}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              {ungTuyenVien?.taiKhoan?.email}
                                             </p>
                                             <p className="address">
                                               <span className="created">
-                                                Ngày tạo:{" "}
+                                                Ngày nộp:{" "}
                                                 {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
+                                                  item?.ngayUngTuyen,
                                                   "DD-MM-YYYY"
                                                 )}
                                               </span>
                                             </p>
                                             <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
+                                              <span
+                                                className="text-success pointer"
+                                                onClick={() => {
+                                                  handleAddButtonClickProfile(
+                                                    item
+                                                  );
+                                                }}
                                               >
                                                 Xem thông tin ứng tuyến viên
-                                              </Link>
+                                              </span>
                                             </p>
                                           </td>
-                                          <td className="align-middle">
+                                          <td className="">
                                             <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
+                                              {tinTuyenDung?.tieuDe}
                                             </p>
                                             <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
+                                              Số lượng tuyển :{" "}
+                                              {tinTuyenDung?.soLuongTuyen}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Số lượng đã tuyển:{" "}
+                                              {tinTuyenDung?.soLuongDaTuyen}
+                                            </p>
+
+                                            <p className="text-sm mb-0">
+                                              Khu vực:{" "}
+                                              {tinTuyenDung?.diaDiem
+                                                ?.tinhThanhPho +
+                                                "-" +
+                                                tinTuyenDung?.diaDiem
+                                                  ?.quanHuyen}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Ngày hết hạn:{" "}
+                                              {TimeUtils.formatDateTime(
+                                                tinTuyenDung?.ngayHetHan,
+                                                "DD-MM-YYYY"
+                                              )}{" "}
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
+                                            <span>{trangThai}</span>
                                           </td>
                                           <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
+                                            className=" cursor-pointer pointer align-middle"
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
-                                            <span className="text-xs font-weight-bold pointer">
+                                            {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
-                                            </span>
+                                            </span> */}
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickProfile(
+                                                      item
+                                                    );
+                                                  }}
+                                                >
+                                                  <span class="dropdown-item">
+                                                    Xem
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Ứng tuyển viên năng
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -1002,7 +1116,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối(${totalTuChoi})`} key="3">
+                    <TabPane tab={`Từ chối(${totalTuChoi})`} key="0">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1086,71 +1200,138 @@ const AllProfilePage = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Chi tiết</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {recruitments.map((item, index) => {
+                                      const {
+                                        ungTuyenVien,
+                                        tinTuyenDung,
+                                        trangThai,
+                                      } = item?.donTuyenDung;
+                                      console.log(
+                                        "v item?.donTuyenDung",
+                                        item?.donTuyenDung
+                                      );
                                       return (
-                                        <tr key={index + 1}>
+                                        <tr key={index}>
                                           <td className="align-middle">
                                             <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
+                                              {index + 1}
                                             </p>
                                           </td>
                                           <td>
                                             <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
+                                              {ungTuyenVien?.ten}
                                             </p>
                                             <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
+                                              {ungTuyenVien?.sdt}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              {ungTuyenVien?.taiKhoan?.email}
                                             </p>
                                             <p className="address">
                                               <span className="created">
-                                                Ngày tạo:{" "}
+                                                Ngày nộp:{" "}
                                                 {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
+                                                  item?.ngayUngTuyen,
                                                   "DD-MM-YYYY"
                                                 )}
                                               </span>
                                             </p>
                                             <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
+                                              <span
+                                                className="text-success pointer"
+                                                onClick={() => {
+                                                  handleAddButtonClickProfile(
+                                                    item
+                                                  );
+                                                }}
                                               >
                                                 Xem thông tin ứng tuyến viên
-                                              </Link>
+                                              </span>
                                             </p>
                                           </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
+                                          <td className="">
+                                            <p className="text-sm fw-bold mb-0">
+                                              {tinTuyenDung?.tieuDe}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Số lượng tuyển :{" "}
+                                              {tinTuyenDung?.soLuongTuyen}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Số lượng đã tuyển:{" "}
+                                              {tinTuyenDung?.soLuongDaTuyen}
+                                            </p>
+
+                                            <p className="text-sm mb-0">
+                                              Khu vực:{" "}
+                                              {tinTuyenDung?.diaDiem
+                                                ?.tinhThanhPho +
+                                                "-" +
+                                                tinTuyenDung?.diaDiem
+                                                  ?.quanHuyen}
+                                            </p>
+                                            <p className="text-sm mb-0">
+                                              Ngày hết hạn:{" "}
+                                              {TimeUtils.formatDateTime(
+                                                tinTuyenDung?.ngayHetHan,
+                                                "DD-MM-YYYY"
+                                              )}{" "}
+                                            </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
+                                            <span>{trangThai}</span>
                                           </td>
                                           <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
+                                            className=" cursor-pointer pointer align-middle"
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
-                                            <span className="text-xs font-weight-bold pointer">
+                                            {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
-                                            </span>
+                                            </span> */}
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickProfile(
+                                                      item
+                                                    );
+                                                  }}
+                                                >
+                                                  <span class="dropdown-item">
+                                                    Xem
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Ứng tuyển viên năng
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
