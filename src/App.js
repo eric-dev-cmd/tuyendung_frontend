@@ -12,6 +12,8 @@ import ProductDetail from "./features/Product/pages/ProductDetail";
 import AllProfilePage from "./pages/Admin/AllProfilePage";
 import AllProfileTalentPage from "./pages/Admin/AllProfileTalentPage";
 import DashBoard from "./pages/Admin/DashBoard";
+import InformationProfilePage from "./pages/Admin/InformationProfilePage";
+import NewForProfileDetail from "./pages/Admin/NewForProfileDetail";
 import NewJob from "./pages/Admin/NewJob";
 import AppliedJobsPage from "./pages/AppliedJobsPage";
 import Home from "./pages/Home";
@@ -55,6 +57,16 @@ function App(props) {
         />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
         <Route exact path="/employer/job/create" component={NewJob} />
+        <Route
+          exact
+          path="/employer/job/detail/:id"
+          component={NewForProfileDetail}
+        />
+        <Route
+          exact
+          path="/employer/account/profile"
+          component={InformationProfilePage}
+        />
         <Route
           exact
           path="/employer/job/apply-job/all"

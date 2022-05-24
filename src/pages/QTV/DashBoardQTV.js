@@ -22,6 +22,8 @@ import Pagination from "../../components/Pagination/Pagination";
 import PostFiltersForm from "../../components/Admin/PostFiltersForm";
 import queryString from "query-string";
 import axios from "axios";
+import { Helmet } from "react-helmet";
+import NavbarQTV from "./components/navbar/NavbarQTV";
 
 const { Option } = Select;
 
@@ -151,32 +153,15 @@ const DashBoardQTV = () => {
 
   return (
     <Fragment>
+      <Helmet>
+        <title>[Admin] - Trang chủ quản trị viên</title>
+      </Helmet>
       <Layout
         style={{
           minHeight: "100vh",
         }}
       >
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={() => setCollapsed(!collapsed)}
-        >
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-            <Menu.Item icon={<DesktopOutlined />} key="1">
-              Trang chủ
-              <Link to="/admin/dashboard" />
-            </Menu.Item>
-            <Menu.Item icon={<DesktopOutlined />} key="2">
-              Quản lý tin tuyển dụng
-              <Link to="/admin/dashboard" />
-            </Menu.Item>
-            <Menu.Item icon={<GoSignOut />} key="3">
-              Đăng xuất
-              <Link to="/logout" />
-            </Menu.Item>
-          </Menu>
-        </Sider>
+        <NavbarQTV />
         <Layout className="site-layout">
           <Header
             className="site-layout-background"
@@ -230,7 +215,53 @@ const DashBoardQTV = () => {
                           <Select
                             style={{ width: "100%" }}
                             showSearch
-                            placeholder="Thời gian tạo"
+                            placeholder="Tất cả ngành nghề"
+                            optionFilterProp="children"
+                            onChange={(value) => {
+                              console.log("Value", value);
+                            }}
+                            onSearch={(value) => {
+                              console.log("Value search", value);
+                            }}
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                          >
+                            <Option value="jack">Jack</Option>
+                            <Option value="lucy">Lucy</Option>
+                            <Option value="tom">Tom</Option>
+                          </Select>
+                        </div>
+                        <div className="col-2">
+                          <Select
+                            style={{ width: "100%" }}
+                            showSearch
+                            placeholder="Tất cả cấp bậc"
+                            optionFilterProp="children"
+                            onChange={(value) => {
+                              console.log("Value", value);
+                            }}
+                            onSearch={(value) => {
+                              console.log("Value search", value);
+                            }}
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                          >
+                            <Option value="jack">Jack</Option>
+                            <Option value="lucy">Lucy</Option>
+                            <Option value="tom">Tom</Option>
+                          </Select>
+                        </div>
+                        <div className="col-3">
+                          <Select
+                            style={{ width: "100%" }}
+                            showSearch
+                            placeholder="Tất cả hình thức làm việc"
                             optionFilterProp="children"
                             onChange={(value) => {
                               console.log("Value", value);
@@ -271,7 +302,7 @@ const DashBoardQTV = () => {
                             Tìm kiếm
                           </Button>
                         </div> */}
-                        <div className="col-1 ms-3">
+                        <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
@@ -297,16 +328,22 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
+                                        <strong> Tên việc làm</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
+                                        <strong>Tên NTD</strong>
+                                      </th>
+                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                        <strong>Ngày tạo</strong>
+                                      </th>
+                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                        <strong>Ngày hết hạn</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Action</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -376,15 +413,68 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
+                                          <td className="text-center align-middle">
+                                            <span>aaa</span>
+                                          </td>
+                                          <td className="text-center align-middle">
+                                            <span>bbbb</span>
+                                          </td>
                                           <td
                                             className="text-center cursor-pointer align-middle pointer"
                                             onClick={(e) => {
                                               console.log("e", e);
                                             }}
                                           >
-                                            <span className="text-xs font-weight-bold pointer">
+                                            {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
-                                            </span>
+                                            </span> */}
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li
+                                                  // onClick={() => {
+                                                  //   handleAddButtonClickProfile(
+                                                  //     item
+                                                  //   );
+                                                  // }}
+                                                >
+                                                  <span class="dropdown-item">
+                                                    Xem
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Duyệt tin
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Từ chối tin
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                    Khóa tin
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span class="dropdown-item">
+                                                   Mở khóa tin
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -453,7 +543,7 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Chờ duyệt (${totalChoDuyet ? totalChoDuyet : 0})`}
+                      tab={`Chờ xét duyệt (${totalChoDuyet ? totalChoDuyet : 0})`}
                       key="1"
                     >
                       <div className="row">
@@ -905,7 +995,7 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Dừng tuyển(${totalDungTuyen ? totalDungTuyen : 0})`}
+                      tab={`Xem xét lại(${totalDungTuyen ? totalDungTuyen : 0})`}
                       key="3"
                     >
                       <div className="row">
@@ -1448,10 +1538,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
+                                        <strong>Tên việc làm</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
+                                        <strong>Tên NTD</strong>
+                                      </th>
+                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                        <strong> Ngày tạo</strong>
+                                      </th>
+                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                        <strong> Ngày hết hạn</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
                                         <strong> Trạng thái</strong>

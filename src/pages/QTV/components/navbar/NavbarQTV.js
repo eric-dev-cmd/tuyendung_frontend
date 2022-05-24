@@ -17,7 +17,7 @@ import { logout } from "../../../../redux/actions/authActions";
 import { toast } from "react-toastify";
 const { Header, Content, Footer, Sider } = Layout;
 
-const NavbarAdmin = (props) => {
+const NavbarQTV = (props) => {
   const [collapsed, setCollapsed] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -43,12 +43,29 @@ const NavbarAdmin = (props) => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item icon={<DesktopOutlined />} key="1">
+        <Menu theme="dark" mode="inline">
+          <Menu.Item icon={<DesktopOutlined />} 
+            defaultSelectedKeys={["1"]}
+          key="1">
             Trang chủ
-            <Link to="/employer/dashboard" />
+            <Link to="/admin/dashboard" />
           </Menu.Item>
-          <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="sub1">
+          <Menu.Item
+            icon={<DesktopOutlined />}
+            key="2"
+          >
+            Tin tuyển dụng
+            <Link to="/admin/dashboard" />
+          </Menu.Item>
+          <Menu.Item icon={<DesktopOutlined />} key="3">
+            Nhà tuyển dụng
+            <Link to="/admin/employers" />
+          </Menu.Item>
+          <Menu.Item icon={<DesktopOutlined />} key="4">
+            Ứng tuyển viên
+            <Link to="/admin/dashboard" />
+          </Menu.Item>
+          {/* <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="sub1">
             <Menu.Item key="2">
               Quản lý tin
               <Link to="/employer/dashboard" />
@@ -72,9 +89,9 @@ const NavbarAdmin = (props) => {
               Hồ sơ tiềm năng
               <Link to="/employer/job/apply-job/talent" />
             </Menu.Item>
-          </Menu.SubMenu>
+          </Menu.SubMenu> */}
           <Menu.Item icon={<DesktopOutlined />} key="6">
-            Thông tin công ty
+            Thông tin quản trị viên
             <Link to="/employer/account/profile" />
           </Menu.Item>
           <Menu.Item icon={<GoSignOut />} key="7" onClick={logoutHandler}>
@@ -87,6 +104,6 @@ const NavbarAdmin = (props) => {
   );
 };
 
-NavbarAdmin.propTypes = {};
+NavbarQTV.propTypes = {};
 
-export default NavbarAdmin;
+export default NavbarQTV;
