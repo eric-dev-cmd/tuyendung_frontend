@@ -57,8 +57,6 @@ const DashBoardQTVEmployer = () => {
       const requestUrl = `http://localhost:4000/nhaTuyenDungs/nhaTuyenDungTheoSoLuongTin`;
       try {
         const response = await axios.get(requestUrl);
-        console.log("...soLuongDanhGiaTheoTin [vinh]", response.data.data);
-        console.log("Aaaaaaaaaaaa", response.data);
         setRecruitments(response.data.data);
         setTotalCount(response?.data?.pagination?.total);
       } catch (error) {
