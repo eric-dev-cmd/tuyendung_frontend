@@ -63,7 +63,7 @@ const NavbarQTV = (props) => {
           </Menu.Item>
           <Menu.Item icon={<DesktopOutlined />} key="4">
             Ứng tuyển viên
-            <Link to="/admin/dashboard" />
+            <Link to="/admin/candidates" />
           </Menu.Item>
           {/* <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="sub1">
             <Menu.Item key="2">
@@ -92,7 +92,7 @@ const NavbarQTV = (props) => {
           </Menu.SubMenu> */}
           <Menu.Item icon={<DesktopOutlined />} key="6">
             Thông tin quản trị viên
-            <Link to="/employer/account/profile" />
+            <Link to="/admin/profile" />
           </Menu.Item>
           <Menu.Item icon={<GoSignOut />} key="7" onClick={logoutHandler}>
             Đăng xuất

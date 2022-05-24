@@ -13,6 +13,7 @@ import AllProfilePage from "./pages/Admin/AllProfilePage";
 import AllProfileTalentPage from "./pages/Admin/AllProfileTalentPage";
 import DashBoard from "./pages/Admin/DashBoard";
 import InformationProfilePage from "./pages/Admin/InformationProfilePage";
+import InformationProfilePageQTV from "./pages/QTV/InformationProfilePageQTV";
 import NewForProfileDetail from "./pages/Admin/NewForProfileDetail";
 import NewJob from "./pages/Admin/NewJob";
 import AppliedJobsPage from "./pages/AppliedJobsPage";
@@ -20,6 +21,8 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
 import DashBoardQTV from "./pages/QTV/DashBoardQTV";
+import DashBoardQTVCandidates from "./pages/QTV/DashBoardQTVCandidates";
+import DashBoardQTVEmployer from "./pages/QTV/DashBoardQTVEmployer";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import SearchPage from "./pages/SearchPage";
 import SeachPage from "./pages/SearchPage";
@@ -97,6 +100,9 @@ function App(props) {
           component={ResetPasswordPage}
         />
         <Route exact path="/admin/dashboard" component={DashBoardQTV} />
+        <Route exact path="/admin/employers" component={DashBoardQTVEmployer} />
+        <Route exact path="/admin/candidates" component={DashBoardQTVCandidates} />
+        <Route exact path="/admin/profile" component={InformationProfilePageQTV} />
 
         <Route exact path="/employer/dashboard" component={DashBoard} />
 
