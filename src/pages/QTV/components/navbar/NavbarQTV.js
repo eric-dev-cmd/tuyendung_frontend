@@ -25,6 +25,7 @@ const NavbarQTV = (props) => {
     dispatch(logout());
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    window.location.reload();
     toast.success("Đăng xuất thành công", {
       position: "bottom-right",
       autoClose: 1500,
@@ -44,16 +45,15 @@ const NavbarQTV = (props) => {
       >
         <div className="logo" />
         <Menu theme="dark" mode="inline">
-          <Menu.Item icon={<DesktopOutlined />} 
+          <Menu.Item
+            icon={<DesktopOutlined />}
             defaultSelectedKeys={["1"]}
-          key="1">
+            key="1"
+          >
             Trang chủ
             <Link to="/admin/dashboard" />
           </Menu.Item>
-          <Menu.Item
-            icon={<DesktopOutlined />}
-            key="2"
-          >
+          <Menu.Item icon={<DesktopOutlined />} key="2">
             Tin tuyển dụng
             <Link to="/admin/dashboard" />
           </Menu.Item>

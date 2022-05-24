@@ -25,6 +25,7 @@ const NavbarAdmin = (props) => {
     dispatch(logout());
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    window.location.reload();
     toast.success("Đăng xuất thành công", {
       position: "bottom-right",
       autoClose: 1500,

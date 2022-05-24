@@ -3,17 +3,13 @@ import axios from "axios";
 import queryString from "query-string";
 import React, { Fragment, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { FaEllipsisV, FaUserPlus } from "react-icons/fa";
+import { FaUserPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import PostFiltersForm from "../../components/Admin/PostFiltersForm";
-import { logout } from "../../redux/actions/authActions";
+import axiosClient from "../../services/axiosClient";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
-import ReactPaginate from "react-paginate";
-import Pagination from "../../components/Pagination/Pagination";
-import axiosClient from "../../services/axiosClient";
 
 const { Option } = Select;
 

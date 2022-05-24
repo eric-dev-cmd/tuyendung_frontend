@@ -3,10 +3,11 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import classes from "./JobItem.module.css";
 import clsx from "clsx";
 import { Tooltip } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getUserProfile } from "../../../utils/localStorage";
 import InterestedJobApi from "../../../services/interestedJobApi";
 import { toast } from "react-toastify";
+import useSelection from "antd/lib/table/hooks/useSelection";
 
 const JobItem = (props) => {
   const {
@@ -15,11 +16,17 @@ const JobItem = (props) => {
     jobItemImage,
     jobItemFavoriteWrapper,
   } = classes;
+  const heartStyle = { color: "red" };
+  const heartNoneStyle = { color: "" };
   const styleImage = clsx(jobItemImageWrapper, "rounded");
   const user = getUserProfile();
   const userId = user?.taiKhoan?._id;
   const [favorite, setFavorite] = useState(props?.jobs?.dsViecLamDaLuu);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isHightLightFavorite, setIsHightLightFavorite] = useState(false);
+  const handleHightLightFavorite = () => {
+    setIsHightLightFavorite(!isHightLightFavorite);
+  };
 
   const checkIsFavorite = () => {
     favorite.map((item, index) => {
@@ -38,32 +45,35 @@ const JobItem = (props) => {
   useEffect(() => {
     checkIsFavorite();
   }, []);
-  console.log("favoritefavorite", favorite);
+  const history = useHistory();
   const handleSubmitFavorite = async () => {
-    console.log("dsViecLamDaLuu", props);
-    setFavorite(true);
-
-    const payload = {
-      tinTuyenDung: props?.jobs?._id,
-      ungTuyenVien: user.taiKhoan._id,
-    };
-    try {
-      const response = await InterestedJobApi.creatInterestedJob(payload);
-      if (response.status === "success") {
-        toast.success("Lưu việc làm quan tâm thành công", {
-          position: "bottom-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+    if (!userId) {
+      history.push("/login");
+    } else {
+      handleHightLightFavorite();
+      setFavorite(true);
+      const payload = {
+        tinTuyenDung: props?.jobs?._id,
+        ungTuyenVien: user.taiKhoan._id,
+      };
+      try {
+        const response = await InterestedJobApi.creatInterestedJob(payload);
+        if (response.status === "success") {
+          toast.success("Lưu việc làm quan tâm thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response);
+        console.log(error.response);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response);
-      console.log(error.response);
     }
   };
 
@@ -121,7 +131,7 @@ const JobItem = (props) => {
             >
               <div
                 className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${
-                  isFavorite ? "text-danger" : ""
+                  isHightLightFavorite ? "text-danger" : ""
                 }`}
               >
                 <AiFillHeart

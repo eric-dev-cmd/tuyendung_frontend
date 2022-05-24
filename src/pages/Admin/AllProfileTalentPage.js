@@ -81,6 +81,8 @@ const AllProfilePage = () => {
 
   useEffect(() => {
     let mounted = true;
+    const paramsString = queryString.stringify(filters);
+    
     const getDataListFilters = async () => {
       const requestUrl = `http://localhost:4000/donUngTuyens/timKiemTheoNhaTuyenDung?${paramsString}`;
       try {
@@ -189,7 +191,7 @@ const AllProfilePage = () => {
     const getTotalApplication = async () => {
       const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyenTheoTrangThai`;
       try {
-        const response = await axios.get(requestUrl).then((res) => {
+        const response = await axiosClient.get(requestUrl).then((res) => {
           console.log("response abc res", res);
 
           res.data.data.map((item) => {

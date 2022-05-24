@@ -64,6 +64,7 @@ const MainNavigation = () => {
       draggable: true,
       progress: undefined,
     });
+    window.location.reload();
   };
   return (
     <Fragment>

@@ -32,19 +32,22 @@ import { FogotPasswordPage } from "./pages/User/FogotPasswordPage";
 import JobDetailPage from "./pages/User/JobDetailPage";
 import ResetPasswordPage from "./pages/User/ResetPasswordPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import { ConfirmRegisterAccountSuccess } from "./pages/User/components/ConfirmRegisterAccountSuccess";
+import AccessDenied from "./components/AccessDenied";
 
 function App(props) {
   return (
     <Fragment>
       <Helmet>
         <title>
-          123job.org - Tuyển dụng, việc làm 24h từ 50.000+ công ty uy tín hàng
-          đầu tại Việt Nam
+          Tuyển dụng, việc làm 24h từ 50.000+ công ty uy tín hàng đầu tại Việt
+          Nam
         </title>
       </Helmet>
 
       <Switch>
         <Route path="/" component={Home} exact />
+        <Route path="/access-denied" component={AccessDenied} exact />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />
         {/* <Route exact path="/appled-jobs" component={AppliedJobsPage} />*/}
@@ -96,13 +99,26 @@ function App(props) {
         />
         <Route
           exact
+          path="/auth/register/verified"
+          component={ConfirmRegisterAccountSuccess}
+        />
+        <Route
+          exact
           path="/auth/verified/:token"
           component={ResetPasswordPage}
         />
         <Route exact path="/admin/dashboard" component={DashBoardQTV} />
         <Route exact path="/admin/employers" component={DashBoardQTVEmployer} />
-        <Route exact path="/admin/candidates" component={DashBoardQTVCandidates} />
-        <Route exact path="/admin/profile" component={InformationProfilePageQTV} />
+        <Route
+          exact
+          path="/admin/candidates"
+          component={DashBoardQTVCandidates}
+        />
+        <Route
+          exact
+          path="/admin/profile"
+          component={InformationProfilePageQTV}
+        />
 
         <Route exact path="/employer/dashboard" component={DashBoard} />
 

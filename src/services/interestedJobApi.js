@@ -7,7 +7,7 @@ const InterestedJobApi = {
     return axiosClient.patch(url);
   },
   getListInterestedJob: () => {
-    const url = `/viecLamQuanTams/timTheoUngTuyenVien`;
+    const url = `/tinTuyenDungs/tinTuyenDungDaLuu`;
     return axiosClient.get(url);
   },
 };
