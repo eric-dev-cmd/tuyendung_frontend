@@ -39,7 +39,7 @@ const DashBoardQTVEmployer = () => {
   const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 15,
+    limit: 25,
   });
 
   const [recruitments, setRecruitments] = useState([]);
@@ -54,7 +54,7 @@ const DashBoardQTVEmployer = () => {
   useEffect(() => {
     let mounted = true;
     const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/soLuongDanhGiaTheoTin?${paramsString}`;
+      const requestUrl = `http://localhost:4000/nhaTuyenDungs/nhaTuyenDungTheoSoLuongTin`;
       try {
         const response = await axios.get(requestUrl);
         console.log("...soLuongDanhGiaTheoTin [vinh]", response.data.data);
@@ -150,6 +150,27 @@ const DashBoardQTVEmployer = () => {
     };
     getRecruitmentReviewLeast();
   }, [isGetRecruitmentReviewLeast]);
+
+
+  //Khóa tài khoản
+  const handleAddButtonClickBlock = async (id) => {
+    const requestUrl = `http://localhost:4000/quanTriViens/khoataikhoan/${id}`;
+    try {
+      const response = await axios.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  //Mở khóa tài khoản
+  const handleAddButtonClickUnBlock = async (id) => {
+    const requestUrl = `http://localhost:4000/quanTriViens/motaikhoan/${id}`;
+    try {
+      const response = await axios.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   return (
     <Fragment>
@@ -328,22 +349,22 @@ const DashBoardQTVEmployer = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tên việc làm</strong>
+                                        <strong> Tên công ty</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tên NTD</strong>
+                                        <strong>Địa chỉ</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Ngày tạo</strong>
+                                        <strong>Số điện thoại</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Ngày hết hạn</strong>
+                                        <strong>Email</strong>
                                       </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
+                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Action</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -358,66 +379,50 @@ const DashBoardQTVEmployer = () => {
                                           </td>
                                           <td>
                                             <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
+                                              {item?.nhaTuyenDung?.tenCongTy}
                                             </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
+                                            <p className="address">
+                                              <span className="created">
+                                                Quy mô: {item?.nhaTuyenDung?.quyMo} nhân viên
+                                              </span>
+                                            </p>
+                                            <p>
+                                              <span>
+                                                Số lượng tin tuyển dụng:{" "}
+                                              </span>
+                                              {item?.soLuongTinDaDang}
                                             </p>
                                             <p className="address">
                                               <span className="created">
                                                 Ngày tạo:{" "}
                                                 {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
+                                                  item?.nhaTuyenDung?.namThanhLap,
                                                   "DD-MM-YYYY"
                                                 )}
                                               </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.soLuotDanhGia == 0 ? (
-                                                <span className="fst-italic">
-                                                  Không có lượt đánh giá nào
-                                                </span>
-                                              ) : (
-                                                <>
-                                                  <span>
-                                                    Số lượt đánh giá:{" "}
-                                                  </span>
-                                                  {item?.soLuotDanhGia}
-                                                </>
-                                              )}
                                             </p>
                                             <p>
                                               <Link
-                                                to={`/job-detail/${item._id}`}
+                                                to={`/company/${item?.nhaTuyenDung?._id}`}
                                                 target="_blank"
                                               >
-                                                Xem tin đăng trên website
+                                                Xem thông tin trên website
                                               </Link>
                                             </p>
                                           </td>
                                           <td className="align-middle">
                                             <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
+                                              <span>{item?.nhaTuyenDung?.diaChi}</span>
                                             </span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
+                                            <span>{item?.nhaTuyenDung?.sdt}</span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>aaa</span>
+                                            <span>{item?.nhaTuyenDung?.email}</span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>bbbb</span>
+                                            <span>True</span>
                                           </td>
                                           <td
                                             className="text-center cursor-pointer align-middle pointer"
@@ -442,35 +447,27 @@ const DashBoardQTVEmployer = () => {
                                                 class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
-                                                <li
-                                                  // onClick={() => {
-                                                  //   handleAddButtonClickProfile(
-                                                  //     item
-                                                  //   );
-                                                  // }}
-                                                >
+                                                <li>
                                                   <span class="dropdown-item">
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickBlock(
+                                                    item?.nhaTuyenDung?._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
-                                                    Duyệt tin
+                                                    Khóa
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickUnBlock(
+                                                    item?.nhaTuyenDung?._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
-                                                    Từ chối tin
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Khóa tin
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                   Mở khóa tin
+                                                    Mở khóa
                                                   </span>
                                                 </li>
                                               </ul>
@@ -506,9 +503,8 @@ const DashBoardQTVEmployer = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -522,9 +518,8 @@ const DashBoardQTVEmployer = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -542,1361 +537,7 @@ const DashBoardQTVEmployer = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane
-                      tab={`Chờ xét duyệt (${totalChoDuyet ? totalChoDuyet : 0})`}
-                      key="1"
-                    >
-                      <div className="row">
-                        <div className="col-2">
-                          <PostFiltersForm onSubmit={handleFiltersChange} />
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index + 1}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
-                          </div>
-                        )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div>
-                    </TabPane>
-                    <TabPane
-                      tab={`Đã duyệt (${totalDaDuyet ? totalDaDuyet : 0})`}
-                      key="2"
-                    >
-                      <div className="row">
-                        <div className="col-2">
-                          <PostFiltersForm onSubmit={handleFiltersChange} />
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index + 1}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.soLuotDanhGia == 0 ? (
-                                                <span className="fst-italic">
-                                                  Không có lượt đánh giá nào
-                                                </span>
-                                              ) : (
-                                                <>
-                                                  <span>
-                                                    Số lượt đánh giá:{" "}
-                                                  </span>
-                                                  {item?.soLuotDanhGia}
-                                                </>
-                                              )}
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
-                          </div>
-                        )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div>
-                    </TabPane>
-                    <TabPane
-                      tab={`Xem xét lại(${totalDungTuyen ? totalDungTuyen : 0})`}
-                      key="3"
-                    >
-                      <div className="row">
-                        <div className="col-2">
-                          <PostFiltersForm onSubmit={handleFiltersChange} />
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index + 1}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.soLuotDanhGia == 0 ? (
-                                                <span className="fst-italic">
-                                                  Không có lượt đánh giá nào
-                                                </span>
-                                              ) : (
-                                                <>
-                                                  <span>
-                                                    Số lượt đánh giá:{" "}
-                                                  </span>
-                                                  {item?.soLuotDanhGia}
-                                                </>
-                                              )}
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
-                          </div>
-                        )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div>
-                    </TabPane>
-                    <TabPane
-                      tab={`Khóa (${totalKhoa ? totalKhoa : 0})`}
-                      key="0"
-                    >
-                      <div className="row">
-                        <div className="col-2">
-                          <PostFiltersForm onSubmit={handleFiltersChange} />
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index + 1}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.soLuotDanhGia == 0 ? (
-                                                <span className="fst-italic">
-                                                  Không có lượt đánh giá nào
-                                                </span>
-                                              ) : (
-                                                <>
-                                                  <span>
-                                                    Số lượt đánh giá:{" "}
-                                                  </span>
-                                                  {item?.soLuotDanhGia}
-                                                </>
-                                              )}
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
-                          </div>
-                        )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div>
-                    </TabPane>
-                    <TabPane
-                      tab={`Từ chối (${totalTuChoi ? totalTuChoi : 0})`}
-                      key="4"
-                    >
-                      <div className="row">
-                        <div className="col-2">
-                          <PostFiltersForm onSubmit={handleFiltersChange} />
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tên việc làm</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tên NTD</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Ngày tạo</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Ngày hết hạn</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index + 1}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.soLuotDanhGia == 0 ? (
-                                                <span className="fst-italic">
-                                                  Không có lượt đánh giá nào
-                                                </span>
-                                              ) : (
-                                                <>
-                                                  <span>
-                                                    Số lượt đánh giá:{" "}
-                                                  </span>
-                                                  {item?.soLuotDanhGia}
-                                                </>
-                                              )}
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
-                          </div>
-                        )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div>
-                    </TabPane>
-                    <TabPane tab={`Đánh giá kém`} key="9">
-                      <div className="row">
-                        <div className="col-10">
-                          <PostFiltersForm onSubmit={handleFiltersChange} />
-                        </div>
-                        <div className="col-2">
-                          <Button
-                            style={{ width: "100%" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitmentReviewLeast.map(
-                                      (item, index) => {
-                                        return (
-                                          <tr key={index + 1}>
-                                            <td className="align-middle">
-                                              <p className="text-sm font-weight-bold mb-0 text-center">
-                                                {index}
-                                              </p>
-                                            </td>
-                                            <td>
-                                              <p className="text-sm fw-bold mb-0">
-                                                {item?.tinTuyenDung?.tieuDe}
-                                              </p>
-                                              <p className="text-sm mb-0">
-                                                {
-                                                  item?.tinTuyenDung?.diaDiem
-                                                    ?.tinhThanhPho
-                                                }{" "}
-                                                :{" "}
-                                                {
-                                                  item?.tinTuyenDung?.diaDiem
-                                                    ?.quanHuyen
-                                                }
-                                              </p>
-                                              <p className="address">
-                                                <span className="created">
-                                                  Ngày tạo:{" "}
-                                                  {TimeUtils.formatDateTime(
-                                                    item?.tinTuyenDung?.ngayTao,
-                                                    "DD-MM-YYYY"
-                                                  )}
-                                                </span>
-                                                &nbsp;
-                                                <span className="apply-date">
-                                                  Hạn nộp:{" "}
-                                                  {TimeUtils.formatDateTime(
-                                                    item?.tinTuyenDung
-                                                      ?.ngayHetHan,
-                                                    "DD-MM-YYYY"
-                                                  )}
-                                                </span>
-                                              </p>
-                                              <p className="text-sm mb-0">
-                                                {item?.soLuotDanhGia == 0 ? (
-                                                  <span className="fst-italic">
-                                                    Không có lượt đánh giá nào
-                                                  </span>
-                                                ) : (
-                                                  <>
-                                                    <span>
-                                                      Số lượt đánh giá:{" "}
-                                                    </span>
-                                                    {item?.soLuotDanhGia}
-                                                  </>
-                                                )}
-                                              </p>
-                                              <p>
-                                                <Link
-                                                  to={`/job-detail/${item._id}`}
-                                                  target="_blank"
-                                                >
-                                                  Xem tin đăng trên website
-                                                </Link>
-                                              </p>
-                                            </td>
-                                            <td className="align-middle">
-                                              <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                                <FaUserPlus className="text-danger" />{" "}
-                                                &nbsp; 1 hồ sơ mới
-                                              </span>
-                                            </td>
-                                            <td className="text-center align-middle">
-                                              <span>
-                                                {item?.tinTuyenDung?.trangThai}
-                                              </span>
-                                            </td>
-                                            <td
-                                              className="text-center cursor-pointer align-middle pointer"
-                                              onClick={(e) => {
-                                                console.log("e", e);
-                                              }}
-                                            >
-                                              <span className="text-xs font-weight-bold pointer">
-                                                <FaEllipsisV />
-                                              </span>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    )}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
-                          </div>
-                        )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div>
-                    </TabPane>
+
                   </Tabs>
                 </div>
               </div>
