@@ -31,6 +31,7 @@ import PostFiltersForm from "../../components/Admin/PostFiltersForm";
 import queryString from "query-string";
 import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
+import axiosClient from "../../services/axiosClient";
 
 const { Option } = Select;
 
@@ -46,19 +47,16 @@ const AllProfilePage = () => {
   const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 5,
+    limit: 25,
     trangThai: 6,
   });
 
   const [recruitments, setRecruitments] = useState([]);
 
-  // console.log("paramsString", paramsString);
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
   useEffect(() => {
-    console.log("filters", filters);
     const paramsString = queryString.stringify(filters);
-    console.log("filters paramsString", paramsString);
   }, [filters]);
 
   useEffect(() => {
@@ -118,7 +116,6 @@ const AllProfilePage = () => {
   const [userProfile, setUserProfile] = useState();
   const [isShowModalProfile, setIsShowModalProfile] = useState(false);
   const handleAddButtonClickProfile = (item) => {
-    // console.log("E", item);
     setUserProfile(item);
     // e.preventDefault();
     setIsShowModalProfile(true);
@@ -145,17 +142,19 @@ const AllProfilePage = () => {
   const [totalDangUT, setTotalDangUT] = useState();
   const [totalDaUT, setTotalDaUT] = useState();
   const [totalTuChoi, setTotalTuChoi] = useState();
+  const [totalAll, setTotalAll] = useState();
   useEffect(() => {
     const getTotalApplication = async () => {
+      let total = 0;
       const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyenTheoTrangThai`;
       try {
-        const response = await axios.get(requestUrl).then((res) => {
-          console.log("response abc res", res);
-
-          res.data.data.map((item) => {
+        const response = await axiosClient.get(requestUrl).then((res) => {
+          res.data.map((item) => {
             if (item.trangThai == "Đang ứng tuyển") setTotalDangUT(item.tong);
             if (item.trangThai == "Đã ứng tuyển") setTotalDaUT(item.tong);
             if (item.trangThai == "Thất bại") setTotalTuChoi(item.tong);
+            total = total + item.tong;
+            setTotalAll(total);
           });
         });
       } catch (error) {
@@ -164,6 +163,26 @@ const AllProfilePage = () => {
     };
     getTotalApplication();
   }, []);
+
+  // xóa đơn ứng tuyển
+  const handleAddButtonClickDelete = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/donUngTuyens/${id}`;
+      await axios.delete(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  // ứng viêm tiềm năng
+  const handleAddButtonClickTalent = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
+      await axios.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   return (
     <Fragment>
@@ -202,18 +221,13 @@ const AllProfilePage = () => {
               icon={<TeamOutlined />}
               key="3"
             >
-              {/* <Link to="/employer/job/apply-job/all" /> */}
               <Menu.Item key="31">
                 Tất cả đơn ứng tuyển
                 <Link to="/employer/job/apply-job/all" />
               </Menu.Item>
               <Menu.Item key="32">
-                Hồ sơ tiềm năng
+                Đơn tiềm năng tiềm năng
                 <Link to="/employer/job/apply-job/talent" />
-              </Menu.Item>
-              <Menu.Item key="33">
-                Mới ứng tuyển
-                <Link to="/employer/job/apply-job/new" />
               </Menu.Item>
             </Menu.SubMenu>
             <Menu.Item icon={<DesktopOutlined />} key="4">
@@ -265,7 +279,7 @@ const AllProfilePage = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalCount})`} key="4">
+                    <TabPane tab={`Tất cả (${totalAll})`} key="4">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm
@@ -364,10 +378,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -437,13 +447,17 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
+                                            <>
+                                              {trangThai == 'Thất bại' ? (<span>Từ chối</span>) :
+                                                trangThai == 'Đã ứng tuyển' ? (<span>Chấp nhận</span>) :
+                                                  <span>{trangThai}</span>}
+                                            </>
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -473,12 +487,22 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
-                                                  </span>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickTalent(
+                                                    item?.donTuyenDung._id
+                                                  );
+                                                }}>
+                                                  <>
+                                                    {trangThai == 'Thất bại' ? null : (<span class="dropdown-item">
+                                                      Ứng viên tiềm năng
+                                                    </span>)}
+                                                  </>
                                                 </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDelete(
+                                                    item?.donTuyenDung._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -516,9 +540,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -532,9 +555,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -645,10 +667,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -722,9 +740,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -754,12 +772,20 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickTalent(
+                                                    item?.donTuyenDung._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
+                                                    Ứng viên tiềm năng
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDelete(
+                                                    item?.donTuyenDung._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -797,9 +823,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -813,9 +838,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -833,7 +857,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đã ứng tuyển (${totalDaUT})`} key="2">
+                    <TabPane tab={`Chấp nhận (${totalDaUT})`} key="2">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -928,10 +952,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -1001,13 +1021,13 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
+                                            {trangThai == 'Đã ứng tuyển' && (<span>Chấp nhận</span>)}
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1037,12 +1057,20 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickTalent(
+                                                    item?.donTuyenDung._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
+                                                    Ứng viên tiềm năng
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDelete(
+                                                    item?.donTuyenDung._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1080,9 +1108,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1096,9 +1123,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -1211,10 +1237,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -1284,13 +1306,15 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
+                                            <>
+                                              {trangThai == 'Thất bại' && (<span>Từ chối</span>)}
+                                            </>
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1320,12 +1344,11 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
-                                                  </span>
-                                                </li>
-                                                <li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDelete(
+                                                    item?.donTuyenDung._id
+                                                  );
+                                                }}>
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1363,9 +1386,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1379,9 +1401,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"

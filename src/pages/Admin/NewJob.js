@@ -194,18 +194,13 @@ const NewJob = () => {
               icon={<TeamOutlined />}
               key="3"
             >
-              <Link to="/employer/job/create" />
               <Menu.Item key="31">
-                Tất cả hồ sơ
+                Tất cả đơn ứng tuyển
                 <Link to="/employer/job/apply-job/all" />
               </Menu.Item>
               <Menu.Item key="32">
-                Hồ sơ tiềm năng
+                Đơn tiềm năng tiềm năng
                 <Link to="/employer/job/apply-job/talent" />
-              </Menu.Item>
-              <Menu.Item key="33">
-                Mới ứng tuyển
-                <Link to="/employer/job/apply-job/new" />
               </Menu.Item>
             </Menu.SubMenu>
             <Menu.Item icon={<DesktopOutlined />} key="4">

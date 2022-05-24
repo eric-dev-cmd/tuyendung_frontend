@@ -18,9 +18,16 @@ const RecruitmentApi = {
     return axiosClient.get(url);
   },
   getListProfile: (params) => {
-    console.log("filter api vvv", params);
-    const url = `donUngTuyens/timKiemTheoNhaTuyenDung?${params}`;
+    const url = `/donUngTuyens/timKiemTheoNhaTuyenDung?${params}`;
     return axiosClient.get(url);
+  },
+  getListRecruitmentByEmployer: () => {
+    const url = `/tinTuyenDungs/timKiemTheoNhaTuyenDung`;
+    return axiosClient.get(url);
+  },
+  getListRecruitmentByEmployerFilterParams: (params) => {
+    const url = `/tinTuyenDungs/timKiemTheoNhaTuyenDung`;
+    return axiosClient.get(url, { params });
   },
 };
 

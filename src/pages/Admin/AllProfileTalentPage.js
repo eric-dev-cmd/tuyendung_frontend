@@ -31,6 +31,7 @@ import PostFiltersForm from "../../components/Admin/PostFiltersForm";
 import queryString from "query-string";
 import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
+import axiosClient from "../../services/axiosClient";
 
 const { Option } = Select;
 
@@ -78,27 +79,27 @@ const AllProfileTalentPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   let mounted = true;
-  //   const getDataListFilters = async () => {
-  //     const requestUrl = `http://localhost:4000/donUngTuyens/timKiemTheoNhaTuyenDung?${paramsString}`;
-  //     try {
-  //       const response = await axios.get(requestUrl);
-  //       console.log("responseresponse getDataListFilters", response.data.data);
-  //       setRecruitments(response.data.data);
-  //       setTotalCount(response.pagination.total);
-  //     } catch (error) {
-  //       console.log(error.response);
-  //     }
-  //   };
-  //   if (mounted) {
-  //     getDataListFilters();
-  //   }
-  //   return () => {
-  //     mounted = false;
-  //     setRecruitments([]);
-  //   };
-  // }, [filters]);
+  useEffect(() => {
+    let mounted = true;
+    const getDataListFilters = async () => {
+      const requestUrl = `http://localhost:4000/donUngTuyens/timKiemTheoNhaTuyenDung?${paramsString}`;
+      try {
+        const response = await axiosClient.get(requestUrl);
+        console.log("responseresponse getDataListFilters", response.data.data);
+        setRecruitments(response.data.data);
+        setTotalCount(response.pagination.total);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    if (mounted) {
+      getDataListFilters();
+    }
+    return () => {
+      mounted = false;
+      setRecruitments([]);
+    };
+  }, [filters]);
 
   useEffect(() => {
     getListData();
@@ -229,12 +230,8 @@ const AllProfileTalentPage = () => {
                 <Link to="/employer/job/apply-job/all" />
               </Menu.Item>
               <Menu.Item key="32">
-                Hồ sơ tiềm năng
+                Đơn tiềm năng tiềm năng
                 <Link to="/employer/job/apply-job/talent" />
-              </Menu.Item>
-              <Menu.Item key="33">
-                Mới ứng tuyển
-                <Link to="/employer/job/apply-job/new" />
               </Menu.Item>
             </Menu.SubMenu>
             <Menu.Item icon={<DesktopOutlined />} key="4">

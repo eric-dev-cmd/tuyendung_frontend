@@ -37,7 +37,7 @@ const DashBoardQTV = () => {
   const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 15,
+    limit: 30,
   });
 
   const [recruitments, setRecruitments] = useState([]);
@@ -103,6 +103,7 @@ const DashBoardQTV = () => {
       // tieuDe: newFilters.searchTerm,
     });
   };
+
   const [totalStatus, setTotalStatus] = useState();
   const [totalDungTuyen, setTotalDungTuyen] = useState();
   const [totalChoDuyet, setTotalChoDuyet] = useState();
@@ -116,12 +117,15 @@ const DashBoardQTV = () => {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThai`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
+          let total = 0;
           res.data.data.map((item) => {
             if (item.trangThai == "Dừng tuyển") setTotalDungTuyen(item.tong);
             if (item.trangThai == "Chờ duyệt") setTotalChoDuyet(item.tong);
             if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
             if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
             if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
+            total = total + item.tong;
+            setTotalAll(total)
           });
         });
 
@@ -132,8 +136,7 @@ const DashBoardQTV = () => {
     };
     getTotalStatus();
   }, []);
-  const [isGetRecruitmentReviewLeast, setIsGetRecruitmentReviewLeast] =
-    useState(false);
+  const [isGetRecruitmentReviewLeast, setIsGetRecruitmentReviewLeast] = useState(false);
   const [recruitmentReviewLeast, setRecruitmentReviewLeast] = useState([]);
   useEffect(() => {
     const getRecruitmentReviewLeast = async () => {
@@ -148,6 +151,46 @@ const DashBoardQTV = () => {
     };
     getRecruitmentReviewLeast();
   }, [isGetRecruitmentReviewLeast]);
+
+  // xóa tin
+  const handleAddButtonClickDetailDelete = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
+      await axios.delete(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  // duyệt tin
+  const handleAddButtonClickDetailAccept = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/duyetTin/${id}`;
+      await axios.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  // mở / khóa tin
+  const handleAddButtonClickDetailBlock = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/khoaTin/${id}`;
+      await axios.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  // Từ chối
+  const handleAddButtonClickDetailDeny = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/tuChoiTin/${id}`;
+      await axios.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   return (
     <Fragment>
@@ -221,7 +264,7 @@ const DashBoardQTV = () => {
                       }
                     }}
                   >
-                    <TabPane tab={`Tất cả (${0})`} key="6">
+                    <TabPane tab={`Tất cả (${totalAll})`} key="6">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -376,15 +419,81 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
+                                          <td className=" cursor-pointer pointer align-middle">
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <>
+                                                  {item?.trangThai == 'Chờ duyệt' ? (
+                                                    <>
+                                                      <li onClick={() => {
+                                                        handleAddButtonClickDetailAccept(
+                                                          item?._id
+                                                        );
+                                                      }}>
+                                                        <span class="dropdown-item">
+                                                          Duyệt
+                                                        </span>
+                                                      </li>
+                                                      <li onClick={() => {
+                                                        handleAddButtonClickDetailDeny(
+                                                          item?._id
+                                                        );
+                                                      }}>
+                                                        <span class="dropdown-item">
+                                                          Từ chối
+                                                        </span>
+                                                      </li>
+                                                    </>
+                                                  ) : item?.trangThai == 'Đã duyệt' || item?.trangThai == 'Dừng tuyển' ? (
+                                                    <>
+                                                      <li onClick={() => {
+                                                        handleAddButtonClickDetailBlock(
+                                                          item?._id
+                                                        );
+                                                      }}>
+                                                        <span class="dropdown-item">
+                                                          Khóa
+                                                        </span>
+                                                      </li>
+                                                    </>
+                                                  ) : item?.trangThai == 'Khóa' ? (
+                                                    <>
+                                                      <li onClick={() => {
+                                                        handleAddButtonClickDetailBlock(
+                                                          item?._id
+                                                        );
+                                                      }}>
+                                                        <span class="dropdown-item">
+                                                          Mở khóa
+                                                        </span>
+                                                      </li>
+                                                    </>
+                                                  ) : null}
+                                                </>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDelete(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -416,9 +525,8 @@ const DashBoardQTV = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -432,9 +540,8 @@ const DashBoardQTV = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -595,15 +702,51 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
+                                          <td className="text-center cursor-pointer align-middle pointer">
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDetailAccept(
+                                                    item?._id
+                                                  );
+                                                }}>
+                                                  <span class="dropdown-item">
+                                                    Duyệt
+                                                  </span>
+                                                </li>
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDetailDeny(
+                                                    item?._id
+                                                  );
+                                                }}>
+                                                  <span class="dropdown-item">
+                                                    Từ chối
+                                                  </span>
+                                                </li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDelete(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -635,9 +778,8 @@ const DashBoardQTV = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -651,9 +793,8 @@ const DashBoardQTV = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -828,15 +969,42 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
+                                          <td className="text-center cursor-pointer align-middle pointer" >
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDetailBlock(
+                                                    item?._id
+                                                  );
+                                                }}>
+                                                  <span class="dropdown-item">
+                                                    Khóa
+                                                  </span>
+                                                </li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDelete(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -868,9 +1036,8 @@ const DashBoardQTV = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -884,9 +1051,8 @@ const DashBoardQTV = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -1061,15 +1227,42 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
+                                          <td className="text-center cursor-pointer align-middle pointer">
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDetailBlock(
+                                                    item?._id
+                                                  );
+                                                }}>
+                                                  <span class="dropdown-item">
+                                                    Khóa
+                                                  </span>
+                                                </li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDelete(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -1101,9 +1294,8 @@ const DashBoardQTV = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1117,9 +1309,8 @@ const DashBoardQTV = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -1294,15 +1485,42 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
+                                          <td className="text-center cursor-pointer align-middle pointer" >
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDetailBlock(
+                                                    item?._id
+                                                  );
+                                                }}>
+                                                  <span class="dropdown-item">
+                                                    Mở khóa
+                                                  </span>
+                                                </li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDelete(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -1334,9 +1552,8 @@ const DashBoardQTV = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1350,9 +1567,8 @@ const DashBoardQTV = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -1527,15 +1743,33 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td
-                                            className="text-center cursor-pointer align-middle pointer"
-                                            onClick={(e) => {
-                                              console.log("e", e);
-                                            }}
-                                          >
-                                            <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span>
+                                          <td className="text-center cursor-pointer align-middle pointer">
+                                          <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDelete(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                           </td>
                                         </tr>
                                       );
@@ -1567,9 +1801,8 @@ const DashBoardQTV = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1583,9 +1816,8 @@ const DashBoardQTV = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -1724,15 +1956,42 @@ const DashBoardQTV = () => {
                                                 {item?.tinTuyenDung?.trangThai}
                                               </span>
                                             </td>
-                                            <td
-                                              className="text-center cursor-pointer align-middle pointer"
-                                              onClick={(e) => {
-                                                console.log("e", e);
-                                              }}
-                                            >
-                                              <span className="text-xs font-weight-bold pointer">
-                                                <FaEllipsisV />
-                                              </span>
+                                            <td className="text-center cursor-pointer align-middle pointer">
+                                            <div class="dropdown">
+                                              <button
+                                                class="btn btn-secondary dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                Chi tiết
+                                              </button>
+                                              <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
+                                                <li onClick={() => {
+                                                  handleAddButtonClickDetailBlock(
+                                                    item?._id
+                                                  );
+                                                }}>
+                                                  <span class="dropdown-item">
+                                                    Khóa
+                                                  </span>
+                                                </li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDelete(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                  <span class="dropdown-item">
+                                                    Xóa
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                            </div>
                                             </td>
                                           </tr>
                                         );
@@ -1765,9 +2024,8 @@ const DashBoardQTV = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1781,9 +2039,8 @@ const DashBoardQTV = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -1814,9 +2071,9 @@ const DashBoardQTV = () => {
           >
             Ant Design ©2018 Created by Trung Vinh
           </Footer>
-        </Layout>
-      </Layout>
-    </Fragment>
+        </Layout >
+      </Layout >
+    </Fragment >
   );
 };
 export default DashBoardQTV;
