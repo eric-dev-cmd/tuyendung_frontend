@@ -17,6 +17,7 @@ import { BsTelephoneFill } from "react-icons/bs";
 import { FaLocationArrow } from "react-icons/fa";
 import moment from "moment";
 import TimeUtils from "../../../../utils/timeUtils";
+import axiosClient from "../../../../services/axiosClient";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -39,13 +40,14 @@ const ModalProfileDetail = ({
   const {
     tinTuyenDung,
     ungTuyenVien,
-    yeuCauDoTuoi,
-    yeuCauSoNamKinhNghiem,
     tiemNang,
     ngayUngTuyen,
+    _id
   } = user?.donTuyenDung;
+  const { yeuCauDoTuoi } = user?.yeuCauDoTuoi;
+  const { yeuCauSoNamKinhNghiem } = user?.yeuCauSoNamKinhNghiem;
 
-  console.log("Trung Vinh user", user);
+  console.log("Trung Vinh user", user, yeuCauDoTuoi, yeuCauSoNamKinhNghiem);
 
   const resetValue = () => {
     console.log("3. Reset value");
@@ -86,6 +88,27 @@ const ModalProfileDetail = ({
   const handleCreatedDate = () => {
     const today = new Date();
   };
+
+  // Chấp nhận đơn ứng tuyển
+  const handleAddButtonClickAccept = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/donUngTuyens/chapNhanDonUngTuyen/${id}`;
+      await axiosClient.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  // Từ chối đơn ứng tuyển
+  const handleAddButtonClickDeny = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
+      await axiosClient.patch(requestUrl);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -234,10 +257,20 @@ const ModalProfileDetail = ({
                         size="large"
                         className="text-center text-white rounded"
                         style={{ background: "#4e83a6" }}
+                        onClick={() => {
+                          handleAddButtonClickAccept(
+                            _id
+                          );
+                        }}
                       >
                         Chấp nhận
                       </Button>
-                      <Button size="large" className="rounded">
+                      <Button size="large" className="rounded"
+                        onClick={() => {
+                          handleAddButtonClickDeny(
+                            _id
+                          );
+                        }}>
                         Từ chối
                       </Button>
                     </div>

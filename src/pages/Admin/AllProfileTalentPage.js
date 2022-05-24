@@ -33,6 +33,7 @@ import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
 import { Helmet } from "react-helmet";
+import axiosClient from "../../services/axiosClient";
 
 const { Option } = Select;
 
@@ -57,10 +58,47 @@ const AllProfilePage = () => {
   // console.log("paramsString", paramsString);
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
+
+  const getListData = async (pg = page, pgSize = pageSize) => {
+    try {
+      const params = {
+        page: pg,
+        limit: 15,
+        // tieuDe: "",
+        trangThai: "",
+      };
+      console.log("params", params);
+
+      const response = await RecruitmentApi.getListProfile(params);
+
+      console.log("response::: aaa", response.data);
+      setRecruitments(response.data);
+      setTotalCount(response.pagination.total);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   useEffect(() => {
-    console.log("filters", filters);
-    const paramsString = queryString.stringify(filters);
-    console.log("filters paramsString", paramsString);
+    let mounted = true;
+    const getDataListFilters = async () => {
+      const requestUrl = `http://localhost:4000/donUngTuyens/timKiemTheoNhaTuyenDung?${paramsString}`;
+      try {
+        const response = await axiosClient.get(requestUrl);
+        console.log("responseresponse getDataListFilters", response.data.data);
+        setRecruitments(response.data.data);
+        setTotalCount(response.pagination.total);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    if (mounted) {
+      getDataListFilters();
+    }
+    return () => {
+      mounted = false;
+      setRecruitments([]);
+    };
   }, [filters]);
 
   useEffect(() => {
@@ -177,7 +215,7 @@ const AllProfilePage = () => {
           minHeight: "100vh",
         }}
       >
-        <NavbarAdmin />
+        <NavbarAdmin/>
         <Layout className="site-layout">
           <Header
             className="site-layout-background"

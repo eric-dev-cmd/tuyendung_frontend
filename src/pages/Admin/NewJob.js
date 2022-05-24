@@ -169,7 +169,7 @@ const NewJob = () => {
           minHeight: "100vh",
         }}
       >
-        <NavbarAdmin />
+        <NavbarAdmin/>
         <Layout className="site-layout">
           <Header
             className="site-layout-background"
