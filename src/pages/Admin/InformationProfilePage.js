@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import { Helmet } from "react-helmet";
 import { AiFillEdit } from "react-icons/ai";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
+import axiosClient from "../../services/axiosClient";
 
 const { Option } = Select;
 
@@ -11,6 +12,8 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const InformationProfilePage = () => {
+
+
   return (
     <Fragment>
       <Helmet>
@@ -107,22 +110,6 @@ const InformationProfilePage = () => {
                     <div className="col-4 p-3">
                       <div className="d-flex align-items-center justify-content-between">
                         <div>
-                          <strong>Cấp bậc</strong>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-8 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
-                          <span>Trưởng nhóm</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-4 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
                           <strong>Số điện thoại</strong>
                         </div>
                       </div>
@@ -187,22 +174,6 @@ const InformationProfilePage = () => {
                     <div className="col-4 p-3">
                       <div className="d-flex align-items-center justify-content-between">
                         <div>
-                          <strong>Lĩnh vực hoạt động</strong>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-8 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
-                          <span>Game</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-4 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
                           <strong>Năm thành lập</strong>
                         </div>
                       </div>
@@ -235,22 +206,6 @@ const InformationProfilePage = () => {
                     <div className="col-4 p-3">
                       <div className="d-flex align-items-center justify-content-between">
                         <div>
-                          <strong>Trạng thái xác thực</strong>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-8 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
-                          <span className="text-info">+Xác thực ngay</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-4 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
                           <strong>Mô tả công ty</strong>
                         </div>
                       </div>
@@ -260,24 +215,6 @@ const InformationProfilePage = () => {
                         <div>
                           <span className="text-info">
                             fasdfasfasdfsdafsafsdafasdfsdafadsfsdfdasfsdfsdafdasfasdfasdf
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-4 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
-                          <strong>Lý do gia nhập</strong>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-8 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div>
-                          <span className="text-info">
-                            adsfgsfadsfasdffffffffffffffffffffffffffffffffffffffffffffffffff
                           </span>
                         </div>
                       </div>

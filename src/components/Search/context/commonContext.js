@@ -46,7 +46,6 @@ const CommonProvider = ({ children, ...props }) => {
         filter
       );
       setRecruitmentsPartTime(response.data);
-      console.log("response.data part time", response.data);
     } catch (error) {
       console.log(error.response);
     }
@@ -80,7 +79,6 @@ const CommonProvider = ({ children, ...props }) => {
         filter
       );
       setRecruitmentsFullTime(response.data);
-      console.log("response.data full time", response.data);
     } catch (error) {
       console.log(error.response);
     }
