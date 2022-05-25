@@ -1,7 +1,7 @@
 import { Breadcrumb, Button, Layout, Menu, Select, Tabs } from "antd";
 import axios from "axios";
 import queryString from "query-string";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { FaUserPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import axiosClient from "../../services/axiosClient";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -17,7 +18,11 @@ const { TabPane } = Tabs;
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
+
+
 const MainNavigationAdmin = () => {
+  const [isSubmit, setIsSubmit] = useState([])
+
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
@@ -49,9 +54,9 @@ const MainNavigationAdmin = () => {
       const response = await RecruitmentApi.getListRecruitmentByEmployerFilterParams(
         params
       );
-
       console.log("response:::", response);
       setRecruitments(response.data);
+      setIsSubmit(false);
       setTotalCount(response.pagination.total);
     } catch (error) {
       console.log(error.response);
@@ -122,28 +127,31 @@ const MainNavigationAdmin = () => {
   const [totalDaDuyet, setTotalDaDuyet] = useState();
   const [totalTuChoi, setTotalTuChoi] = useState();
   const [totalAll, setTotalAll] = useState();
-  useEffect(() => {
-    const getTotalStatus = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThaiNhaTuyenDung`;
-      try {
-        const response = await axiosClient.get(requestUrl).then((res) => {
-          let total = 0;
-          res.data.map((item) => {
-            if (item.trangThai == "Dừng tuyển") setTotalDungTuyen(item.tong);
-            if (item.trangThai == "Chờ duyệt") setTotalChoDuyet(item.tong);
-            if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
-            if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
-            if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
-            total = total + item.tong;
-            setTotalAll(total)
-          });
-        });
 
-        setTotalStatus(response.data.data);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
+  const getTotalStatus = async () => {
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThaiNhaTuyenDung`;
+    try {
+      const response = await axiosClient.get(requestUrl).then((res) => {
+        let total = 0;
+        res.data.map((item) => {
+          if (item.trangThai == "Dừng tuyển") setTotalDungTuyen(item.tong);
+          if (item.trangThai == "Chờ duyệt") setTotalChoDuyet(item.tong);
+          if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
+          if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
+          if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
+          total = total + item.tong;
+          setTotalAll(total);
+          setIsSubmit(false)
+        });
+      });
+
+      setTotalStatus(response.data.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  useEffect(() => {
+
     getTotalStatus();
   }, []);
 
@@ -157,16 +165,34 @@ const MainNavigationAdmin = () => {
     }
   };
 
-  // duyệt tin
+  // dừng tin
   const handleAddButtonClickDetailStop = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/dungTuyen/${id}`;
-      await axios.patch(requestUrl);
+      await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == 'success') {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+
     } catch (error) {
       console.log(error.response);
     }
   };
 
+  useEffect(() => {
+    getListData();
+    getTotalStatus();
+  }, [isSubmit]);
 
   return (
     <Fragment>
