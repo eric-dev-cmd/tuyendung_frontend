@@ -21,7 +21,7 @@ import profileApi from "../../../services/profileApi";
 const ProductHeader = (props) => {
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
   const users = useSelector((state) => state?.userLogin);
-  const userId = users.user.taiKhoan._id;
+  const userId = users?.user?.taiKhoan._id;
   const history = useHistory();
   const { t } = useTranslation();
   const expirationDateFormat = TimeUtils.formatDateTime(
@@ -55,7 +55,6 @@ const ProductHeader = (props) => {
   const [isShowLinkUpdateProfile, setIsShowLinkUpdateProfile] = useState(false);
   const handleAddButtonClick = (e) => {
     e.preventDefault();
-    console.log("isAuthenticated", isAuthenticated);
     if (isAuthenticated) {
       console.log("USER", user);
       if (

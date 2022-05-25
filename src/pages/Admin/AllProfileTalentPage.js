@@ -58,7 +58,17 @@ const AllProfilePage = () => {
   // console.log("paramsString", paramsString);
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
-
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalProducts: 1,
+  });
+  //HANDLE PAGINATION
+  const handlePageChange = (newPage) => {
+    setFilters({
+      ...filters,
+      page: newPage.selected + 1,
+    });
+  };
   useEffect(() => {
     let mounted = true;
     const paramsString = queryString.stringify(filters);
@@ -68,9 +78,10 @@ const AllProfilePage = () => {
       const requestUrl = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang?${paramsString}`;
       try {
         const response = await axiosClient.get(requestUrl);
-        console.log('response', response.data)
+        console.log("response", response.data);
         setRecruitments(response.data);
         setTotalCount(response.pagination.total);
+        setPagination(response.pagination);
       } catch (error) {
         console.log(error.response);
       }
@@ -89,7 +100,9 @@ const AllProfilePage = () => {
     const getDataListFilters = async () => {
       const paramsString = queryString.stringify(filters);
       try {
-        const response = await RecruitmentApi.getListProfileTalent(paramsString);
+        const response = await RecruitmentApi.getListProfileTalent(
+          paramsString
+        );
         setRecruitments(response.data);
         // setTotalCount(response.pagination.total);
       } catch (error) {
@@ -408,14 +421,17 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            {trangThai == 'Thất bại' ? (<span>Từ chối</span>) : (<span>{trangThai}</span>)}
-
+                                            {trangThai == "Thất bại" ? (
+                                              <span>Từ chối</span>
+                                            ) : (
+                                              <span>{trangThai}</span>
+                                            )}
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -477,52 +493,20 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`} key="1">
+                    <TabPane
+                      tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`}
+                      key="1"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -688,9 +672,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -752,52 +736,20 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`} key="2">
+                    <TabPane
+                      tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`}
+                      key="2"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -965,9 +917,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1029,52 +981,20 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`} key="0">
+                    <TabPane
+                      tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`}
+                      key="0"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1238,13 +1158,17 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            {trangThai == 'Thất bại' ? (<span>Từ chối</span>) : (<span>{trangThai}</span>)}
+                                            {trangThai == "Thất bại" ? (
+                                              <span>Từ chối</span>
+                                            ) : (
+                                              <span>{trangThai}</span>
+                                            )}
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1306,48 +1230,14 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>

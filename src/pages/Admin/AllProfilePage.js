@@ -44,20 +44,29 @@ const AllProfilePage = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
   const [totalCount, setTotalCount] = useState(0);
-  const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 25,
-    trangThai: 6,
+    limit: 4,
+  });
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalProducts: 1,
   });
 
   const [recruitments, setRecruitments] = useState([]);
 
-  const [type, setType] = useState();
   const [value, setValue] = useState(0);
   useEffect(() => {
     const paramsString = queryString.stringify(filters);
+    console.log("paramsString", paramsString);
   }, [filters]);
+  //HANDLE PAGINATION
+  const handlePageChange = (newPage) => {
+    setFilters({
+      ...filters,
+      page: newPage.selected + 1,
+    });
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -65,9 +74,8 @@ const AllProfilePage = () => {
       const paramsString = queryString.stringify(filters);
       try {
         const response = await RecruitmentApi.getListProfile(paramsString);
-        console.log("data by trung vinh", response.data);
         setRecruitments(response.data);
-        // setTotalCount(response.pagination.total);
+        setPagination(response.pagination);
       } catch (error) {
         console.log(error.response);
       }
@@ -448,16 +456,21 @@ const AllProfilePage = () => {
                                           </td>
                                           <td className="text-center align-middle">
                                             <>
-                                              {trangThai == 'Thất bại' ? (<span>Từ chối</span>) :
-                                                trangThai == 'Đã ứng tuyển' ? (<span>Chấp nhận</span>) :
-                                                  <span>{trangThai}</span>}
+                                              {trangThai == "Thất bại" ? (
+                                                <span>Từ chối</span>
+                                              ) : trangThai ==
+                                                "Đã ứng tuyển" ? (
+                                                <span>Chấp nhận</span>
+                                              ) : (
+                                                <span>{trangThai}</span>
+                                              )}
                                             </>
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -487,22 +500,29 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickTalent(
-                                                    item?.donTuyenDung._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <>
-                                                    {trangThai == 'Thất bại' ? null : (<span class="dropdown-item">
-                                                      Ứng viên tiềm năng
-                                                    </span>)}
+                                                    {trangThai ==
+                                                    "Thất bại" ? null : (
+                                                      <span class="dropdown-item">
+                                                        Ứng viên tiềm năng
+                                                      </span>
+                                                    )}
                                                   </>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDelete(
-                                                    item?.donTuyenDung._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDelete(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -529,48 +549,13 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -740,9 +725,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -772,20 +757,24 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickTalent(
-                                                    item?.donTuyenDung._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Ứng viên tiềm năng
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDelete(
-                                                    item?.donTuyenDung._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDelete(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -812,48 +801,13 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -1021,13 +975,15 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            {trangThai == 'Đã ứng tuyển' && (<span>Chấp nhận</span>)}
+                                            {trangThai == "Đã ứng tuyển" && (
+                                              <span>Chấp nhận</span>
+                                            )}
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1057,20 +1013,24 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickTalent(
-                                                    item?.donTuyenDung._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Ứng viên tiềm năng
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDelete(
-                                                    item?.donTuyenDung._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDelete(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1105,40 +1065,12 @@ const AllProfilePage = () => {
                           of {totalCount}
                         </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -1307,14 +1239,16 @@ const AllProfilePage = () => {
                                           </td>
                                           <td className="text-center align-middle">
                                             <>
-                                              {trangThai == 'Thất bại' && (<span>Từ chối</span>)}
+                                              {trangThai == "Thất bại" && (
+                                                <span>Từ chối</span>
+                                              )}
                                             </>
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1344,11 +1278,13 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDelete(
-                                                    item?.donTuyenDung._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDelete(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1383,40 +1319,12 @@ const AllProfilePage = () => {
                           of {totalCount}
                         </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>

@@ -11,6 +11,8 @@ import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
 import { toast } from "react-toastify";
+import ReactPaginate from "react-paginate";
+import Pagination from "../../components/Pagination/Pagination";
 
 const { Option } = Select;
 
@@ -18,10 +20,8 @@ const { TabPane } = Tabs;
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-
-
 const MainNavigationAdmin = () => {
-  const [isSubmit, setIsSubmit] = useState([])
+  const [isSubmit, setIsSubmit] = useState([]);
 
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
@@ -42,6 +42,18 @@ const MainNavigationAdmin = () => {
   };
   const [value, setValue] = useState(0);
 
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalProducts: 1,
+  });
+  //HANDLE PAGINATION
+  const handlePageChange = (newPage) => {
+    setFilters({
+      ...filters,
+      page: newPage.selected + 1,
+    });
+  };
+
   const getListData = async (pg = page, pgSize = pageSize) => {
     try {
       const params = {
@@ -51,9 +63,8 @@ const MainNavigationAdmin = () => {
         // trangThai: "",
       };
 
-      const response = await RecruitmentApi.getListRecruitmentByEmployerFilterParams(
-        params
-      );
+      const response =
+        await RecruitmentApi.getListRecruitmentByEmployerFilterParams(params);
       console.log("response:::", response);
       setRecruitments(response.data);
       setIsSubmit(false);
@@ -70,6 +81,7 @@ const MainNavigationAdmin = () => {
       console.log("responseresponse", response.data);
       setRecruitments(response.data);
       setTotalCount(response.pagination.total);
+      setPagination(response.pagination);
       setIsSubmit(false);
     } catch (error) {
       console.log(error.response);
@@ -141,8 +153,8 @@ const MainNavigationAdmin = () => {
           if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
           if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
           if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
-            
-          setIsSubmit(false)
+
+          setIsSubmit(false);
         });
       });
 
@@ -152,7 +164,6 @@ const MainNavigationAdmin = () => {
     }
   };
   useEffect(() => {
-
     getTotalStatus();
   }, []);
 
@@ -171,7 +182,7 @@ const MainNavigationAdmin = () => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/dungTuyen/${id}`;
       await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == 'success') {
+        if (res?.data?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
@@ -183,8 +194,7 @@ const MainNavigationAdmin = () => {
             progress: undefined,
           });
         }
-      })
-
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -193,7 +203,7 @@ const MainNavigationAdmin = () => {
   useEffect(() => {
     // getListData();
     getTotalStatus();
-    getDataListFilters()
+    getDataListFilters();
   }, [isSubmit]);
 
   return (
@@ -246,7 +256,10 @@ const MainNavigationAdmin = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalAll ? totalAll : 0})`} key="6">
+                    <TabPane
+                      tab={`Tất cả (${totalAll ? totalAll : 0})`}
+                      key="6"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -390,7 +403,11 @@ const MainNavigationAdmin = () => {
                                           </td>
                                           <td className="text-center align-middle">
                                             <>
-                                              {item?.trangThai == 'Đã duyệt' ? (<span>Đang tuyển dụng</span>) : item?.trangThai}
+                                              {item?.trangThai == "Đã duyệt" ? (
+                                                <span>Đang tuyển dụng</span>
+                                              ) : (
+                                                item?.trangThai
+                                              )}
                                             </>
                                           </td>
                                           <td className="text-center cursor-pointer align-middle pointer">
@@ -409,13 +426,16 @@ const MainNavigationAdmin = () => {
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
                                                 <>
-                                                  {item?.trangThai == 'Đã duyệt' ? (
+                                                  {item?.trangThai ==
+                                                  "Đã duyệt" ? (
                                                     <>
-                                                      <li onClick={() => {
-                                                        handleAddButtonClickDetailStop(
-                                                          item?._id
-                                                        );
-                                                      }}>
+                                                      <li
+                                                        onClick={() => {
+                                                          handleAddButtonClickDetailStop(
+                                                            item?._id
+                                                          );
+                                                        }}
+                                                      >
                                                         <span class="dropdown-item">
                                                           Dừng tuyển dụng
                                                         </span>
@@ -428,7 +448,8 @@ const MainNavigationAdmin = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -455,52 +476,21 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Chờ duyệt (${totalChoDuyet ? totalChoDuyet : 0})`} key="1">
+                    <TabPane
+                      tab={`Chờ duyệt (${totalChoDuyet ? totalChoDuyet : 0})`}
+                      key="1"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -660,7 +650,8 @@ const MainNavigationAdmin = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -687,52 +678,23 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đang tuyển dụng (${totalDaDuyet ? totalDaDuyet : 0})`} key="2">
+                    <TabPane
+                      tab={`Đang tuyển dụng (${
+                        totalDaDuyet ? totalDaDuyet : 0
+                      })`}
+                      key="2"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -871,10 +833,13 @@ const MainNavigationAdmin = () => {
                                           </td>
                                           <td className="text-center align-middle">
                                             <>
-                                              {item?.trangThai == 'Đã duyệt' && <span>Đang tuyển dụng</span>}
+                                              {item?.trangThai ==
+                                                "Đã duyệt" && (
+                                                <span>Đang tuyển dụng</span>
+                                              )}
                                             </>
                                           </td>
-                                          <td className="text-center cursor-pointer align-middle pointer" >
+                                          <td className="text-center cursor-pointer align-middle pointer">
                                             <div class="dropdown">
                                               <button
                                                 class="btn btn-secondary dropdown-toggle"
@@ -894,7 +859,8 @@ const MainNavigationAdmin = () => {
                                                     handleAddButtonClickDetailStop(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Dừng tuyển dụng
                                                   </span>
@@ -904,7 +870,8 @@ const MainNavigationAdmin = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -931,52 +898,21 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Dừng tuyển(${totalDungTuyen ? totalDungTuyen : 0})`} key="3">
+                    <TabPane
+                      tab={`Dừng tuyển(${totalDungTuyen ? totalDungTuyen : 0})`}
+                      key="3"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1136,7 +1072,8 @@ const MainNavigationAdmin = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1163,52 +1100,20 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Khóa (${totalKhoa ? totalKhoa : 0})`} key="0">
+                    <TabPane
+                      tab={`Khóa (${totalKhoa ? totalKhoa : 0})`}
+                      key="0"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1361,13 +1266,15 @@ const MainNavigationAdmin = () => {
                                               </button>
                                               <ul
                                                 class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1">
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
                                                 <li
                                                   onClick={() => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1394,52 +1301,21 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối (${totalTuChoi ? totalTuChoi : 0})`} key="4">
+                    <TabPane
+                      tab={`Từ chối (${totalTuChoi ? totalTuChoi : 0})`}
+                      key="4"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1592,13 +1468,15 @@ const MainNavigationAdmin = () => {
                                               </button>
                                               <ul
                                                 class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1">
+                                                aria-labelledby="dropdownMenuButton1"
+                                              >
                                                 <li
                                                   onClick={() => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1615,6 +1493,14 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         </div>
+                        <div className="col-12">
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
+                        </div>
                         {recruitments.length < 1 && (
                           <div className="col-12">
                             <div
@@ -1625,49 +1511,6 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
                       </div>
                     </TabPane>
                   </Tabs>
