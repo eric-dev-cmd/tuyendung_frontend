@@ -1,4 +1,3 @@
-import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Layout, Menu, Breadcrumb } from "antd";
 import {
@@ -9,17 +8,43 @@ import {
   UserOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { GoSignOut } from "react-icons/go";
 import { FaListUl } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../redux/actions/authActions";
 import { toast } from "react-toastify";
+import React, { Fragment, useEffect, useState } from "react";
+import axiosClient from "../../../../services/axiosClient";
+import { use } from "i18next";
+import { useHistory } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
+
 
 const NavbarAdmin = (props) => {
   const [collapsed, setCollapsed] = React.useState(false);
   const dispatch = useDispatch();
+  const [totalAll, setTotalAll] = useState();
+  const history = useHistory()
+
+  useEffect(() => {
+    const getTotalRecruitments = async () => {
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThaiNhaTuyenDung`;
+      try {
+        const response = await axiosClient.get(requestUrl).then((res) => {
+          let total = 0;
+          res.data.map((item) => {
+            total = total + item.tong;
+            setTotalAll(total)
+          });
+        });
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    getTotalRecruitments();
+  }, []);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -54,9 +79,14 @@ const NavbarAdmin = (props) => {
               Quản lý tin
               <Link to="/employer/dashboard" />
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="3" onClick={() => {
+              if (totalAll >= 3) {
+                history.replace('/employer/job/payment')
+              } else if (totalAll < 3) {
+                history.replace('/employer/job/create')
+              }
+            }}>
               Thêm mới tin
-              <Link to="/employer/job/create" />
             </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu
@@ -66,11 +96,11 @@ const NavbarAdmin = (props) => {
           >
             <Link to="/employer/job/apply-job/all" />
             <Menu.Item key="4">
-              Tất cả hồ sơ
+              Tất cả đơn ứng tuyển
               <Link to="/employer/job/apply-job/all" />
             </Menu.Item>
             <Menu.Item key="5">
-              Hồ sơ tiềm năng
+              Đơn tiềm năng
               <Link to="/employer/job/apply-job/talent" />
             </Menu.Item>
           </Menu.SubMenu>

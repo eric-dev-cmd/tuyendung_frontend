@@ -34,6 +34,7 @@ import ResetPasswordPage from "./pages/User/ResetPasswordPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { ConfirmRegisterAccountSuccess } from "./pages/User/components/ConfirmRegisterAccountSuccess";
 import AccessDenied from "./components/AccessDenied";
+import { Payment } from "./pages/Admin/Payment";
 
 function App(props) {
   return (
@@ -82,6 +83,11 @@ function App(props) {
           exact
           path="/employer/job/apply-job/talent"
           component={AllProfileTalentPage}
+        />
+        <Route
+          exact
+          path="/employer/job/payment"
+          component={Payment}
         />
         <Route exact path="/job-detail/:slug" component={ProductDetail} />
         <Route exact path="/company/:uniqueId" component={ProductDetail} />
