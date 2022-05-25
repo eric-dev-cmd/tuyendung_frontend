@@ -33,6 +33,7 @@ const Home = () => {
     recruitmentsTopNews,
     companyFields,
     recruitments,
+    recruitmentsApproved,
   } = useCommonContext();
 
   useEffect(() => {

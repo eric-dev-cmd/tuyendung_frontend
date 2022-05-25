@@ -8,7 +8,8 @@ import { getUserProfile } from "../../../utils/localStorage";
 import InterestedJobApi from "../../../services/interestedJobApi";
 import { toast } from "react-toastify";
 import useSelection from "antd/lib/table/hooks/useSelection";
-
+import moment from "moment";
+import "moment/locale/vi";
 const JobItem = (props) => {
   const {
     jobItemImageWrapper,
@@ -24,57 +25,9 @@ const JobItem = (props) => {
   const [favorite, setFavorite] = useState(props?.jobs?.dsViecLamDaLuu);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHightLightFavorite, setIsHightLightFavorite] = useState(false);
+  moment.locale("vi");
   const handleHightLightFavorite = () => {
     setIsHightLightFavorite(!isHightLightFavorite);
-  };
-
-  const checkIsFavorite = () => {
-    favorite?.map((item, index) => {
-      if (item?.ungTuyenVien === userId) {
-        setIsFavorite(true);
-      } else {
-        setIsFavorite(false);
-      }
-    });
-  };
-
-  useEffect(() => {
-    checkIsFavorite();
-  }, [props?.jobs?.dsViecLamDaLuu]);
-
-  useEffect(() => {
-    checkIsFavorite();
-  }, []);
-  const history = useHistory();
-  const handleSubmitFavorite = async () => {
-    if (!userId) {
-      history.push("/login");
-    } else {
-      handleHightLightFavorite();
-      setIsFavorite(true);
-      const payload = {
-        tinTuyenDung: props?.jobs?._id,
-        ungTuyenVien: user.taiKhoan._id,
-      };
-      try {
-        const response = await InterestedJobApi.creatInterestedJob(payload);
-        if (response.status === "success") {
-          toast.success("Lưu việc làm quan tâm thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error(error.response);
-        console.log(error.response);
-      }
-    }
   };
 
   return (
@@ -105,7 +58,7 @@ const JobItem = (props) => {
                   className="titleParagraphOne text-dark fw-bold"
                   to={`/job-detail/${props?.jobs?._id}`}
                 >
-                  <strong>{props?.jobs?.tieuDe}</strong>
+                  <h6>{props?.jobs?.tieuDe}</h6>
                 </Link>
               </Tooltip>
               <Tooltip
@@ -126,7 +79,6 @@ const JobItem = (props) => {
               className={jobItemFavoriteWrapper}
               onClick={(e) => {
                 e.preventDefault();
-                handleSubmitFavorite();
               }}
             >
               <div
@@ -134,9 +86,12 @@ const JobItem = (props) => {
                   isHightLightFavorite ? "text-danger" : ""
                 }`}
               >
-                <AiFillHeart
-                  className={`fs-18 ${isFavorite ? "text-danger" : ""}`}
-                />
+                <span>
+                  {moment(props?.jobs?.ngayHetHan)
+                    .lang("vi")
+                    .startOf("day")
+                    .fromNow()}
+                </span>
               </div>
             </div>
           </div>

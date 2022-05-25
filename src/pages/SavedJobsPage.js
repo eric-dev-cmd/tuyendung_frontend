@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import FooterHome from "../components/Footer/FooterHome";
-import JobList from "../components/JobHome/components/JobList";
+import JobList from "../components/JobSaved/components/JobList";
 import JobProvider from "../components/JobHome/context/jobCommonContext";
 import MainNavigation from "../components/Layout/MainNavigation";
 import InterestedJobApi from "../services/interestedJobApi";

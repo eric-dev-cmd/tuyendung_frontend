@@ -110,7 +110,7 @@ const MainNavigation = () => {
                   aria-labelledby="navbarDropdown"
                 >
                   <li>
-                    <NavLink to="/tim-viec-lam" className="dropdown-item">
+                    <NavLink to="/" className="dropdown-item">
                       Tìm việc làm
                     </NavLink>
                   </li>

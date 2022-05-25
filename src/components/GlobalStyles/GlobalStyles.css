@@ -202,3 +202,10 @@
 .fs-18{
   font-size: 18px;
 }
+input[type="radio"]{
+  display: none;
+}
+.star{
+  cursor: pointer;
+  transition: color 200ms;
+}

@@ -5,9 +5,15 @@ export const IMAGE_LOGO =
 
 export const BAN_THOI_GIAN = {
   loaiCongViec: "Bán thời gian",
+  page: 1,
+  limit: 15,
+  trangThai: 2,
 };
 export const TOAN_THOI_GIAN = {
   loaiCongViec: "Toàn thời gian",
+  page: 1,
+  limit: 15,
+  trangThai: 2,
 };
 export const LINH_VUC = {
   linhVuc: "IT- CÔNG NGHỆ THÔNG TIN",

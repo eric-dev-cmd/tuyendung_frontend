@@ -5,10 +5,16 @@ const RecruitmentApi = {
     const url = `/tinTuyenDungs`;
     return axiosClient.get(url);
   },
+  getListRecruitmentApproved: (params) => {
+    console.log("[Vinh]", params);
+    const url = `/tinTuyenDungs/timKiemTheoNhieuTieuChi?${params}`;
+    return axiosClient.get(url);
+  },
   getListRecruitmentFilterParams: (params) => {
     const url = `/tinTuyenDungs/timKiemTheoNhieuTieuChi`;
     return axiosClient.get(url, { params });
   },
+
   getListTopNewsRecruitments: () => {
     const url = `/tinTuyenDungs/tinNoiBat`;
     return axiosClient.get(url);

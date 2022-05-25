@@ -3,16 +3,19 @@ import React, { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { login } from "../../redux/actions/authActions";
 import Logo from "../../assets/logo/logo_remove_bg.png";
 import "./Login.css";
 import { logoStyle, maxWH } from "../../utils/style";
-import { IMAGE_LOGO } from "../../constansts/common";
+import { IMAGE_LOGO, UNG_TUYEN_VIEN } from "../../constansts/common";
+import { NHA_TUYEN_DUNG, QUAN_TRI_VIEN } from "../../utils/roles";
 
 const Login = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { register, errors, handleSubmit } = useForm({});
+  const user = useSelector((state) => state.userLogin);
   const { isAuthenticated } = useSelector((state) => state.userLogin);
   console.log("isAuthenticated", isAuthenticated);
 
@@ -23,7 +26,18 @@ const Login = () => {
     };
     dispatch(login(payload));
   };
-
+  useEffect(() => {
+    if (user?.user?.taiKhoan?.loaiTaiKhoan === NHA_TUYEN_DUNG) {
+      console.log("Role ntd");
+      history.push("/employer/dashboard");
+    } else if (user?.user?.taiKhoan?.loaiTaiKhoan === UNG_TUYEN_VIEN) {
+      console.log("Role utv");
+      history.push("/");
+    } else if (user?.user?.taiKhoan?.loaiTaiKhoan === QUAN_TRI_VIEN) {
+      console.log("Role qtv");
+      history.push("/admin/dashboard");
+    }
+  }, [isAuthenticated]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

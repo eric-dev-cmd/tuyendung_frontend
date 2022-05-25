@@ -5,6 +5,7 @@ import RecruitmentApi from "../../../services/recruitmentApi";
 import CareerApi from "../../../services/careerApi";
 import FieldCompanyApi from "../../../services/fieldCompanyApi";
 import { GlobalData } from "../../../data/globalData";
+import queryString from "query-string";
 
 import {
   BAN_THOI_GIAN,
@@ -24,17 +25,39 @@ const CommonProvider = ({ children, ...props }) => {
   const [recruitmentsFullTime, setRecruitmentsFullTime] = useState([]);
   const [listCareers, setListCareers] = useState([]);
   const [recruitmentsTopNews, setRecruitmentsTopNews] = useState([]);
+  const [recruitmentsTopNewsApproved, setRecruitmentsTopNewsApproved] =
+    useState([]);
   const [companyFields, setCompanyFields] = useState([]);
   const levels = GlobalData.capBacData();
   const typeWorks = GlobalData.loaiCongViec();
   const experiences = GlobalData.kinhNghiem();
   const wages = GlobalData.mucLuongData();
+  const [recruitmentsApproved, setRecruitmentsApproved] = useState([]);
 
   const getListData = async () => {
     try {
       const response = await RecruitmentApi.getListRecruitment();
       setRecruitments(response.data);
       setLocation(response.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  const getListDataApproved = async () => {
+    try {
+      const params = {
+        limit: 12,
+        page: 1,
+        trangThai: 2,
+      };
+
+      const paramsString = queryString.stringify(params);
+      console.log("ABC response params", paramsString);
+      const response = await RecruitmentApi.getListRecruitmentApproved(
+        paramsString
+      );
+      console.log("ABC response", response);
+      setRecruitmentsApproved(response?.data?.data);
     } catch (error) {
       console.log(error.response);
     }
@@ -95,8 +118,25 @@ const CommonProvider = ({ children, ...props }) => {
   // Top 12 ứng tuyển nhiều nhất
   const getListDataTopNewsRecruitments = async () => {
     try {
+      const params = {
+        limit: 12,
+        page: 1,
+        trangThai: 2,
+      };
+
+      const paramsString = queryString.stringify(params);
+      console.log("ABC response params", paramsString);
       const response = await RecruitmentApi.getListTopNewsRecruitments();
       setRecruitmentsTopNews(response.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  // Top 12 ứng tuyển nhiều nhất
+  const getListDataTopNewsRecruitmentsApproved = async () => {
+    try {
+      const response = await RecruitmentApi.getListTopNewsRecruitments();
+      setRecruitmentsTopNewsApproved(response.data);
     } catch (error) {
       console.log(error.response);
     }
@@ -122,6 +162,7 @@ const CommonProvider = ({ children, ...props }) => {
       getListDataCareers();
       getListDataTopNewsRecruitments();
       getListDataFieldsCompany();
+      getListDataApproved();
     }
     return () => {
       mounted = false;
@@ -144,6 +185,7 @@ const CommonProvider = ({ children, ...props }) => {
         typeWorks,
         experiences,
         wages,
+        recruitmentsApproved,
       }}
     >
       {children}

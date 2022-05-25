@@ -11,6 +11,11 @@ const ReviewApi = {
     const url = `/danhGias/danhGiaTheoTin/${id}?${param}`;
     return axiosClient.get(url);
   },
+  creareReview: (payload) => {
+    console.log("payload api", payload);
+    const url = `/danhGias`;
+    return axiosClient.post(url, payload);
+  },
 };
 
 export default ReviewApi;
