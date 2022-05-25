@@ -12,10 +12,12 @@ import queryString from "query-string";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import axiosClient from "../../services/axiosClient";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
+import { useParams } from "react-router-dom";
 const { RangePicker } = DatePicker;
 
 const { Option } = Select;
@@ -38,6 +40,8 @@ const NewForProfileDetail = () => {
 
   const [recruitments, setRecruitments] = useState([]);
 
+  const params = useParams();
+
   // console.log("paramsString", paramsString);
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
@@ -52,7 +56,7 @@ const NewForProfileDetail = () => {
     const getDataListFilters = async () => {
       const paramsString = queryString.stringify(filters);
       try {
-        const response = await RecruitmentApi.getListProfile(paramsString);
+        const response = await RecruitmentApi.getListProfileByRecruitment({ paramsString, id: params.id });
         console.log("data by trung vinh", response.data);
         setRecruitments(response.data);
         // setTotalCount(response.pagination.total);
@@ -131,17 +135,19 @@ const NewForProfileDetail = () => {
   const [totalDangUT, setTotalDangUT] = useState();
   const [totalDaUT, setTotalDaUT] = useState();
   const [totalTuChoi, setTotalTuChoi] = useState();
+  const [totalAll, setTotalAll] = useState();
   useEffect(() => {
     const getTotalApplication = async () => {
-      const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyenTheoTrangThai`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyentheoTin/${params?.id}`;
       try {
-        const response = await axios.get(requestUrl).then((res) => {
-          console.log("response abc res", res);
-
-          res.data.data.map((item) => {
+        const response = await axiosClient.get(requestUrl).then((res) => {
+          let total = 0;
+          res.data.map((item) => {
             if (item.trangThai == "Đang ứng tuyển") setTotalDangUT(item.tong);
             if (item.trangThai == "Đã ứng tuyển") setTotalDaUT(item.tong);
             if (item.trangThai == "Thất bại") setTotalTuChoi(item.tong);
+            total = total + item.tong;
+            setTotalAll(total);
           });
         });
       } catch (error) {
@@ -149,6 +155,21 @@ const NewForProfileDetail = () => {
       }
     };
     getTotalApplication();
+  }, []);
+
+  const [recruitmentById, setRecruitmentById] = useState();
+  useEffect(() => {
+    const getRecruitmentById = async () => {
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/${params?.id}`;
+      try {
+        await axiosClient.get(requestUrl).then((res) => {
+          setRecruitmentById(res.data)
+        });
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    getRecruitmentById();
   }, []);
 
   return (
@@ -180,8 +201,8 @@ const NewForProfileDetail = () => {
               }}
             >
               <Breadcrumb.Item>Tổng quan</Breadcrumb.Item>
-              <Breadcrumb.Item>Tin theo vị trí</Breadcrumb.Item>
-              <Breadcrumb.Item>ABC</Breadcrumb.Item>
+              <Breadcrumb.Item>Tin tuyển dụng</Breadcrumb.Item>
+              <Breadcrumb.Item>Đơn tuyển dụng</Breadcrumb.Item>
             </Breadcrumb>
             <div
               className="site-layout-background bg-white"
@@ -196,36 +217,39 @@ const NewForProfileDetail = () => {
                   <div className="row mt-3">
                     <div className="col-12">
                       <h5>
-                        <strong>ABC</strong>
+                        <strong>{recruitmentById?.tieuDe}</strong>
                       </h5>
                     </div>
                     <div className="col-12">
                       <div>
                         <span>
                           Địa điểm:{" "}
-                          <span className="ps-5">Đà Nẵng: Hải Châu</span>
+                          <span className="ps-5">{recruitmentById?.diaDiem?.quanHuyen}, {recruitmentById?.diaDiem?.tinhThanhPho}</span>
                         </span>
                       </div>
                     </div>
                     <div className="col-12">
                       <div>
                         <span>
-                          Mức lương: <span className="ps-4">100 triệu</span>
+                          Mức lương: <span className="ps-4">{recruitmentById?.mucLuong}</span>
                         </span>
                       </div>
                     </div>
                     <div className="col-12">
                       <div>
                         <span>
-                          Trạng thái:<span className="ps-4">Tuyển dụng</span>
+                          Trạng thái:<span className="ps-4">{recruitmentById?.trangThai}</span>
                         </span>
                       </div>
                     </div>
                     <div className="col-12">
                       <div>
                         <span>
-                          Thời hạn nhận hồ sơ:{" "}
-                          <span className="ps-4">18/05/2022</span>
+                          Ngày hết hạn:{" "}
+                          <span className="ps-4">{TimeUtils.formatDateTime(
+                            recruitmentById?.ngayHetHan,
+                            "DD-MM-YYYY"
+                          )}</span>
                         </span>
                       </div>
                     </div>
@@ -243,7 +267,7 @@ const NewForProfileDetail = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalCount})`} key="4">
+                    <TabPane tab={`Tất cả (${totalAll ? totalAll : 0})`} key="4">
                       <div className="row">
                         <div className="col-6">
                           <RangePicker style={{ width: "100%" }} />
@@ -294,10 +318,6 @@ const NewForProfileDetail = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -371,9 +391,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -446,9 +466,8 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -462,9 +481,8 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -482,7 +500,7 @@ const NewForProfileDetail = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đang ứng tuyển (${totalDangUT})`} key="1">
+                    <TabPane tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`} key="1">
                       <div className="row">
                         <div className="col-6">
                           <RangePicker style={{ width: "100%" }} />
@@ -532,10 +550,6 @@ const NewForProfileDetail = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -609,9 +623,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -684,9 +698,8 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -700,9 +713,8 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -720,7 +732,7 @@ const NewForProfileDetail = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đã ứng tuyển (${totalDaUT})`} key="2">
+                    <TabPane tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`} key="2">
                       <div className="row">
                         <div className="col-6">
                           <RangePicker style={{ width: "100%" }} />
@@ -770,10 +782,6 @@ const NewForProfileDetail = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -847,9 +855,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -922,9 +930,8 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -938,9 +945,8 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -958,7 +964,7 @@ const NewForProfileDetail = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối(${totalTuChoi})`} key="0">
+                    <TabPane tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`} key="0">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1053,10 +1059,6 @@ const NewForProfileDetail = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -1130,9 +1132,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1205,9 +1207,8 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1221,9 +1222,8 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"

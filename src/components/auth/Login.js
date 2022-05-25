@@ -22,7 +22,6 @@ const Login = () => {
       matKhau: data.dangNhapMatKhau?.trim(),
     };
     dispatch(login(payload));
-    window.location.reload();
   };
 
   useEffect(() => {

@@ -382,12 +382,6 @@ const DashBoardQTV = () => {
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong>Ngày hết hạn</strong>
                                       </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Action</strong>
-                                      </th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1108,7 +1102,7 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Xem xét lại(${totalDungTuyen ? totalDungTuyen : 0})`}
+                      tab={`Dừng tuyển(${totalDungTuyen ? totalDungTuyen : 0})`}
                       key="3"
                     >
                       <div className="row">

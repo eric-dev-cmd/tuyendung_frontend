@@ -49,7 +49,7 @@ const AllProfilePage = () => {
   const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 5,
+    limit: 10,
     trangThai: 6,
   });
 
@@ -59,36 +59,17 @@ const AllProfilePage = () => {
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
 
-  const getListData = async (pg = page, pgSize = pageSize) => {
-    try {
-      const params = {
-        page: pg,
-        limit: 15,
-        // tieuDe: "",
-        trangThai: "",
-      };
-      console.log("params", params);
-
-      const response = await RecruitmentApi.getListProfile(params);
-
-      console.log("response::: aaa", response.data);
-      setRecruitments(response.data);
-      setTotalCount(response.pagination.total);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
   useEffect(() => {
     let mounted = true;
     const paramsString = queryString.stringify(filters);
-    
+
     const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/donUngTuyens/timKiemTheoNhaTuyenDung?${paramsString}`;
+      const paramsString = queryString.stringify(filters);
+      const requestUrl = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang?${paramsString}`;
       try {
         const response = await axiosClient.get(requestUrl);
-        console.log("responseresponse getDataListFilters", response.data.data);
-        setRecruitments(response.data.data);
+        console.log('response', response.data)
+        setRecruitments(response.data);
         setTotalCount(response.pagination.total);
       } catch (error) {
         console.log(error.response);
@@ -108,8 +89,7 @@ const AllProfilePage = () => {
     const getDataListFilters = async () => {
       const paramsString = queryString.stringify(filters);
       try {
-        const response = await RecruitmentApi.getListProfile(paramsString);
-        console.log("data by trung vinh", response.data);
+        const response = await RecruitmentApi.getListProfileTalent(paramsString);
         setRecruitments(response.data);
         // setTotalCount(response.pagination.total);
       } catch (error) {
@@ -187,17 +167,19 @@ const AllProfilePage = () => {
   const [totalDangUT, setTotalDangUT] = useState();
   const [totalDaUT, setTotalDaUT] = useState();
   const [totalTuChoi, setTotalTuChoi] = useState();
+  const [totalAll, setTotalAll] = useState();
   useEffect(() => {
     const getTotalApplication = async () => {
-      const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyenTheoTrangThai`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyenTiemNang`;
       try {
         const response = await axiosClient.get(requestUrl).then((res) => {
-          console.log("response abc res", res);
-
-          res.data.data.map((item) => {
+          let total = 0;
+          res.data.map((item) => {
             if (item.trangThai == "Đang ứng tuyển") setTotalDangUT(item.tong);
             if (item.trangThai == "Đã ứng tuyển") setTotalDaUT(item.tong);
             if (item.trangThai == "Thất bại") setTotalTuChoi(item.tong);
+            total = total + item.tong;
+            setTotalAll(total);
           });
         });
       } catch (error) {
@@ -217,7 +199,7 @@ const AllProfilePage = () => {
           minHeight: "100vh",
         }}
       >
-        <NavbarAdmin/>
+        <NavbarAdmin />
         <Layout className="site-layout">
           <Header
             className="site-layout-background"
@@ -258,7 +240,7 @@ const AllProfilePage = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalCount})`} key="4">
+                    <TabPane tab={`Tất cả (${totalAll})`} key="4">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm
@@ -357,10 +339,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -430,13 +408,14 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
+                                            {trangThai == 'Thất bại' ? (<span>Từ chối</span>) : (<span>{trangThai}</span>)}
+
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -509,9 +488,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -525,9 +503,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -545,7 +522,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đang ứng tuyển (${totalDangUT})`} key="1">
+                    <TabPane tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`} key="1">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -638,10 +615,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -715,9 +688,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -790,9 +763,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -806,9 +778,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -826,7 +797,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đã ứng tuyển (${totalDaUT})`} key="2">
+                    <TabPane tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`} key="2">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -921,10 +892,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -998,9 +965,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1073,9 +1040,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1089,9 +1055,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"
@@ -1109,7 +1074,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối(${totalTuChoi})`} key="0">
+                    <TabPane tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`} key="0">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1204,10 +1169,6 @@ const AllProfilePage = () => {
                                         tinTuyenDung,
                                         trangThai,
                                       } = item?.donTuyenDung;
-                                      console.log(
-                                        "v item?.donTuyenDung",
-                                        item?.donTuyenDung
-                                      );
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -1277,13 +1238,13 @@ const AllProfilePage = () => {
                                             </p>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
+                                            {trangThai == 'Thất bại' ? (<span>Từ chối</span>) : (<span>{trangThai}</span>)}
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1356,9 +1317,8 @@ const AllProfilePage = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page <= 1 ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   type="button"
@@ -1372,9 +1332,8 @@ const AllProfilePage = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
-                                }`}
+                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
+                                  }`}
                               >
                                 <button
                                   className="page-link"

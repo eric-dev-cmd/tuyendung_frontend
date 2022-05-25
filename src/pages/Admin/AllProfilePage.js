@@ -1,13 +1,36 @@
-import { Breadcrumb, Button, Layout, Menu, Select, Tabs } from "antd";
-import axios from "axios";
-import queryString from "query-string";
+import {
+  Layout,
+  Menu,
+  Breadcrumb,
+  Input,
+  Tooltip,
+  Button,
+  Dropdown,
+} from "antd";
+import {
+  DesktopOutlined,
+  PieChartOutlined,
+  FileOutlined,
+  TeamOutlined,
+  UserOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet";
-import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import { FaListUl, FaUserPlus } from "react-icons/fa";
+import { GoSignOut } from "react-icons/go";
+import { Link } from "react-router-dom";
+import { Tabs } from "antd";
+import { Select } from "antd";
+import { GrFormRefresh } from "react-icons/gr";
+import { FaEllipsisV } from "react-icons/fa";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
+import ReactPaginate from "react-paginate";
+import Pagination from "../../components/Pagination/Pagination";
+import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import queryString from "query-string";
+import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
-import NavbarAdmin from "./components/navbar/NavbarAdmin";
 import axiosClient from "../../services/axiosClient";
 
 const { Option } = Select;
@@ -163,15 +186,60 @@ const AllProfilePage = () => {
 
   return (
     <Fragment>
-      <Helmet>
-        <title>[Employer] - Hồ sơ ứng tuyển</title>
-      </Helmet>
       <Layout
         style={{
           minHeight: "100vh",
         }}
       >
-        <NavbarAdmin/>
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={() => setCollapsed(!collapsed)}
+        >
+          <div className="logo" />
+          <Menu
+            theme="dark"
+            //  defaultSelectedKeys={["1"]}
+            mode="inline"
+          >
+            <Menu.Item icon={<DesktopOutlined />} key="1">
+              Trang chủ
+              <Link to="/employer/dashboard" />
+            </Menu.Item>
+            <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="2">
+              <Menu.Item key="21">
+                Quản lý tin
+                <Link to="/employer/dashboard" />
+              </Menu.Item>
+              <Menu.Item key="22">
+                Thêm mới tin
+                <Link to="/employer/job/create" />
+              </Menu.Item>
+            </Menu.SubMenu>
+            <Menu.SubMenu
+              title="Hồ sơ ứng tuyển"
+              icon={<TeamOutlined />}
+              key="3"
+            >
+              <Menu.Item key="31">
+                Tất cả đơn ứng tuyển
+                <Link to="/employer/job/apply-job/all" />
+              </Menu.Item>
+              <Menu.Item key="32">
+                Đơn tiềm năng tiềm năng
+                <Link to="/employer/job/apply-job/talent" />
+              </Menu.Item>
+            </Menu.SubMenu>
+            <Menu.Item icon={<DesktopOutlined />} key="4">
+              Thông tin công ty
+              <Link to="/employer/account/profile" />
+            </Menu.Item>
+            <Menu.Item icon={<GoSignOut />} key="5">
+              Đăng xuất
+              <Link to="/logout" />
+            </Menu.Item>
+          </Menu>
+        </Sider>
         <Layout className="site-layout">
           <Header
             className="site-layout-background"

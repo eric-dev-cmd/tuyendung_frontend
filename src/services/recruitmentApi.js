@@ -17,8 +17,16 @@ const RecruitmentApi = {
     const url = `/tinTuyenDungs/${id}`;
     return axiosClient.get(url);
   },
+  getListProfileByRecruitment: (params) => {
+    const url = `/donUngTuyens/timKiemTheoTinTuyenDung/${params.id}?${params.paramsString}`;
+    return axiosClient.get(url);
+  },
   getListProfile: (params) => {
     const url = `/donUngTuyens/timKiemTheoNhaTuyenDung?${params}`;
+    return axiosClient.get(url);
+  },
+  getListProfileTalent: (params) => {
+    const url = `/donUngTuyens/donUngTuyenTiemNang?${params}`;
     return axiosClient.get(url);
   },
   getListRecruitmentByEmployer: () => {
