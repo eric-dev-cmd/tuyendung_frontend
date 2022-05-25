@@ -54,7 +54,7 @@ const DashBoardQTVEmployer = () => {
   useEffect(() => {
     let mounted = true;
     const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/nhaTuyenDungs/nhaTuyenDungTheoSoLuongTin`;
+      const requestUrl = `http://localhost:4000/nhaTuyenDungs?${paramsString}`;
       try {
         const response = await axios.get(requestUrl);
         setRecruitments(response.data.data);
@@ -199,7 +199,7 @@ const DashBoardQTVEmployer = () => {
               }}
             >
               <Breadcrumb.Item>Tổng quan</Breadcrumb.Item>
-              <Breadcrumb.Item>Quản lý tin đăng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý nhà tuyển dụng</Breadcrumb.Item>
             </Breadcrumb>
             <div
               className="site-layout-background bg-white"
@@ -208,7 +208,7 @@ const DashBoardQTVEmployer = () => {
                 minHeight: 360,
               }}
             >
-              <strong>Tất cả tin tuyển dụng</strong>
+              <strong>Tất cả nhà tuyển dụng</strong>
               <div className="row">
                 <div className="col-12">
                   <Tabs
@@ -225,7 +225,7 @@ const DashBoardQTVEmployer = () => {
                       }
                     }}
                   >
-                    <TabPane tab={`Tất cả (${0})`} key="6">
+                    <TabPane tab={`Tất cả (${totalCount ? totalCount : 0})`} key="6">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -377,31 +377,26 @@ const DashBoardQTVEmployer = () => {
                                           </td>
                                           <td>
                                             <p className="text-sm fw-bold mb-0">
-                                              {item?.nhaTuyenDung?.tenCongTy}
+                                              {item?.tenCongty}
                                             </p>
                                             <p className="address">
                                               <span className="created">
-                                                Quy mô: {item?.nhaTuyenDung?.quyMo} nhân viên
+                                                Quy mô: {item?.quyMo} nhân viên
                                               </span>
                                             </p>
-                                            <p>
-                                              <span>
-                                                Số lượng tin tuyển dụng:{" "}
-                                              </span>
-                                              {item?.soLuongTinDaDang}
-                                            </p>
+
                                             <p className="address">
                                               <span className="created">
                                                 Ngày tạo:{" "}
                                                 {TimeUtils.formatDateTime(
-                                                  item?.nhaTuyenDung?.namThanhLap,
+                                                  item?.namThanhLap,
                                                   "DD-MM-YYYY"
                                                 )}
                                               </span>
                                             </p>
                                             <p>
                                               <Link
-                                                to={`/company/${item?.nhaTuyenDung?._id}`}
+                                                to={`/company/${item?._id}`}
                                                 target="_blank"
                                               >
                                                 Xem thông tin trên website
@@ -410,17 +405,17 @@ const DashBoardQTVEmployer = () => {
                                           </td>
                                           <td className="align-middle">
                                             <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <span>{item?.nhaTuyenDung?.diaChi}</span>
+                                              <span>{item?.diaChi}</span>
                                             </span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{item?.nhaTuyenDung?.sdt}</span>
+                                            <span>{item?.sdt}</span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>{item?.nhaTuyenDung?.email}</span>
+                                            <span>{item?.email}</span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            <span>True</span>
+                                            {item?.taiKhoan?.trangThai ? (<span>Hoạt động</span>) : (<span>Khóa</span>)}
                                           </td>
                                           <td
                                             className="text-center cursor-pointer align-middle pointer"
@@ -450,24 +445,25 @@ const DashBoardQTVEmployer = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickBlock(
-                                                    item?.nhaTuyenDung?._id
-                                                  );
-                                                }}>
-                                                  <span class="dropdown-item">
-                                                    Khóa
-                                                  </span>
-                                                </li>
-                                                <li onClick={() => {
+                                                {item?.taiKhoan?.trangThai ? (
+                                                  <li onClick={() => {
+                                                    handleAddButtonClickBlock(
+                                                      item?._id
+                                                    );
+                                                  }}>
+                                                    <span class="dropdown-item">
+                                                      Khóa
+                                                    </span>
+                                                  </li>
+                                                ) : (<li onClick={() => {
                                                   handleAddButtonClickUnBlock(
-                                                    item?.nhaTuyenDung?._id
+                                                    item?._id
                                                   );
                                                 }}>
                                                   <span class="dropdown-item">
                                                     Mở khóa
                                                   </span>
-                                                </li>
+                                                </li>)}
                                               </ul>
                                             </div>
                                           </td>

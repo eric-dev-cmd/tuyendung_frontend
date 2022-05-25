@@ -301,7 +301,7 @@ const MainNavigationAdmin = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -554,7 +554,7 @@ const MainNavigationAdmin = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -786,7 +786,7 @@ const MainNavigationAdmin = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -1030,7 +1030,7 @@ const MainNavigationAdmin = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -1262,7 +1262,7 @@ const MainNavigationAdmin = () => {
                                         <strong> Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>

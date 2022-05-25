@@ -45,7 +45,7 @@ const DashBoardQTVCandidates = () => {
 
   const [recruitments, setRecruitments] = useState([]);
   const paramsString = queryString.stringify(filters);
-  console.log("paramsString", paramsString);
+  console.log("recruitments", paramsString);
   const [type, setType] = useState();
   const onHandleChangeType = (value) => {
     setType(value);
@@ -55,10 +55,11 @@ const DashBoardQTVCandidates = () => {
   useEffect(() => {
     let mounted = true;
     const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/ungTuyenViens`;
+      const requestUrl = `http://localhost:4000/ungTuyenViens?${recruitments}`;
       try {
         const response = await axiosClient.get(requestUrl);
         setRecruitments(response.data);
+        setTotalCount(response.pagination.total)
       } catch (error) {
         console.log(error.response);
       }
@@ -198,7 +199,7 @@ const DashBoardQTVCandidates = () => {
               }}
             >
               <Breadcrumb.Item>Tổng quan</Breadcrumb.Item>
-              <Breadcrumb.Item>Quản lý tin đăng</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản lý úng tuyển viên</Breadcrumb.Item>
             </Breadcrumb>
             <div
               className="site-layout-background bg-white"
@@ -207,7 +208,7 @@ const DashBoardQTVCandidates = () => {
                 minHeight: 360,
               }}
             >
-              <strong>Tất cả tin tuyển dụng</strong>
+              <strong>Tất cả ứng tuyển viên</strong>
               <div className="row">
                 <div className="col-12">
                   <Tabs
@@ -224,7 +225,7 @@ const DashBoardQTVCandidates = () => {
                       }
                     }}
                   >
-                    <TabPane tab={`Tất cả`} key="6">
+                    <TabPane tab={`Tất cả (${totalCount ? totalCount : 0})`} key="6">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />

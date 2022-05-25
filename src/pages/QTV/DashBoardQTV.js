@@ -140,12 +140,14 @@ const DashBoardQTV = () => {
   }, []);
   const [isGetRecruitmentReviewLeast, setIsGetRecruitmentReviewLeast] = useState(false);
   const [recruitmentReviewLeast, setRecruitmentReviewLeast] = useState([]);
+  const [totalReviewLeast, setTotalReviewLeast] = useState([]);
   useEffect(() => {
     const getRecruitmentReviewLeast = async () => {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/tinTuyenDungCoNguyCoKhoa`;
       try {
         const response = await axios.get(requestUrl);
         setRecruitmentReviewLeast(response?.data?.data);
+        setTotalReviewLeast(response?.data?.pagination?.total)
         console.log("response getRecruitmentReviewLeast", response);
       } catch (error) {
         console.log(error.response);
@@ -371,16 +373,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tên việc làm</strong>
+                                        <strong>Tin tuyển dụng</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tên NTD</strong>
+                                        <strong>Hồ sơ</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Ngày tạo</strong>
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Ngày hết hạn</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -668,16 +670,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
+                                        <strong>Tin tuyển dụng</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong>Hồ sơ</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -921,16 +923,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
+                                        <strong>Tin tuyển dụng</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong>Hồ sơ</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -1179,16 +1181,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
+                                        <strong>Tin tuyển dụng</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong>Hồ sơ</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -1437,16 +1439,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
+                                        <strong>Tin tuyển dụng</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong>Hồ sơ</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -1695,22 +1697,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tên việc làm</strong>
+                                        <strong>Tin tuyển dụng</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tên NTD</strong>
+                                        <strong>Hồ sơ</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Ngày tạo</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Ngày hết hạn</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -1781,7 +1777,7 @@ const DashBoardQTV = () => {
                                             <span>{item?.trangThai}</span>
                                           </td>
                                           <td className="text-center cursor-pointer align-middle pointer">
-                                          <div class="dropdown">
+                                            <div class="dropdown">
                                               <button
                                                 class="btn btn-secondary dropdown-toggle"
                                                 type="button"
@@ -1872,7 +1868,7 @@ const DashBoardQTV = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đánh giá kém`} key="9">
+                    <TabPane tab={`Đánh giá kém(${totalReviewLeast ? totalReviewLeast : 0})`} key="9">
                       <div className="row">
                         <div className="col-10">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1903,16 +1899,16 @@ const DashBoardQTV = () => {
                                         <strong>STT</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Tin tuyển dụng</strong>
+                                        <strong>Tin tuyển dụng</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-white py-3">
                                         <strong>Hồ sơ</strong>
                                       </th>
                                       <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
+                                        <strong>Trạng thái</strong>
                                       </th>
                                       <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Áp dụng dịch vụ</strong>
+                                        <strong>Thao tác</strong>
                                       </th>
                                     </tr>
                                   </thead>
@@ -1994,41 +1990,41 @@ const DashBoardQTV = () => {
                                               </span>
                                             </td>
                                             <td className="text-center cursor-pointer align-middle pointer">
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDetailBlock(
-                                                    item?._id
-                                                  );
-                                                }}>
-                                                  <span class="dropdown-item">
-                                                    Khóa
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                              <div class="dropdown">
+                                                <button
+                                                  class="btn btn-secondary dropdown-toggle"
+                                                  type="button"
+                                                  id="dropdownMenuButton1"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="false"
+                                                >
+                                                  Chi tiết
+                                                </button>
+                                                <ul
+                                                  class="dropdown-menu"
+                                                  aria-labelledby="dropdownMenuButton1"
+                                                >
+                                                  <li onClick={() => {
+                                                    handleAddButtonClickDetailBlock(
                                                       item?._id
                                                     );
                                                   }}>
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
+                                                    <span class="dropdown-item">
+                                                      Khóa
+                                                    </span>
+                                                  </li>
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickDetailDelete(
+                                                        item?._id
+                                                      );
+                                                    }}>
+                                                    <span class="dropdown-item">
+                                                      Xóa
+                                                    </span>
+                                                  </li>
+                                                </ul>
+                                              </div>
                                             </td>
                                           </tr>
                                         );
