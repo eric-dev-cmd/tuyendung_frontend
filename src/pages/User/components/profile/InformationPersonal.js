@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -12,8 +12,14 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import { getUserProfile } from "../../../../utils/localStorage";
 import { AntDesignOutlined } from "@ant-design/icons";
+import axiosClient from "../../../../services/axiosClient";
+import axios from "axios"
+
+
 const { Option } = Select;
 const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
+  const user = getUserProfile();
+  console.log('user, ', user)
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [numbers, setNumbers] = useState("");
@@ -106,10 +112,20 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
             type="file"
             name="file"
             onChange={(event) => {
-              console.log(event.target.files[0]);
+              let formData = new FormData();
+              formData.append('file', event.target.files[0]);
+              const requestUrl = `http://localhost:4000/ungtuyenviens/capNhatAvatar`;
+              axios({
+                method: 'patch',
+                url: requestUrl,
+                data: formData,
+                headers: {
+                  Authorization: `Bearer ${user.token}`
+                }
+              })
               setSelectedImage(event.target.files[0]);
             }}
-            // hidden
+          // hidden
           />
         </div>
         <div className="pb-3">
@@ -120,6 +136,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
             // showCount
             // maxLength={20}
             onChange={(e) => {
+
               console.log("value", e.target.value);
               setName(e.target.value);
             }}

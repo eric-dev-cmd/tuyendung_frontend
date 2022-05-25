@@ -63,19 +63,21 @@ const MainNavigationAdmin = () => {
     }
   };
 
+  const getDataListFilters = async () => {
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhaTuyenDung?${paramsString}`;
+    try {
+      const response = await axiosClient.get(requestUrl);
+      console.log("responseresponse", response.data);
+      setRecruitments(response.data);
+      setTotalCount(response.pagination.total);
+      setIsSubmit(false);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   useEffect(() => {
     let mounted = true;
-    const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhaTuyenDung?${paramsString}`;
-      try {
-        const response = await axiosClient.get(requestUrl);
-        console.log("responseresponse", response.data);
-        setRecruitments(response.data);
-        setTotalCount(response.pagination.total);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
+
     if (mounted) {
       getDataListFilters();
     }
@@ -139,8 +141,7 @@ const MainNavigationAdmin = () => {
           if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
           if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
           if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
-          total = total + item.tong;
-          setTotalAll(total);
+            
           setIsSubmit(false)
         });
       });
@@ -190,8 +191,9 @@ const MainNavigationAdmin = () => {
   };
 
   useEffect(() => {
-    getListData();
+    // getListData();
     getTotalStatus();
+    getDataListFilters()
   }, [isSubmit]);
 
   return (

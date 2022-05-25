@@ -209,8 +209,8 @@ const ProductDetail = (props) => {
           // clearErrors();
         }}
         onSubmit={handleSubmitModal}
-        // detail={detail}
-        // isEdit={isEdit}
+      // detail={detail}
+      // isEdit={isEdit}
       />
     );
   }, [isShowModal]);
@@ -229,17 +229,23 @@ const ProductDetail = (props) => {
   const [totalThreeStar, setTotalThreeStar] = useState();
   const [totalFourStar, setTotalFourStar] = useState();
   const [totalFiveStar, setTotalFiveStar] = useState();
+  const [totalAll, setTotalAll] = useState();
   useEffect(() => {
     const getTotalStatus = async () => {
-      const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai`;
+      const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai/${slug}`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
+          
+          let total = 0;
           res.data.data.map((item) => {
             if (item.xepLoai == 1) setTotalFirstStar(item.tong);
             if (item.xepLoai == 2) setTotalSecondStar(item.tong);
             if (item.xepLoai == 3) setTotalThreeStar(item.tong);
             if (item.xepLoai == 4) setTotalFourStar(item.tong);
             if (item.xepLoai == 5) setTotalFiveStar(item.tong);
+            console.log('sao',setTotalFirstStar, setTotalSecondStar, setTotalThreeStar, setTotalFourStar, setTotalFiveStar )
+            total = total + item.tong;
+            setTotalAll(total);
           });
         });
         console.log("responseresponse", response);
@@ -412,7 +418,7 @@ const ProductDetail = (props) => {
                         }
                       }}
                     >
-                      <TabPane tab="Tất cả" key="7">
+                      <TabPane tab={`Tất cả (${totalAll ? totalAll : 0})`} key="7">
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -535,7 +541,7 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab="5 sao" key="5">
+                      <TabPane tab={`5 sao (${totalFiveStar ? totalFiveStar : 0})`} key="5">
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -658,7 +664,7 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab="4 sao" key="4">
+                      <TabPane tab={`4 sao (${totalFourStar ? totalFourStar : 0})`} key="4">
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -781,7 +787,7 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab="3 sao" key="3">
+                      <TabPane tab={`3 sao (${totalThreeStar ? totalThreeStar : 0})`} key="3">
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -904,7 +910,7 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab="2 sao" key="2">
+                      <TabPane tab={`2 sao (${totalSecondStar ? totalSecondStar : 0})`} key="2">
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -1027,7 +1033,7 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab="1 sao" key="1">
+                      <TabPane tab={`1 sao (${totalFirstStar ? totalFirstStar : 0})`} key="1">
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (

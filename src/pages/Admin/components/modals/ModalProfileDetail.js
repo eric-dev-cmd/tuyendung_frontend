@@ -44,10 +44,7 @@ const ModalProfileDetail = ({
     ngayUngTuyen,
     _id
   } = user?.donTuyenDung;
-  const { yeuCauDoTuoi } = user?.yeuCauDoTuoi;
-  const { yeuCauSoNamKinhNghiem } = user?.yeuCauSoNamKinhNghiem;
-
-  console.log("Trung Vinh user", user, yeuCauDoTuoi, yeuCauSoNamKinhNghiem);
+  console.log("Trung Vinh user", user);
 
   const resetValue = () => {
     console.log("3. Reset value");
@@ -250,6 +247,9 @@ const ModalProfileDetail = ({
                     </div>
                   </div>
                 </div>
+                <div className="col-12 mt-3">
+                  {user?.yeuCauDoTuoi == false && < p > Chưa đủ tuổi</p>}
+                </div>
                 <div className="row">
                   <div className="col-12 mt-3">
                     <div className="d-flex align-items-center justify-content-between">
@@ -262,6 +262,7 @@ const ModalProfileDetail = ({
                             _id
                           );
                         }}
+                        disabled={user?.yeuCauDoTuoi ? false : true}
                       >
                         Chấp nhận
                       </Button>
@@ -296,28 +297,31 @@ const ModalProfileDetail = ({
                     <p className="d-flex align-items-center pt-1">
                       {" "}
                       <AiOutlineCalendar style={{ fontSize: "21px" }} />{" "}
-                      <span className="ps-2 pt-1">22/10/2000</span>
+                      <span className="ps-2 pt-1">{TimeUtils.formatDateTime(
+                        ungTuyenVien?.ngaySinh,
+                        "DD-MM-YYYY"
+                      )}</span>
                     </p>
                     <p className="d-flex align-items-center">
                       {" "}
                       <UserOutlined style={{ fontSize: "20px" }} />{" "}
-                      <span className="ps-2">Nam</span>
+                      <span className="ps-2">{ungTuyenVien?.gioiTinh}</span>
                     </p>
 
                     <p className="d-flex align-items-center">
                       {" "}
                       <BsTelephoneFill style={{ fontSize: "16px" }} />{" "}
-                      <span className="ps-2">0987777666</span>
+                      <span className="ps-2">{ungTuyenVien?.sdt}</span>
                     </p>
                     <p className="d-flex align-items-center">
                       {" "}
                       <HiOutlineMail style={{ fontSize: "20px" }} />{" "}
-                      <span className="ps-2">a@gmail.com</span>
+                      <span className="ps-2">{ungTuyenVien?.taiKhoan?.email}</span>
                     </p>
                     <p className="d-flex align-items-center">
                       {" "}
                       <FaLocationArrow style={{ fontSize: "16px" }} />{" "}
-                      <span className="ps-2">114 Binh Thanh, Tan Binh</span>
+                      <span className="ps-2">{ungTuyenVien?.diaChi}</span>
                     </p>
                   </div>
                 </div>
@@ -485,8 +489,8 @@ const ModalProfileDetail = ({
             </div>
           </div>
         </div>
-      </Modal>
-    </div>
+      </Modal >
+    </div >
   );
 };
 

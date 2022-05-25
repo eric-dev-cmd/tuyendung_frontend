@@ -507,7 +507,7 @@ const ProfileMyPage = ({ ...props }) => {
             <div className="position-relative  cursor-pointer">
               <Avatar
                 size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-                src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/helianthus-yellow-flower-pixabay_11863.jpg`}
+                src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${detail?.data?.avatar}`}
               />
               <label htmlFor="icon-button-file" className="cursor-pointer">
                 <span className="position-absolute profile-avatar-icon">

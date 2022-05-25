@@ -24,6 +24,7 @@ import queryString from "query-string";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import NavbarQTV from "./components/navbar/NavbarQTV";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -32,6 +33,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const DashBoardQTV = () => {
+  const [isSubmit, setIsSubmit] = useState([]);
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
@@ -51,20 +53,22 @@ const DashBoardQTV = () => {
   };
   const [value, setValue] = useState(0);
 
+  const getDataListFilters = async () => {
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/soLuongDanhGiaTheoTin?${paramsString}`;
+    try {
+      const response = await axios.get(requestUrl);
+      console.log("...soLuongDanhGiaTheoTin [vinh]", response.data.data);
+      console.log("Aaaaaaaaaaaa", response.data);
+      setRecruitments(response.data.data);
+      setTotalCount(response?.data?.pagination?.total);
+      setIsSubmit(false);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   useEffect(() => {
     let mounted = true;
-    const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/soLuongDanhGiaTheoTin?${paramsString}`;
-      try {
-        const response = await axios.get(requestUrl);
-        console.log("...soLuongDanhGiaTheoTin [vinh]", response.data.data);
-        console.log("Aaaaaaaaaaaa", response.data);
-        setRecruitments(response.data.data);
-        setTotalCount(response?.data?.pagination?.total);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
+
     if (mounted) {
       getDataListFilters();
     }
@@ -114,28 +118,30 @@ const DashBoardQTV = () => {
   const [totalTuChoi, setTotalTuChoi] = useState();
   const [totalAll, setTotalAll] = useState();
 
-  useEffect(() => {
-    const getTotalStatus = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThai`;
-      try {
-        const response = await axios.get(requestUrl).then((res) => {
-          let total = 0;
-          res.data.data.map((item) => {
-            if (item.trangThai == "Dừng tuyển") setTotalDungTuyen(item.tong);
-            if (item.trangThai == "Chờ duyệt") setTotalChoDuyet(item.tong);
-            if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
-            if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
-            if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
-            total = total + item.tong;
-            setTotalAll(total)
-          });
+  const getTotalStatus = async () => {
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThai`;
+    try {
+      const response = await axios.get(requestUrl).then((res) => {
+        let total = 0;
+        res.data.data.map((item) => {
+          if (item.trangThai == "Dừng tuyển") setTotalDungTuyen(item.tong);
+          if (item.trangThai == "Chờ duyệt") setTotalChoDuyet(item.tong);
+          if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
+          if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
+          if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
+          total = total + item.tong;
+          setTotalAll(total);
+          setIsSubmit(false);
         });
+      });
 
-        setTotalStatus(response.data.data);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
+      setTotalStatus(response.data.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  useEffect(() => {
+
     getTotalStatus();
   }, []);
   const [isGetRecruitmentReviewLeast, setIsGetRecruitmentReviewLeast] = useState(false);
@@ -147,7 +153,8 @@ const DashBoardQTV = () => {
       try {
         const response = await axios.get(requestUrl);
         setRecruitmentReviewLeast(response?.data?.data);
-        setTotalReviewLeast(response?.data?.pagination?.total)
+        setTotalReviewLeast(response?.data?.pagination?.total);
+        setIsSubmit(false);
         console.log("response getRecruitmentReviewLeast", response);
       } catch (error) {
         console.log(error.response);
@@ -160,7 +167,20 @@ const DashBoardQTV = () => {
   const handleAddButtonClickDetailDelete = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
-      await axios.delete(requestUrl);
+      await axios.delete(requestUrl).then((res) => {
+        if (res?.data?.status == 'success') {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
     } catch (error) {
       console.log(error.response);
     }
@@ -170,7 +190,20 @@ const DashBoardQTV = () => {
   const handleAddButtonClickDetailAccept = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/duyetTin/${id}`;
-      await axios.patch(requestUrl);
+      await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == 'success') {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
     } catch (error) {
       console.log(error.response);
     }
@@ -180,7 +213,20 @@ const DashBoardQTV = () => {
   const handleAddButtonClickDetailBlock = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/khoaTin/${id}`;
-      await axios.patch(requestUrl);
+      await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == 'success') {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
     } catch (error) {
       console.log(error.response);
     }
@@ -190,11 +236,29 @@ const DashBoardQTV = () => {
   const handleAddButtonClickDetailDeny = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/tuChoiTin/${id}`;
-      await axios.patch(requestUrl);
+      await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == 'success') {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
     } catch (error) {
       console.log(error.response);
     }
   };
+
+  useEffect(() => {
+    getTotalStatus();
+    getDataListFilters()
+  }, [isSubmit]);
 
   return (
     <Fragment>
@@ -489,7 +553,7 @@ const DashBoardQTV = () => {
                                                         </span>
                                                       </li>
                                                     </>
-                                                  ) : item?.trangThai == 'Đã duyệt' || item?.trangThai == 'Dừng tuyển' ? (
+                                                  ) : item?.trangThai == 'Đã duyệt' ? (
                                                     <>
                                                       <li onClick={() => {
                                                         handleAddButtonClickDetailBlock(
@@ -1275,15 +1339,6 @@ const DashBoardQTV = () => {
                                                 class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDetailBlock(
-                                                    item?._id
-                                                  );
-                                                }}>
-                                                  <span class="dropdown-item">
-                                                    Khóa
-                                                  </span>
-                                                </li>
                                                 <li
                                                   onClick={() => {
                                                     handleAddButtonClickDetailDelete(
@@ -1868,7 +1923,7 @@ const DashBoardQTV = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đánh giá kém(${totalReviewLeast ? totalReviewLeast : 0})`} key="9">
+                    <TabPane tab={`Đánh giá kém (${totalReviewLeast ? totalReviewLeast : 0})`} key="9">
                       <div className="row">
                         <div className="col-10">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -2006,7 +2061,7 @@ const DashBoardQTV = () => {
                                                 >
                                                   <li onClick={() => {
                                                     handleAddButtonClickDetailBlock(
-                                                      item?._id
+                                                      item?.tinTuyenDung?._id
                                                     );
                                                   }}>
                                                     <span class="dropdown-item">
@@ -2016,7 +2071,7 @@ const DashBoardQTV = () => {
                                                   <li
                                                     onClick={() => {
                                                       handleAddButtonClickDetailDelete(
-                                                        item?._id
+                                                        item?.tinTuyenDung?._id
                                                       );
                                                     }}>
                                                     <span class="dropdown-item">
