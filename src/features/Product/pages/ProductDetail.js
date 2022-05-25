@@ -238,12 +238,12 @@ const ProductDetail = (props) => {
           
           let total = 0;
           res.data.data.map((item) => {
-            if (item.xepLoai == 1) setTotalFirstStar(item.tong);
-            if (item.xepLoai == 2) setTotalSecondStar(item.tong);
-            if (item.xepLoai == 3) setTotalThreeStar(item.tong);
-            if (item.xepLoai == 4) setTotalFourStar(item.tong);
-            if (item.xepLoai == 5) setTotalFiveStar(item.tong);
-            console.log('sao',setTotalFirstStar, setTotalSecondStar, setTotalThreeStar, setTotalFourStar, setTotalFiveStar )
+            if (item.danhGia.xepLoai == 1) setTotalFirstStar(item.tong);
+            if (item.danhGia.xepLoai == 2) setTotalSecondStar(item.tong);
+            if (item.danhGia.xepLoai == 3) setTotalThreeStar(item.tong);
+            if (item.danhGia.xepLoai == 4) setTotalFourStar(item.tong);
+            if (item.danhGia.xepLoai == 5) setTotalFiveStar(item.tong);
+            console.log('sao',totalFirstStar, totalSecondStar, totalThreeStar, totalFiveStar, totalFourStar )
             total = total + item.tong;
             setTotalAll(total);
           });

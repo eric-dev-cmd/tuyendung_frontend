@@ -1074,7 +1074,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối(${totalTuChoi})`} key="0">
+                    <TabPane tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`} key="0">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />

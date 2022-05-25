@@ -55,7 +55,7 @@ const DashBoardQTVCandidates = () => {
   useEffect(() => {
     let mounted = true;
     const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/ungTuyenViens?${recruitments}`;
+      const requestUrl = `http://localhost:4000/ungTuyenViens?${paramsString}`;
       try {
         const response = await axiosClient.get(requestUrl);
         setRecruitments(response.data);
