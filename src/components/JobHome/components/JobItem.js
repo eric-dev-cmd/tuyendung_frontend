@@ -28,6 +28,7 @@ const JobItem = (props) => {
     setIsHightLightFavorite(!isHightLightFavorite);
   };
 
+
   const checkIsFavorite = () => {
     favorite?.map((item, index) => {
       if (item?.ungTuyenVien === userId) {
@@ -46,6 +47,7 @@ const JobItem = (props) => {
     checkIsFavorite();
   }, []);
   const history = useHistory();
+
   const handleSubmitFavorite = async () => {
     if (!userId) {
       history.push("/login");
@@ -59,7 +61,38 @@ const JobItem = (props) => {
       try {
         const response = await InterestedJobApi.creatInterestedJob(payload);
         if (response.status === "success") {
-          toast.success("Lưu việc làm quan tâm thành công", {
+          toast.success("Lưu tin tuyển dụng thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response);
+        console.log(error.response);
+      }
+    }
+  };
+
+  const handleUnSubmitFavorite = async () => {
+    if (!userId) {
+      history.push("/login");
+    } else {
+      handleHightLightFavorite();
+      setIsFavorite(false);
+      const payload = {
+        tinTuyenDung: props?.jobs?._id,
+        ungTuyenVien: user.taiKhoan._id,
+      };
+      try {
+        const response = await InterestedJobApi.dropInterestedJob(payload);
+        if (response.status === "success") {
+          toast.success("Hủy lưu tin tuyển dụng thành công", {
             position: "bottom-right",
             autoClose: 1000,
             hideProgressBar: false,
@@ -122,23 +155,39 @@ const JobItem = (props) => {
                 </p>
               </Tooltip>
             </div>
-            <div
-              className={jobItemFavoriteWrapper}
-              onClick={(e) => {
-                e.preventDefault();
-                handleSubmitFavorite();
-              }}
-            >
-              <div
-                className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${
-                  isHightLightFavorite ? "text-danger" : ""
-                }`}
+            {isFavorite ?
+              (<div
+                className={jobItemFavoriteWrapper}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleUnSubmitFavorite();
+                }}
               >
-                <AiFillHeart
-                  className={`fs-18 ${isFavorite ? "text-danger" : ""}`}
-                />
-              </div>
-            </div>
+                <div
+                  className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${isHightLightFavorite ? "text-danger" : ""
+                    }`}
+                >
+                  <AiFillHeart
+                    className={`fs-18 `}
+                  />
+                </div>
+              </div>) :
+              (<div
+                className={jobItemFavoriteWrapper}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubmitFavorite();
+                }}
+              >
+                <div
+                  className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${isHightLightFavorite ? "text-danger" : ""
+                    }`}
+                >
+                  <AiFillHeart
+                    className={`fs-18 text-danger `}
+                  />
+                </div>
+              </div>)}
           </div>
           <div className="d-flex mt-2">
             <div className="jobItemSalary cursorDefault">

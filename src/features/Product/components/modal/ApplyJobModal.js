@@ -119,7 +119,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-                defaultValue={props?.user?.ten}
+               // defaultValue={props?.user?.ten}
               />
             </div>
             <div className="pb-2">
@@ -136,7 +136,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 }}
                 size="large"
                 placeholder="0987079079"
-                defaultValue={props?.user?.sdt}
+              //  defaultValue={props?.user?.sdt}
               />
             </div>
             <div className="pb-2">
@@ -153,7 +153,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 }}
                 size="large"
                 placeholder="zunggzing@gmail.com"
-                defaultValue={props?.user?.taiKhoan?.email}
+               // defaultValue={props?.user?.taiKhoan?.email}
               />
             </div>
             <div className="pb-2">
@@ -168,7 +168,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 onChange={(e) => {
                   setIntroduce(e.target.value);
                 }}
-                defaultValue={props?.user?.loiGioiThieu}
+              //  defaultValue={props?.user?.loiGioiThieu}
               />
             </div>
             <div className="pb-2">
