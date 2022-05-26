@@ -153,7 +153,8 @@ const MainNavigationAdmin = () => {
           if (item.trangThai == "Khóa") setTotalKhoa(item.tong);
           if (item.trangThai == "Đã duyệt") setTotalDaDuyet(item.tong);
           if (item.trangThai == "Từ chối") setTotalTuChoi(item.tong);
-
+          total = total + item.tong;
+          setTotalAll(total);
           setIsSubmit(false);
         });
       });
@@ -171,7 +172,20 @@ const MainNavigationAdmin = () => {
   const handleAddButtonClickDetailDelete = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
-      await axios.delete(requestUrl);
+      await axios.delete(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -427,7 +441,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <>
                                                   {item?.trangThai ==
-                                                  "Đã duyệt" ? (
+                                                    "Đã duyệt" ? (
                                                     <>
                                                       <li
                                                         onClick={() => {
@@ -690,9 +704,8 @@ const MainNavigationAdmin = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Đang tuyển dụng (${
-                        totalDaDuyet ? totalDaDuyet : 0
-                      })`}
+                      tab={`Đang tuyển dụng (${totalDaDuyet ? totalDaDuyet : 0
+                        })`}
                       key="2"
                     >
                       <div className="row">
@@ -835,8 +848,8 @@ const MainNavigationAdmin = () => {
                                             <>
                                               {item?.trangThai ==
                                                 "Đã duyệt" && (
-                                                <span>Đang tuyển dụng</span>
-                                              )}
+                                                  <span>Đang tuyển dụng</span>
+                                                )}
                                             </>
                                           </td>
                                           <td className="text-center cursor-pointer align-middle pointer">

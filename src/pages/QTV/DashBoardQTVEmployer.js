@@ -41,7 +41,7 @@ const DashBoardQTVEmployer = () => {
   const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 25,
+    limit: 5,
   });
 
   const [recruitments, setRecruitments] = useState([]);

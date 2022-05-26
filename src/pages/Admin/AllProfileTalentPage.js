@@ -310,7 +310,7 @@ const AllProfilePage = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalAll})`} key="4">
+                    <TabPane tab={`Tất cả (${totalAll ? totalAll :0})`} key="4">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm
