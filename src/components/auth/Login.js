@@ -38,6 +38,7 @@ const Login = () => {
       history.push("/admin/dashboard");
     }
   }, [isAuthenticated]);
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

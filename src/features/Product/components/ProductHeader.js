@@ -52,6 +52,7 @@ const ProductHeader = (props) => {
     };
     getProfileDetail();
   }, [userId]);
+  const [isShowDaUngTuyen, setIsShowDaUngTuyen] = useState(false);
   const [isShowLinkUpdateProfile, setIsShowLinkUpdateProfile] = useState(false);
   const handleAddButtonClick = (e) => {
     e.preventDefault();
@@ -81,6 +82,7 @@ const ProductHeader = (props) => {
   }
   const handleSubmitModal = async (payload) => {
     console.log("Call api payload", payload);
+    setIsShowDaUngTuyen(false);
     try {
       await CandidateApplicationForm.createApplicationForm(payload);
       // setDetail(response);
@@ -95,6 +97,19 @@ const ProductHeader = (props) => {
         progress: undefined,
       });
     } catch (error) {
+      if (error) {
+        setIsShowDaUngTuyen(true);
+        toast.error("Bạn đã ứng tuyển tin tuyển dụng này!", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.log("Da ung tuyen tin dung nay");
+      }
       console.log("error", { error });
       console.log("error", error.response);
       console.log("error", error.response.data);
@@ -128,6 +143,22 @@ const ProductHeader = (props) => {
       />
     );
   }, [isShowModal]);
+  // const [isShowModalApplied, setIsShowModalApplied] = useState(false)
+  //   const renderModalApplied = useMemo(() => {
+  //     if (!isShowModalApplied) return null;
+
+  //     return (
+  //       <ApplyJobModal
+  //         showModal={isShowModalApplied}
+  //         onCloseModal={() => {
+  //           setIsShowModalApplied(false);
+  //           // clearErrors();
+  //         }}
+  //         onSubmit={handleSubmitModal}
+
+  //       />
+  //     );
+  //   }, [isShowModalApplied]);
 
   return (
     <>
@@ -169,8 +200,9 @@ const ProductHeader = (props) => {
         <Col span={4}>
           <div>
             <Button
+              style={{ width: "100%" }}
               onClick={handleAddButtonClick}
-              className="form-control d-flex align-items-center justify-content-center py-2 my-4"
+              className="d-flex align-items-center justify-content-center py-2 my-4"
               type="primary"
               icon={<BiPaperPlane />}
             >

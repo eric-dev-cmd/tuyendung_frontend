@@ -6,7 +6,10 @@ const ProtectedRoute = ({ component: Component, ...restOfProps }) => {
   const isAuthenticated = useSelector(
     (state) => state.userLogin.isAuthenticated
   );
-  console.log("isAuthenticated::", isAuthenticated);
+  const user = useSelector((state) => state.userLogin);
+  console.log("isAuthenticated aaa::", isAuthenticated);
+  console.log("isAuthenticated user::", user);
+  
   return (
     <Route
       {...restOfProps}

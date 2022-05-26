@@ -54,7 +54,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
   return (
     <div>
       <Modal
-        title="Liên hệ với tôi"
+        title="Bạn đã ứng tuyển tin tuyển dụng này"
         centered
         visible={showModal}
         // onOk={() => {

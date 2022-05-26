@@ -63,28 +63,28 @@ function App(props) {
           component={AppliedJobsPage}
         />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
-        <Route exact path="/employer/job/create" component={NewJob} />
-        <Route
+        <ProtectedRoute exact path="/employer/job/create" component={NewJob} />
+        <ProtectedRoute
           exact
           path="/employer/job/detail/:id"
           component={NewForProfileDetail}
         />
-        <Route
+        <ProtectedRoute
           exact
           path="/employer/account/profile"
           component={InformationProfilePage}
         />
-        <Route
+        <ProtectedRoute
           exact
           path="/employer/job/apply-job/all"
           component={AllProfilePage}
         />
-        <Route
+        <ProtectedRoute
           exact
           path="/employer/job/apply-job/talent"
           component={AllProfileTalentPage}
         />
-        <Route
+        <ProtectedRoute
           exact
           path="/employer/job/payment"
           component={Payment}
@@ -113,20 +113,32 @@ function App(props) {
           path="/auth/verified/:token"
           component={ResetPasswordPage}
         />
-        <Route exact path="/admin/dashboard" component={DashBoardQTV} />
-        <Route exact path="/admin/employers" component={DashBoardQTVEmployer} />
-        <Route
+        <ProtectedRoute
+          exact
+          path="/admin/dashboard"
+          component={DashBoardQTV}
+        />
+        <ProtectedRoute
+          exact
+          path="/admin/employers"
+          component={DashBoardQTVEmployer}
+        />
+        <ProtectedRoute
           exact
           path="/admin/candidates"
           component={DashBoardQTVCandidates}
         />
-        <Route
+        <ProtectedRoute
           exact
           path="/admin/profile"
           component={InformationProfilePageQTV}
         />
 
-        <Route exact path="/employer/dashboard" component={DashBoard} />
+        <ProtectedRoute
+          exact
+          path="/employer/dashboard"
+          component={DashBoard}
+        />
 
         <Route path="*">
           <NotFound />
