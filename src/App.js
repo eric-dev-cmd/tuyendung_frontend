@@ -35,6 +35,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import { ConfirmRegisterAccountSuccess } from "./pages/User/components/ConfirmRegisterAccountSuccess";
 import AccessDenied from "./components/AccessDenied";
 import { Payment } from "./pages/Admin/Payment";
+import EmployerRoute from "./routes/EmployerRoute";
+import AdminRoute from "./routes/AdminRoute";
 
 function App(props) {
   return (
@@ -48,6 +50,8 @@ function App(props) {
 
       <Switch>
         <Route path="/" component={Home} exact />
+        <Route exact path="/access-denied" component={AccessDenied} />
+
         <Route path="/access-denied" component={AccessDenied} exact />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />
@@ -63,32 +67,31 @@ function App(props) {
           component={AppliedJobsPage}
         />
         <Route exact path="/forgot-password" component={FogotPasswordPage} />
-        <ProtectedRoute exact path="/employer/job/create" component={NewJob} />
-        <ProtectedRoute
+        {/* EMPLOYER START */}
+        <EmployerRoute exact path="/employer/dashboard" component={DashBoard} />
+        <EmployerRoute exact path="/employer/job/create" component={NewJob} />
+        <EmployerRoute
           exact
           path="/employer/job/detail/:id"
           component={NewForProfileDetail}
         />
-        <ProtectedRoute
+        <EmployerRoute
           exact
           path="/employer/account/profile"
           component={InformationProfilePage}
         />
-        <ProtectedRoute
+        <EmployerRoute
           exact
           path="/employer/job/apply-job/all"
           component={AllProfilePage}
         />
-        <ProtectedRoute
+        <EmployerRoute
           exact
           path="/employer/job/apply-job/talent"
           component={AllProfileTalentPage}
         />
-        <ProtectedRoute
-          exact
-          path="/employer/job/payment"
-          component={Payment}
-        />
+        <EmployerRoute exact path="/employer/job/payment" component={Payment} />
+        {/* EMPLOYER ENND */}
         <Route exact path="/job-detail/:slug" component={ProductDetail} />
         <Route exact path="/company/:uniqueId" component={ProductDetail} />
         <Route exact path="/search" component={SearchPage} />
@@ -113,32 +116,24 @@ function App(props) {
           path="/auth/verified/:token"
           component={ResetPasswordPage}
         />
-        <ProtectedRoute
-          exact
-          path="/admin/dashboard"
-          component={DashBoardQTV}
-        />
-        <ProtectedRoute
+        {/* ADMIN START */}
+        <AdminRoute exact path="/admin/dashboard" component={DashBoardQTV} />
+        <AdminRoute
           exact
           path="/admin/employers"
           component={DashBoardQTVEmployer}
         />
-        <ProtectedRoute
+        <AdminRoute
           exact
           path="/admin/candidates"
           component={DashBoardQTVCandidates}
         />
-        <ProtectedRoute
+        <AdminRoute
           exact
           path="/admin/profile"
           component={InformationProfilePageQTV}
         />
-
-        <ProtectedRoute
-          exact
-          path="/employer/dashboard"
-          component={DashBoard}
-        />
+        {/* ADMIN END */}
 
         <Route path="*">
           <NotFound />
