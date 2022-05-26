@@ -46,8 +46,16 @@ const DashBoardQTVEmployer = () => {
   const paramsString = queryString.stringify(filters);
   console.log("paramsString", paramsString);
   const [type, setType] = useState();
-  const onHandleChangeType = (value) => {
-    setType(value);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalProducts: 1,
+  });
+  //HANDLE PAGINATION
+  const handlePageChange = (newPage) => {
+    setFilters({
+      ...filters,
+      page: newPage.selected + 1,
+    });
   };
   const [value, setValue] = useState(0);
 
@@ -59,6 +67,7 @@ const DashBoardQTVEmployer = () => {
         const response = await axios.get(requestUrl);
         setRecruitments(response.data.data);
         setTotalCount(response?.data?.pagination?.total);
+        setPagination(response?.data?.pagination);
       } catch (error) {
         console.log(error.response);
       }
@@ -149,7 +158,6 @@ const DashBoardQTVEmployer = () => {
     getRecruitmentReviewLeast();
   }, [isGetRecruitmentReviewLeast]);
 
-
   //Khóa tài khoản
   const handleAddButtonClickBlock = async (id) => {
     const requestUrl = `http://localhost:4000/quanTriViens/khoataikhoan/${id}`;
@@ -225,7 +233,10 @@ const DashBoardQTVEmployer = () => {
                       }
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalCount ? totalCount : 0})`} key="6">
+                    <TabPane
+                      tab={`Tất cả (${totalCount ? totalCount : 0})`}
+                      key="6"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -415,7 +426,11 @@ const DashBoardQTVEmployer = () => {
                                             <span>{item?.email}</span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            {item?.taiKhoan?.trangThai ? (<span>Hoạt động</span>) : (<span>Khóa</span>)}
+                                            {item?.taiKhoan?.trangThai ? (
+                                              <span>Hoạt động</span>
+                                            ) : (
+                                              <span>Khóa</span>
+                                            )}
                                           </td>
                                           <td
                                             className="text-center cursor-pointer align-middle pointer"
@@ -446,24 +461,30 @@ const DashBoardQTVEmployer = () => {
                                                   </span>
                                                 </li>
                                                 {item?.taiKhoan?.trangThai ? (
-                                                  <li onClick={() => {
-                                                    handleAddButtonClickBlock(
-                                                      item?._id
-                                                    );
-                                                  }}>
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickBlock(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
                                                     <span class="dropdown-item">
                                                       Khóa
                                                     </span>
                                                   </li>
-                                                ) : (<li onClick={() => {
-                                                  handleAddButtonClickUnBlock(
-                                                    item?._id
-                                                  );
-                                                }}>
-                                                  <span class="dropdown-item">
-                                                    Mở khóa
-                                                  </span>
-                                                </li>)}
+                                                ) : (
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickUnBlock(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
+                                                    <span class="dropdown-item">
+                                                      Mở khóa
+                                                    </span>
+                                                  </li>
+                                                )}
                                               </ul>
                                             </div>
                                           </td>
@@ -486,52 +507,17 @@ const DashBoardQTVEmployer = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-
                   </Tabs>
                 </div>
               </div>

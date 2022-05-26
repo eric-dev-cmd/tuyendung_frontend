@@ -47,10 +47,19 @@ const DashBoardQTVCandidates = () => {
   const paramsString = queryString.stringify(filters);
   console.log("recruitments", paramsString);
   const [type, setType] = useState();
-  const onHandleChangeType = (value) => {
-    setType(value);
-  };
   const [value, setValue] = useState(0);
+
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalProducts: 1,
+  });
+  //HANDLE PAGINATION
+  const handlePageChange = (newPage) => {
+    setFilters({
+      ...filters,
+      page: newPage.selected + 1,
+    });
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -59,7 +68,8 @@ const DashBoardQTVCandidates = () => {
       try {
         const response = await axiosClient.get(requestUrl);
         setRecruitments(response.data);
-        setTotalCount(response.pagination.total)
+        setTotalCount(response.pagination.total);
+        setPagination(response.pagination);
       } catch (error) {
         console.log(error.response);
       }
@@ -225,7 +235,10 @@ const DashBoardQTVCandidates = () => {
                       }
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalCount ? totalCount : 0})`} key="6">
+                    <TabPane
+                      tab={`Tất cả (${totalCount ? totalCount : 0})`}
+                      key="6"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -382,7 +395,7 @@ const DashBoardQTVCandidates = () => {
 
                                             <p className="address">
                                               <span className="created">
-                                                Giới tính:  {item?.gioiTinh}
+                                                Giới tính: {item?.gioiTinh}
                                               </span>
                                             </p>
                                             <p className="address">
@@ -416,8 +429,11 @@ const DashBoardQTVCandidates = () => {
                                             <span>{item?.taiKhoan?.email}</span>
                                           </td>
                                           <td className="text-center align-middle">
-                                            {item?.taiKhoan?.trangThai ? (<span>Hoạt động</span>) : (<span>Khóa</span>)}
-
+                                            {item?.taiKhoan?.trangThai ? (
+                                              <span>Hoạt động</span>
+                                            ) : (
+                                              <span>Khóa</span>
+                                            )}
                                           </td>
                                           <td className="text-center cursor-pointer align-middle pointer">
                                             <div class="dropdown">
@@ -440,24 +456,30 @@ const DashBoardQTVCandidates = () => {
                                                   </span>
                                                 </li>
                                                 {item?.taiKhoan?.trangThai ? (
-                                                  <li onClick={() => {
-                                                    handleAddButtonClickBlock(
-                                                      item?._id
-                                                    );
-                                                  }}>
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickBlock(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
                                                     <span class="dropdown-item">
                                                       Khóa
                                                     </span>
                                                   </li>
-                                                ) : (<li onClick={() => {
-                                                  handleAddButtonClickUnBlock(
-                                                    item?._id
-                                                  );
-                                                }}>
-                                                  <span class="dropdown-item">
-                                                    Mở khóa
-                                                  </span>
-                                                </li>)}
+                                                ) : (
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickUnBlock(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
+                                                    <span class="dropdown-item">
+                                                      Mở khóa
+                                                    </span>
+                                                  </li>
+                                                )}
                                               </ul>
                                             </div>
                                           </td>
@@ -480,52 +502,17 @@ const DashBoardQTVCandidates = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-
                   </Tabs>
                 </div>
               </div>

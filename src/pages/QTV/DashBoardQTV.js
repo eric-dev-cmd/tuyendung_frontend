@@ -43,14 +43,22 @@ const DashBoardQTV = () => {
     page: 1,
     limit: 30,
   });
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalProducts: 1,
+  });
+  //HANDLE PAGINATION
+  const handlePageChange = (newPage) => {
+    setFilters({
+      ...filters,
+      page: newPage.selected + 1,
+    });
+  };
 
   const [recruitments, setRecruitments] = useState([]);
   const paramsString = queryString.stringify(filters);
   console.log("paramsString", paramsString);
   const [type, setType] = useState();
-  const onHandleChangeType = (value) => {
-    setType(value);
-  };
   const [value, setValue] = useState(0);
 
   const getDataListFilters = async () => {
@@ -61,6 +69,8 @@ const DashBoardQTV = () => {
       console.log("Aaaaaaaaaaaa", response.data);
       setRecruitments(response.data.data);
       setTotalCount(response?.data?.pagination?.total);
+      setPagination(response?.data?.pagination);
+
       setIsSubmit(false);
     } catch (error) {
       console.log(error.response);
@@ -141,10 +151,10 @@ const DashBoardQTV = () => {
     }
   };
   useEffect(() => {
-
     getTotalStatus();
   }, []);
-  const [isGetRecruitmentReviewLeast, setIsGetRecruitmentReviewLeast] = useState(false);
+  const [isGetRecruitmentReviewLeast, setIsGetRecruitmentReviewLeast] =
+    useState(false);
   const [recruitmentReviewLeast, setRecruitmentReviewLeast] = useState([]);
   const [totalReviewLeast, setTotalReviewLeast] = useState([]);
   useEffect(() => {
@@ -168,7 +178,7 @@ const DashBoardQTV = () => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
       await axios.delete(requestUrl).then((res) => {
-        if (res?.data?.status == 'success') {
+        if (res?.data?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
@@ -180,7 +190,7 @@ const DashBoardQTV = () => {
             progress: undefined,
           });
         }
-      })
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -191,7 +201,7 @@ const DashBoardQTV = () => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/duyetTin/${id}`;
       await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == 'success') {
+        if (res?.data?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
@@ -203,7 +213,7 @@ const DashBoardQTV = () => {
             progress: undefined,
           });
         }
-      })
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -214,7 +224,7 @@ const DashBoardQTV = () => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/khoaTin/${id}`;
       await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == 'success') {
+        if (res?.data?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
@@ -226,7 +236,7 @@ const DashBoardQTV = () => {
             progress: undefined,
           });
         }
-      })
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -237,7 +247,7 @@ const DashBoardQTV = () => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/tuChoiTin/${id}`;
       await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == 'success') {
+        if (res?.data?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
@@ -249,7 +259,7 @@ const DashBoardQTV = () => {
             progress: undefined,
           });
         }
-      })
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -257,7 +267,7 @@ const DashBoardQTV = () => {
 
   useEffect(() => {
     getTotalStatus();
-    getDataListFilters()
+    getDataListFilters();
   }, [isSubmit]);
 
   return (
@@ -532,46 +542,57 @@ const DashBoardQTV = () => {
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
                                                 <>
-                                                  {item?.trangThai == 'Chờ duyệt' ? (
+                                                  {item?.trangThai ==
+                                                  "Chờ duyệt" ? (
                                                     <>
-                                                      <li onClick={() => {
-                                                        handleAddButtonClickDetailAccept(
-                                                          item?._id
-                                                        );
-                                                      }}>
+                                                      <li
+                                                        onClick={() => {
+                                                          handleAddButtonClickDetailAccept(
+                                                            item?._id
+                                                          );
+                                                        }}
+                                                      >
                                                         <span class="dropdown-item">
                                                           Duyệt
                                                         </span>
                                                       </li>
-                                                      <li onClick={() => {
-                                                        handleAddButtonClickDetailDeny(
-                                                          item?._id
-                                                        );
-                                                      }}>
+                                                      <li
+                                                        onClick={() => {
+                                                          handleAddButtonClickDetailDeny(
+                                                            item?._id
+                                                          );
+                                                        }}
+                                                      >
                                                         <span class="dropdown-item">
                                                           Từ chối
                                                         </span>
                                                       </li>
                                                     </>
-                                                  ) : item?.trangThai == 'Đã duyệt' ? (
+                                                  ) : item?.trangThai ==
+                                                    "Đã duyệt" ? (
                                                     <>
-                                                      <li onClick={() => {
-                                                        handleAddButtonClickDetailBlock(
-                                                          item?._id
-                                                        );
-                                                      }}>
+                                                      <li
+                                                        onClick={() => {
+                                                          handleAddButtonClickDetailBlock(
+                                                            item?._id
+                                                          );
+                                                        }}
+                                                      >
                                                         <span class="dropdown-item">
                                                           Khóa
                                                         </span>
                                                       </li>
                                                     </>
-                                                  ) : item?.trangThai == 'Khóa' ? (
+                                                  ) : item?.trangThai ==
+                                                    "Khóa" ? (
                                                     <>
-                                                      <li onClick={() => {
-                                                        handleAddButtonClickDetailBlock(
-                                                          item?._id
-                                                        );
-                                                      }}>
+                                                      <li
+                                                        onClick={() => {
+                                                          handleAddButtonClickDetailBlock(
+                                                            item?._id
+                                                          );
+                                                        }}
+                                                      >
                                                         <span class="dropdown-item">
                                                           Mở khóa
                                                         </span>
@@ -584,7 +605,8 @@ const DashBoardQTV = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -611,53 +633,21 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Chờ xét duyệt (${totalChoDuyet ? totalChoDuyet : 0})`}
+                      tab={`Chờ xét duyệt (${
+                        totalChoDuyet ? totalChoDuyet : 0
+                      })`}
                       key="1"
                     >
                       <div className="row">
@@ -814,20 +804,24 @@ const DashBoardQTV = () => {
                                                 class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDetailAccept(
-                                                    item?._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailAccept(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Duyệt
                                                   </span>
                                                 </li>
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDetailDeny(
-                                                    item?._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailDeny(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Từ chối
                                                   </span>
@@ -837,7 +831,8 @@ const DashBoardQTV = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -864,48 +859,14 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -1066,7 +1027,7 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td className="text-center cursor-pointer align-middle pointer" >
+                                          <td className="text-center cursor-pointer align-middle pointer">
                                             <div class="dropdown">
                                               <button
                                                 class="btn btn-secondary dropdown-toggle"
@@ -1081,11 +1042,13 @@ const DashBoardQTV = () => {
                                                 class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDetailBlock(
-                                                    item?._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailBlock(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Khóa
                                                   </span>
@@ -1095,7 +1058,8 @@ const DashBoardQTV = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1122,48 +1086,14 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -1344,7 +1274,8 @@ const DashBoardQTV = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1371,48 +1302,14 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -1573,7 +1470,7 @@ const DashBoardQTV = () => {
                                           <td className="text-center align-middle">
                                             <span>{item?.trangThai}</span>
                                           </td>
-                                          <td className="text-center cursor-pointer align-middle pointer" >
+                                          <td className="text-center cursor-pointer align-middle pointer">
                                             <div class="dropdown">
                                               <button
                                                 class="btn btn-secondary dropdown-toggle"
@@ -1588,11 +1485,13 @@ const DashBoardQTV = () => {
                                                 class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
-                                                <li onClick={() => {
-                                                  handleAddButtonClickDetailBlock(
-                                                    item?._id
-                                                  );
-                                                }}>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetailBlock(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Mở khóa
                                                   </span>
@@ -1602,7 +1501,8 @@ const DashBoardQTV = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1629,48 +1529,14 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -1851,7 +1717,8 @@ const DashBoardQTV = () => {
                                                     handleAddButtonClickDetailDelete(
                                                       item?._id
                                                     );
-                                                  }}>
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -1878,52 +1745,23 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đánh giá kém (${totalReviewLeast ? totalReviewLeast : 0})`} key="9">
+                    <TabPane
+                      tab={`Đánh giá kém (${
+                        totalReviewLeast ? totalReviewLeast : 0
+                      })`}
+                      key="9"
+                    >
                       <div className="row">
                         <div className="col-10">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -2059,11 +1897,13 @@ const DashBoardQTV = () => {
                                                   class="dropdown-menu"
                                                   aria-labelledby="dropdownMenuButton1"
                                                 >
-                                                  <li onClick={() => {
-                                                    handleAddButtonClickDetailBlock(
-                                                      item?.tinTuyenDung?._id
-                                                    );
-                                                  }}>
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickDetailBlock(
+                                                        item?.tinTuyenDung?._id
+                                                      );
+                                                    }}
+                                                  >
                                                     <span class="dropdown-item">
                                                       Khóa
                                                     </span>
@@ -2073,7 +1913,8 @@ const DashBoardQTV = () => {
                                                       handleAddButtonClickDetailDelete(
                                                         item?.tinTuyenDung?._id
                                                       );
-                                                    }}>
+                                                    }}
+                                                  >
                                                     <span class="dropdown-item">
                                                       Xóa
                                                     </span>
@@ -2101,48 +1942,14 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
+
                         <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    // prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
-                              >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    // nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
+                          {recruitments.length !== 0 && (
+                            <Pagination
+                              onPageChange={handlePageChange}
+                              pagination={pagination}
+                            />
+                          )}
                         </div>
                       </div>
                     </TabPane>
@@ -2159,9 +1966,9 @@ const DashBoardQTV = () => {
           >
             Ant Design ©2018 Created by Trung Vinh
           </Footer>
-        </Layout >
-      </Layout >
-    </Fragment >
+        </Layout>
+      </Layout>
+    </Fragment>
   );
 };
 export default DashBoardQTV;
