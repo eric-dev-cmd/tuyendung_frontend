@@ -175,8 +175,7 @@ const ProductGeneralInfomation = (props) => {
                 </p>
                 <div>
                   <div className="mb-2">
-                    - Hồ Chí Minh: 35 Nguyễn An Khương, Phường 13, Quận 5, Thành
-                    Phố Hồ Chí Minh, Quận 5
+                    {props?.diaDiem?.quanHuyen} - {props?.diaDiem?.tinhThanhPho}
                   </div>
                 </div>
               </Col>
@@ -187,10 +186,22 @@ const ProductGeneralInfomation = (props) => {
                     <div>
                       <div className="mb-2">
                         <Timeline>
-                          <Timeline.Item color="gray">
-                            {props?.moTa}
-                          </Timeline.Item>
+                          {props?.moTa}
                         </Timeline>
+                      </div>
+                    </div>
+                    <p className="fw-bolder mb-3">
+                      Yêu cầu ứng viên
+                    </p>
+                    <div>
+                      <div className="">
+                        <Timeline>{props?.yeuCau}</Timeline>
+                      </div>
+                    </div>
+                    <p className="fw-bolder mb-3">Quyền lợi</p>
+                    <div>
+                      <div className="mb-2">
+                        <Timeline>{props?.phucLoi}</Timeline>
                       </div>
                     </div>
                   </Col>

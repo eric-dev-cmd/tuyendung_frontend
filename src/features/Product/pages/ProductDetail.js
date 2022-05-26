@@ -54,7 +54,8 @@ const ProductDetail = (props) => {
   const match = useRouteMatch();
   const { isSubmit, setIsSubmit, detail, setDetail } = useProductContext();
   const { location, listCareers, companyFields } = useCommonContext();
-  const [phucLois, setPhucLois] = useState(detail.phucLoi || []);
+  const [phucLois, setPhucLois] = useState(detail.phucLoi || "");
+  const [moTas, setMoTas] = useState(detail.moTa || "");
   const [yeuCaus, setYeuCaus] = useState(detail.yeuCau || "");
   const [isShowModal, setIsShowModal] = useState(false);
   const history = useHistory();
@@ -116,6 +117,7 @@ const ProductDetail = (props) => {
       setDetail(response.data);
       setPhucLois(response.data.phucLoi);
       setYeuCaus(response.data.yeuCau);
+      setMoTas(response.data.moTa);
       // setLoading(false);
     } catch (error) {
       // setLoading(false);
@@ -125,6 +127,28 @@ const ProductDetail = (props) => {
   const splitRequirement = () => {
     if (yeuCaus.indexOf(".") > -1) {
       let values = yeuCaus.split(".");
+      return values.map((value, index) => (
+        <Timeline.Item key={index} color="gray">
+          {value}
+        </Timeline.Item>
+      ));
+    }
+  };
+
+  const splitDescription = () => {
+    if (moTas.indexOf(".") > -1) {
+      let values = moTas.split(".");
+      return values.map((value, index) => (
+        <Timeline.Item key={index} color="gray">
+          {value}
+        </Timeline.Item>
+      ));
+    }
+  };
+
+  const splitPhucLoi = () => {
+    if (phucLois.indexOf(".") > -1) {
+      let values = phucLois.split(".");
       return values.map((value, index) => (
         <Timeline.Item key={index} color="gray">
           {value}
@@ -235,7 +259,7 @@ const ProductDetail = (props) => {
       const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai/${slug}`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
-          
+
           let total = 0;
           res.data.data.map((item) => {
             if (item.danhGia.xepLoai == 1) setTotalFirstStar(item.tong);
@@ -243,7 +267,7 @@ const ProductDetail = (props) => {
             if (item.danhGia.xepLoai == 3) setTotalThreeStar(item.tong);
             if (item.danhGia.xepLoai == 4) setTotalFourStar(item.tong);
             if (item.danhGia.xepLoai == 5) setTotalFiveStar(item.tong);
-            console.log('sao',totalFirstStar, totalSecondStar, totalThreeStar, totalFiveStar, totalFourStar )
+            console.log('sao', totalFirstStar, totalSecondStar, totalThreeStar, totalFiveStar, totalFourStar)
             total = total + item.tong;
             setTotalAll(total);
           });
@@ -294,7 +318,9 @@ const ProductDetail = (props) => {
                           gioiTinh={detail?.gioiTinh}
                           mucLuong={detail?.mucLuong}
                           hinhThucLamViec={detail?.loaiCongViec}
-                          moTa={detail.moTa}
+                          moTa={splitDescription()}
+                          yeuCau={splitRequirement()}
+                          phucLoi={splitPhucLoi()}
                           diaDiem={detail.diaDiem}
                           nganhNghe={detail.nganhNghe}
                         />
@@ -306,31 +332,7 @@ const ProductDetail = (props) => {
                             <div className="px-3 mt-3">
                               <Row>
                                 <Col span={24}>
-                                  <p className="fw-bolder mb-3">
-                                    Yêu cầu ứng viên
-                                  </p>
-                                  <div>
-                                    <div className="">
-                                      <Timeline>{splitRequirement()}</Timeline>
-                                    </div>
-                                  </div>
-                                  <div className="quyenloi">
-                                    <p className="fw-bolder mb-3">Quyền lợi</p>
-                                    <div>
-                                      <div className="mb-2">
-                                        <Timeline>
-                                          {/* {phucLois.map((item, index) => (
-                                            <Timeline.Item
-                                              key={index}
-                                              color="gray"
-                                            >
-                                              {item.tenPhucLoi}
-                                            </Timeline.Item>
-                                          ))} */}
-                                        </Timeline>
-                                      </div>
-                                    </div>
-                                  </div>
+                                  
                                   <div>
                                     <p className="fw-bolder mb-3">
                                       Cách thức ứng tuyển
