@@ -41,7 +41,7 @@ const DashBoardQTV = () => {
   const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 30,
+    limit: 5,
   });
   const [pagination, setPagination] = useState({
     page: 1,

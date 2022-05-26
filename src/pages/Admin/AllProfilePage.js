@@ -48,7 +48,7 @@ const AllProfilePage = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 4,
+    limit: 2,
   });
   const [pagination, setPagination] = useState({
     page: 1,
@@ -322,7 +322,7 @@ const AllProfilePage = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalAll})`} key="4">
+                    <TabPane tab={`Tất cả (${totalAll ? totalAll :0})`} key="4">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm
@@ -594,7 +594,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đang ứng tuyển (${totalDangUT})`} key="1">
+                    <TabPane tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT: 0})`} key="1">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -846,7 +846,7 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Chấp nhận (${totalDaUT})`} key="2">
+                    <TabPane tab={`Chấp nhận (${totalDaUT ? totalDaUT : 0})`} key="2">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />

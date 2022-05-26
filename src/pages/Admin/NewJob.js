@@ -17,6 +17,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { FaAngleDoubleRight, FaListUl } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCommonContext } from "../../components/Search/context/commonContext";
@@ -35,6 +36,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const NewJob = () => {
+  const history= useHistory();
   const [selectedItems, setSelectedItems] = useState([]);
   const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
   const [isHideForm1, setIsHideForm1] = useState(false);
@@ -151,7 +153,21 @@ const NewJob = () => {
     };
     console.log("payload", payload);
     try {
-      const response = await EmployeerApi.createRecruitment(payload);
+      const response = await EmployeerApi.createRecruitment(payload)
+        .then((res) => {
+          if (res?.status == "success") {
+            toast.success("Đăng tin tuyển dụng thành công", {
+              position: "bottom-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            history.push('/employer/dashboard')
+          }
+        });
       console.log("response", response);
     } catch (error) {
       console.log(error);
@@ -169,7 +185,7 @@ const NewJob = () => {
           minHeight: "100vh",
         }}
       >
-        <NavbarAdmin/>
+        <NavbarAdmin />
         <Layout className="site-layout">
           <Header
             className="site-layout-background"
@@ -741,7 +757,7 @@ const NewJob = () => {
                       >
                         <Option value="Nam">Nam</Option>
                         <Option value="Nữ">Nữ</Option>
-                        <Option value="Khác">Khác</Option>
+                        <Option value="Không phân biệt">Khác</Option>
                       </Select>
                     </p>
                   </div>
