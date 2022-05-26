@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -18,6 +18,7 @@ import { FaLocationArrow } from "react-icons/fa";
 import moment from "moment";
 import TimeUtils from "../../../../utils/timeUtils";
 import axiosClient from "../../../../services/axiosClient";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -30,6 +31,7 @@ const ModalProfileDetail = ({
   user,
   ...props
 }) => {
+  const [isSubmit, setIsSubmit] = useState([]);
   const [typeDegree, setTypeDegree] = useState("");
   const [school, setSchool] = useState("");
   const [specialized, setSpecialized] = useState("");
@@ -90,7 +92,20 @@ const ModalProfileDetail = ({
   const handleAddButtonClickAccept = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/donUngTuyens/chapNhanDonUngTuyen/${id}`;
-      await axiosClient.patch(requestUrl);
+      await axiosClient.patch(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -100,11 +115,27 @@ const ModalProfileDetail = ({
   const handleAddButtonClickDeny = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
-      await axiosClient.patch(requestUrl);
+      await axiosClient.patch(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
     } catch (error) {
       console.log(error.response);
     }
   };
+
+  useEffect(() => {
+  }, [isSubmit]);
 
   return (
     <div>

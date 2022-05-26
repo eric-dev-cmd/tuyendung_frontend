@@ -34,6 +34,7 @@ import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
 import { Helmet } from "react-helmet";
 import axiosClient from "../../services/axiosClient";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -42,6 +43,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const AllProfilePage = () => {
+  const [isSubmit, setIsSubmit] = useState([]);
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
@@ -69,23 +71,26 @@ const AllProfilePage = () => {
       page: newPage.selected + 1,
     });
   };
+
+  const getDataListFilters = async () => {
+    const paramsString = queryString.stringify(filters);
+    const requestUrl = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang?${paramsString}`;
+    try {
+      const response = await axiosClient.get(requestUrl);
+      console.log("response", response.data);
+      setRecruitments(response.data);
+      setTotalCount(response.pagination.total);
+      setPagination(response.pagination);
+      setIsSubmit(false);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   useEffect(() => {
     let mounted = true;
     const paramsString = queryString.stringify(filters);
 
-    const getDataListFilters = async () => {
-      const paramsString = queryString.stringify(filters);
-      const requestUrl = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang?${paramsString}`;
-      try {
-        const response = await axiosClient.get(requestUrl);
-        console.log("response", response.data);
-        setRecruitments(response.data);
-        setTotalCount(response.pagination.total);
-        setPagination(response.pagination);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
+
     if (mounted) {
       getDataListFilters();
     }
@@ -104,6 +109,7 @@ const AllProfilePage = () => {
           paramsString
         );
         setRecruitments(response.data);
+        setIsSubmit(false);
         // setTotalCount(response.pagination.total);
       } catch (error) {
         console.log(error.response);
@@ -193,6 +199,7 @@ const AllProfilePage = () => {
             if (item.trangThai == "Thất bại") setTotalTuChoi(item.tong);
             total = total + item.tong;
             setTotalAll(total);
+            setIsSubmit(false);
           });
         });
       } catch (error) {
@@ -201,6 +208,56 @@ const AllProfilePage = () => {
     };
     getTotalApplication();
   }, []);
+
+  // xóa đơn ứng tuyển
+  const handleAddButtonClickDelete = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/donUngTuyens/${id}`;
+      await axios.delete(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  // ứng viêm tiềm năng
+  const handleAddButtonClickTalent = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
+      await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  useEffect(() => {
+    getDataListFilters();
+  }, [isSubmit]);
 
   return (
     <Fragment>
@@ -429,9 +486,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -461,12 +518,29 @@ const AllProfilePage = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
-                                                  </span>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
+                                                  <>
+                                                    {trangThai ==
+                                                      "Thất bại" ? null : (
+                                                      <span class="dropdown-item">
+                                                        Ứng viên tiềm năng
+                                                      </span>
+                                                    )}
+                                                  </>
                                                 </li>
-                                                <li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDelete(
+                                                      item?.donTuyenDung._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Xóa
                                                   </span>
@@ -672,9 +746,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -917,9 +991,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1166,9 +1240,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />

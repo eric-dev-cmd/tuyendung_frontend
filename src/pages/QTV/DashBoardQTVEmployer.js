@@ -24,6 +24,7 @@ import queryString from "query-string";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import NavbarQTV from "./components/navbar/NavbarQTV";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -32,6 +33,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const DashBoardQTVEmployer = () => {
+  const [isSubmit, setIsSubmit] = useState([]);
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
@@ -59,19 +61,20 @@ const DashBoardQTVEmployer = () => {
   };
   const [value, setValue] = useState(0);
 
+  const getDataListFilters = async () => {
+    const requestUrl = `http://localhost:4000/nhaTuyenDungs?${paramsString}`;
+    try {
+      const response = await axios.get(requestUrl);
+      setRecruitments(response.data.data);
+      setTotalCount(response?.data?.pagination?.total);
+      setPagination(response?.data?.pagination);
+      setIsSubmit(false);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   useEffect(() => {
     let mounted = true;
-    const getDataListFilters = async () => {
-      const requestUrl = `http://localhost:4000/nhaTuyenDungs?${paramsString}`;
-      try {
-        const response = await axios.get(requestUrl);
-        setRecruitments(response.data.data);
-        setTotalCount(response?.data?.pagination?.total);
-        setPagination(response?.data?.pagination);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
     if (mounted) {
       getDataListFilters();
     }
@@ -162,7 +165,20 @@ const DashBoardQTVEmployer = () => {
   const handleAddButtonClickBlock = async (id) => {
     const requestUrl = `http://localhost:4000/quanTriViens/khoataikhoan/${id}`;
     try {
-      const response = await axios.patch(requestUrl);
+      const response = await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -172,11 +188,29 @@ const DashBoardQTVEmployer = () => {
   const handleAddButtonClickUnBlock = async (id) => {
     const requestUrl = `http://localhost:4000/quanTriViens/motaikhoan/${id}`;
     try {
-      const response = await axios.patch(requestUrl);
+      const response = await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
     } catch (error) {
       console.log(error.response);
     }
   };
+
+  useEffect(() => {
+    getDataListFilters();
+  }, [isSubmit]);
+
 
   return (
     <Fragment>

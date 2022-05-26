@@ -116,7 +116,7 @@ const DashBoardQTV = () => {
     setFilters({
       ...filters,
       page: 1,
-      // tieuDe: newFilters.searchTerm,
+      tieuDe: newFilters.searchTerm,
     });
   };
 
