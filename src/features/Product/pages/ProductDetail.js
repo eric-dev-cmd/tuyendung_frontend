@@ -49,6 +49,7 @@ import ReviewApi from "../../../services/reviewApi";
 import TimeUtils from "../../../utils/timeUtils";
 import queryString from "query-string";
 import axios from "axios";
+import JobList from "../../../components/RelatedJobs/components/JobList";
 
 const { TabPane } = Tabs;
 
@@ -68,6 +69,28 @@ const ProductDetail = (props) => {
   const userId = useSelector((state) => state?.userLogin?.user?.taiKhoan._id);
   const [reviews, setReviews] = useState([]);
   const [filterReview, setFilterReview] = useState({});
+  const [filterRelatedJob, setFilterRelatedJob] = useState({
+    limit: 20,
+    page: 1,
+    trangThai: 2,
+  });
+  const [recruitmentsLinhVuc, setRecruitmentsLinhVuc] = useState([]);
+  // Việc làm liên quan
+
+  const getListRelatedJob = async () => {
+    const paramsString = queryString.stringify(filterRelatedJob);
+
+    console.log("filterRelatedJob, filterRelatedJob", filterRelatedJob);
+    console.log("filterRelatedJob, filterRelatedJob", paramsString);
+    try {
+      const response = await RecruitmentApi.getListRecruitmentFilterParams(
+        filterRelatedJob
+      );
+      setRecruitmentsLinhVuc(response.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   const paramsString = queryString.stringify(filterReview);
   const getListTabReveiew = async () => {
@@ -83,11 +106,7 @@ const ProductDetail = (props) => {
         slug,
         params.paramsString
       );
-
-      console.log("response ReviewApi", response);
       setReviews(response);
-      // setRecruitments(response.data);
-      // setTotalCount(response.pagination.total);
     } catch (error) {
       console.log(error.response);
     }
@@ -109,10 +128,15 @@ const ProductDetail = (props) => {
       console.log("error", error);
     }
   };
-
+  console.log("detail ttv", detail);
   useEffect(() => {
     getListReviewById();
   }, []);
+
+  useEffect(() => {
+    getListRelatedJob();
+    console.log("filterRelatedJob", filterRelatedJob);
+  }, [filterRelatedJob]);
 
   //CALL API
   const getRecruitmentByIdAndStatus = async () => {
@@ -208,9 +232,7 @@ const ProductDetail = (props) => {
   }, [slug, user?.taiKhoan._id]);
 
   console.log("... logger detail", detail);
-  console.log("... logger phucLois", phucLois);
   const handleSubmitModal = async (payload) => {
-    console.log("Call api payload", payload);
     try {
       await CandidateApplicationForm.createApplicationForm(payload);
       // setDetail(response);
@@ -329,7 +351,19 @@ const ProductDetail = (props) => {
               </div>
               <div className="my-2">
                 <div className="card-container my-3 py-3">
-                  <Tabs defaultActiveKey="1" style={{ width: "100%" }}>
+                  <Tabs
+                    defaultActiveKey="1"
+                    style={{ width: "100%" }}
+                    onChange={(key) => {
+                      if (key == 3) {
+                        console.log("key", key);
+                        setFilterRelatedJob({
+                          ...filterRelatedJob,
+                          nganhNghe: detail?.nganhNghe?.tenNganhNghe,
+                        });
+                      }
+                    }}
+                  >
                     <TabPane tab={t("productDetail.tabs.header.tab1")} key="1">
                       <div className="px-3 py-3 bg-white ">
                         <ProductGeneralInfomation
@@ -411,7 +445,11 @@ const ProductDetail = (props) => {
                       </div>
                     </TabPane>
                     <TabPane tab={t("productDetail.tabs.header.tab3")} key="3">
-                      <p>Việc làm liên quan</p>
+                      <div className="px-1 py-3 bg-white ">
+                        <div className="row">
+                          <JobList recruitments={recruitmentsLinhVuc} />
+                        </div>
+                      </div>
                     </TabPane>
                   </Tabs>
                 </div>

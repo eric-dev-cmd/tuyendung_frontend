@@ -11,6 +11,7 @@ const RecruitmentApi = {
     return axiosClient.get(url);
   },
   getListRecruitmentFilterParams: (params) => {
+    console.log("params api", params);
     const url = `/tinTuyenDungs/timKiemTheoNhieuTieuChi`;
     return axiosClient.get(url, { params });
   },
