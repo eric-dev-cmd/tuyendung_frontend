@@ -1,15 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import classes from "./JobItem.module.css";
-import clsx from "clsx";
 import { Tooltip } from "antd";
-import { Link, useHistory } from "react-router-dom";
-import { getUserProfile } from "../../../utils/localStorage";
-import InterestedJobApi from "../../../services/interestedJobApi";
-import { toast } from "react-toastify";
-import useSelection from "antd/lib/table/hooks/useSelection";
+import clsx from "clsx";
 import moment from "moment";
 import "moment/locale/vi";
+import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
+import { getUserProfile } from "../../../utils/localStorage";
+import classes from "./JobItem.module.css";
 const JobItem = (props) => {
   const {
     jobItemImageWrapper,
@@ -87,7 +83,7 @@ const JobItem = (props) => {
                 }`}
               >
                 <span>
-                  {moment(props?.jobs?.ngayHetHan)
+                  {moment(props?.jobs?.ngayCapNhat)
                     .lang("vi")
                     .startOf("day")
                     .fromNow()}

@@ -38,7 +38,7 @@ const Login = () => {
       history.push("/admin/dashboard");
     }
   }, [isAuthenticated]);
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -57,7 +57,7 @@ const Login = () => {
           content="width=device-width, initial-scale=1.0"
         ></meta>
         <meta charSet="utf-8" />
-        <title>Đăng nhập tài khoản | 123job.org</title>
+        <title>Đăng nhập tài khoản | jobboard.com</title>
       </Helmet>
 
       <div className="container mt-5">

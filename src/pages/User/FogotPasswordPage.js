@@ -50,7 +50,7 @@ export const FogotPasswordPage = () => {
   return (
     <>
       <Helmet>
-        <title>Quên mật khẩu | 123job.org</title>
+        <title>Quên mật khẩu | jobboard.com</title>
       </Helmet>
       {!isSuccess && (
         <div className="container mt-5">
@@ -126,7 +126,7 @@ export const FogotPasswordPage = () => {
                     </div>
                   </form>
                   <p className="pt-3 text-center">
-                    Bạn sử dụng 123job.org lần đâu?{" "}
+                    Bạn sử dụng jobboard.com lần đâu?{" "}
                     <Link to="/sign-up" className="text-decoration-none">
                       Hãy đăng ký
                     </Link>

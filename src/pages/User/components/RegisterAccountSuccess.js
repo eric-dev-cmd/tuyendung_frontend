@@ -7,8 +7,7 @@ export const RegisterAccountSuccess = ({ email }) => {
   return (
     <>
       <Helmet>
-        <title>
-          Yêu cầu xác thực email | 123job.org</title>
+        <title>Yêu cầu xác thực email | jobboard.com</title>
       </Helmet>
       <div className="login-wrapper d-flex justify-content-center py-4 my-5">
         <div className="bg-login mt-3" style={{ width: "35%" }}>
@@ -22,9 +21,9 @@ export const RegisterAccountSuccess = ({ email }) => {
             <div className="card-body">
               <p className="card-text" style={{ color: "#155724" }}>
                 Hãy kiểm tra email <b>{email}</b>. Sau đó nhấn vào link trong
-                hộp thư để xác thực tài khoản vừa đăng ký. <br></br>Trường hợp nếu bạn chưa
-                nhận được. Vui lòng đợi 3s hoặc kiểm tra trong thư mục spam
-                spam.
+                hộp thư để xác thực tài khoản vừa đăng ký. <br></br>Trường hợp
+                nếu bạn chưa nhận được. Vui lòng đợi 3s hoặc kiểm tra trong thư
+                mục spam spam.
               </p>
             </div>
           </div>

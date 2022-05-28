@@ -13,13 +13,12 @@ import TextArea from "antd/lib/input/TextArea";
 import { getUserProfile } from "../../../../utils/localStorage";
 import { AntDesignOutlined } from "@ant-design/icons";
 import axiosClient from "../../../../services/axiosClient";
-import axios from "axios"
-
+import axios from "axios";
 
 const { Option } = Select;
 const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
   const user = getUserProfile();
-  console.log('user, ', user)
+  console.log("user, ", user);
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [numbers, setNumbers] = useState("");
@@ -58,6 +57,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
   return (
     <div>
       <Modal
+        className="mt-78"
         title="Cập nhật thông tin liên hệ"
         centered
         visible={showModal}
@@ -84,6 +84,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
             onClick={() => {
               save();
             }}
+            className="mt-78"
           >
             Lưu
           </Button>,
@@ -113,19 +114,19 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
             name="file"
             onChange={(event) => {
               let formData = new FormData();
-              formData.append('file', event.target.files[0]);
+              formData.append("file", event.target.files[0]);
               const requestUrl = `http://localhost:4000/ungtuyenviens/capNhatAvatar`;
               axios({
-                method: 'patch',
+                method: "patch",
                 url: requestUrl,
                 data: formData,
                 headers: {
-                  Authorization: `Bearer ${user.token}`
-                }
-              })
+                  Authorization: `Bearer ${user.token}`,
+                },
+              });
               setSelectedImage(event.target.files[0]);
             }}
-          // hidden
+            // hidden
           />
         </div>
         <div className="pb-3">
@@ -136,7 +137,6 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
             // showCount
             // maxLength={20}
             onChange={(e) => {
-
               console.log("value", e.target.value);
               setName(e.target.value);
             }}

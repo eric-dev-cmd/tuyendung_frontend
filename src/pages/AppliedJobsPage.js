@@ -31,7 +31,7 @@ const AppliedJobsPage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Việc làm đã ứng tuyển | 123job.org</title>
+        <title>Việc làm đã ứng tuyển | jobboard.com</title>
       </Helmet>
       <MainNavigation />
 

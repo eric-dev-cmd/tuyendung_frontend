@@ -52,7 +52,7 @@ const Home = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Trang chủ | 123job.org</title>
+        <title>Trang chủ | jobboard.com</title>
       </Helmet>
       <MainNavigation />
 

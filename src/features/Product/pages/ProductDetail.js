@@ -20,7 +20,12 @@ import React, {
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { BiPaperPlane } from "react-icons/bi";
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
+import {
+  Redirect,
+  useHistory,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import FooterHome from "../../../components/Footer/FooterHome";
 import JobProvider from "../../../components/JobHome/context/jobCommonContext";
 import MainNavigation from "../../../components/Layout/MainNavigation";
@@ -113,17 +118,27 @@ const ProductDetail = (props) => {
   const getRecruitmentByIdAndStatus = async () => {
     // setLoading(true);
     try {
-      const response = await RecruitmentApi.getRecruitmentByIdAndStatus(slug);
-      setDetail(response.data);
-      setPhucLois(response.data.phucLoi);
-      setYeuCaus(response.data.yeuCau);
-      setMoTas(response.data.moTa);
-      // setLoading(false);
+      const response = await RecruitmentApi.getRecruitmentByIdAndStatus(
+        slug,
+        user?.taiKhoan._id
+      );
+      if (response?.data.length === 0) {
+        history.push("/404-error");
+      } else {
+        console.log("response?.data status", response);
+
+        setDetail(response?.data);
+        setPhucLois(response?.data.phucLoi);
+        setYeuCaus(response?.data.yeuCau);
+        setMoTas(response?.data.moTa);
+        // setLoading(false);
+      }
     } catch (error) {
       // setLoading(false);
       console.log("error", error);
     }
   };
+
   const splitRequirement = () => {
     if (yeuCaus.indexOf(".") > -1) {
       let values = yeuCaus.split(".");
@@ -160,7 +175,7 @@ const ProductDetail = (props) => {
   const handleSubmitFavorite = async () => {
     const payload = {
       tinTuyenDung: props?.jobs?._id,
-      ungTuyenVien: user.taiKhoan._id,
+      ungTuyenVien: user?.taiKhoan._id,
     };
     try {
       const response = await InterestedJobApi.creatInterestedJob(payload);
@@ -190,7 +205,7 @@ const ProductDetail = (props) => {
       timeout = setTimeout(() => getRecruitmentByIdAndStatus(), 1000);
     }
     return () => clearTimeout(timeout);
-  }, [slug]);
+  }, [slug, user?.taiKhoan._id]);
 
   console.log("... logger detail", detail);
   console.log("... logger phucLois", phucLois);
@@ -233,8 +248,8 @@ const ProductDetail = (props) => {
           // clearErrors();
         }}
         onSubmit={handleSubmitModal}
-      // detail={detail}
-      // isEdit={isEdit}
+        // detail={detail}
+        // isEdit={isEdit}
       />
     );
   }, [isShowModal]);
@@ -259,7 +274,6 @@ const ProductDetail = (props) => {
       const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai/${slug}`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
-
           let total = 0;
           res.data.data.map((item) => {
             if (item.danhGia.xepLoai == 1) setTotalFirstStar(item.tong);
@@ -267,7 +281,14 @@ const ProductDetail = (props) => {
             if (item.danhGia.xepLoai == 3) setTotalThreeStar(item.tong);
             if (item.danhGia.xepLoai == 4) setTotalFourStar(item.tong);
             if (item.danhGia.xepLoai == 5) setTotalFiveStar(item.tong);
-            console.log('sao', totalFirstStar, totalSecondStar, totalThreeStar, totalFiveStar, totalFourStar)
+            console.log(
+              "sao",
+              totalFirstStar,
+              totalSecondStar,
+              totalThreeStar,
+              totalFiveStar,
+              totalFourStar
+            );
             total = total + item.tong;
             setTotalAll(total);
           });
@@ -284,7 +305,7 @@ const ProductDetail = (props) => {
   return (
     <Fragment>
       <Helmet>
-        <title>Product Detail | 123job.org</title>
+        <title>Product Detail | jobboard.com</title>
       </Helmet>
       <MainNavigation />
       <div className="mt-65">
@@ -332,7 +353,6 @@ const ProductDetail = (props) => {
                             <div className="px-3 mt-3">
                               <Row>
                                 <Col span={24}>
-                                  
                                   <div>
                                     <p className="fw-bolder mb-3">
                                       Cách thức ứng tuyển
@@ -420,7 +440,10 @@ const ProductDetail = (props) => {
                         }
                       }}
                     >
-                      <TabPane tab={`Tất cả (${totalAll ? totalAll : 0})`} key="7">
+                      <TabPane
+                        tab={`Tất cả (${totalAll ? totalAll : 0})`}
+                        key="7"
+                      >
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -543,7 +566,10 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab={`5 sao (${totalFiveStar ? totalFiveStar : 0})`} key="5">
+                      <TabPane
+                        tab={`5 sao (${totalFiveStar ? totalFiveStar : 0})`}
+                        key="5"
+                      >
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -666,7 +692,10 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab={`4 sao (${totalFourStar ? totalFourStar : 0})`} key="4">
+                      <TabPane
+                        tab={`4 sao (${totalFourStar ? totalFourStar : 0})`}
+                        key="4"
+                      >
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -789,7 +818,10 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab={`3 sao (${totalThreeStar ? totalThreeStar : 0})`} key="3">
+                      <TabPane
+                        tab={`3 sao (${totalThreeStar ? totalThreeStar : 0})`}
+                        key="3"
+                      >
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -912,7 +944,10 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab={`2 sao (${totalSecondStar ? totalSecondStar : 0})`} key="2">
+                      <TabPane
+                        tab={`2 sao (${totalSecondStar ? totalSecondStar : 0})`}
+                        key="2"
+                      >
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (
@@ -1035,7 +1070,10 @@ const ProductDetail = (props) => {
                           })}
                         {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
                       </TabPane>
-                      <TabPane tab={`1 sao (${totalFirstStar ? totalFirstStar : 0})`} key="1">
+                      <TabPane
+                        tab={`1 sao (${totalFirstStar ? totalFirstStar : 0})`}
+                        key="1"
+                      >
                         {reviews?.data &&
                           reviews?.data.map((item, index) => {
                             return (

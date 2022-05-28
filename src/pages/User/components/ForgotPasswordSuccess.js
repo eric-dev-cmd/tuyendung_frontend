@@ -7,7 +7,7 @@ export const ForgotPasswordSuccess = ({ email }) => {
   return (
     <>
       <Helmet>
-        <title>Mật khẩu | 123job.org</title>
+        <title>Mật khẩu | jobboard.com</title>
       </Helmet>
       <div className="login-wrapper d-flex justify-content-center py-4 my-5">
         <div className="bg-login mt-3" style={{ width: "35%" }}>

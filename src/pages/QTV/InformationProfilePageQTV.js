@@ -177,7 +177,7 @@ const InformationProfilePageQTV = () => {
                     <div className="col-8 p-3">
                       <div className="d-flex align-items-center justify-content-between">
                         <div>
-                          <span>https://employer.123job.org</span>
+                          <span>https://employer.jobboard.com</span>
                         </div>
                       </div>
                     </div>

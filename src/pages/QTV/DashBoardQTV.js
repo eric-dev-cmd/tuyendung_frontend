@@ -2479,7 +2479,7 @@ const DashBoardQTV = () => {
                                               </p>
                                               <p>
                                                 <Link
-                                                  to={`/job-detail/${item._id}`}
+                                                  to={`/job-detail/${item?.tinTuyenDung?._id}`}
                                                   target="_blank"
                                                 >
                                                   Xem tin đăng trên website

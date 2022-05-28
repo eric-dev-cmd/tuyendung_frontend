@@ -45,7 +45,7 @@ const SavedJobsPage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Tin tuyển dụng đã lưu | 123job.org</title>
+        <title>Tin tuyển dụng đã lưu | jobboard.com</title>
       </Helmet>
       <MainNavigation />
 

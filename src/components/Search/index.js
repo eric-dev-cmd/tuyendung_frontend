@@ -96,6 +96,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
     // delete filters.loaiCongViec;
     setFilters({
       ...filters,
+      trangThai: 2,
       page: 1,
       tieuDe: kw,
     });
@@ -185,6 +186,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                     delete filters.loaiCongViec;
                     setFilters({
                       ...filters,
+                      trangThai: 2,
                       page: 1,
                       nganhNghe: e,
                     });
@@ -229,6 +231,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                     // delete filters.loaiCongViec;
                     setFilters({
                       ...filters,
+                      trangThai: 2,
                       page: 1,
                       linhVuc: e,
                     });
@@ -272,6 +275,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   // delete filters.loaiCongViec;
                   setFilters({
                     ...filters,
+                    trangThai: 2,
                     page: 1,
                     diaDiem: e,
                   });
@@ -313,6 +317,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   // delete filters.loaiCongViec;
                   setFilters({
                     ...filters,
+                    trangThai: 2,
                     page: 1,
                     viTri: e,
                   });
@@ -368,6 +373,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   // delete filters.diaDiem;
                   setFilters({
                     ...filters,
+                    trangThai: 2,
                     page: 1,
                     loaiCongViec: e,
                   });
@@ -412,6 +418,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   setFilters({
                     ...filters,
                     page: 1,
+                    trangThai: 2,
                     soNamKinhNghiem: e,
                   });
                 }}

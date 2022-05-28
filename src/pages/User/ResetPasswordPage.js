@@ -48,7 +48,7 @@ const ResetPasswordPage = (props) => {
     <div>
       {" "}
       <Helmet>
-        <title>Đặt lại mật khẩu | 123job.org</title>
+        <title>Đặt lại mật khẩu | jobboard.com</title>
       </Helmet>
       <div className="login-wrapper d-flex justify-content-center py-4 my-5">
         <div className="bg-login mt-3" style={{ width: "35%" }}>

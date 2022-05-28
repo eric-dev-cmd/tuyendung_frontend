@@ -23,8 +23,8 @@ const RecruitmentApi = {
     const url = `/tinTuyenDungs/${id}`;
     return axiosClient.get(url);
   },
-  getRecruitmentByIdAndStatus: (id) => {
-    const url = `/tinTuyenDungs/getByIdTrangThai/${id}`;
+  getRecruitmentByIdAndStatus: (id, idUtv) => {
+    const url = `/tinTuyenDungs/getByIdTrangThai/${id}?idUtv=${idUtv}`;
     return axiosClient.get(url);
   },
   getListProfileByRecruitment: (params) => {

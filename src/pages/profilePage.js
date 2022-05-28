@@ -14,7 +14,7 @@ const ProfilePage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Hồ sơ của tôi | 123job.org</title>
+        <title>Hồ sơ của tôi | jobboard.com</title>
       </Helmet>
       <MainNavigation />
       <div className="mt-65">

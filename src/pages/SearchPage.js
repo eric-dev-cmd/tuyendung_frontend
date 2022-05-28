@@ -61,7 +61,7 @@ const SearchPage = (props) => {
   return (
     <Fragment>
       <Helmet>
-        <title>Trang tìm kiếm| 123job.org</title>
+        <title>Trang tìm kiếm| jobboard.com</title>
       </Helmet>
       <MainNavigation />
       <div className="mt-65">

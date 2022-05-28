@@ -132,7 +132,9 @@ function App(props) {
           component={InformationProfilePageQTV}
         />
         {/* ADMIN END */}
-
+        <Route path="/404-error">
+          <NotFound />
+        </Route>
         <Route path="*">
           <NotFound />
         </Route>

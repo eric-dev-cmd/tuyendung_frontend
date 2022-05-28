@@ -77,7 +77,7 @@ const ChangePasswordPage = (props) => {
     <>
       {" "}
       <Helmet>
-        <title>Setting account | 123job.org</title>
+        <title>Setting account | jobboard.com</title>
       </Helmet>
       <MainNavigation />
       <Layout>
