@@ -38,9 +38,6 @@ const { SubMenu } = Menu;
 const DashBoardQTV = () => {
   const { t } = useTranslation();
   const { listCareers, levels, typeWorks } = useCommonContext();
-  console.log("Ngang nghe", listCareers);
-  console.log("cap bac", listCareers);
-  console.log("Ngang nghe", listCareers);
   const [isSubmit, setIsSubmit] = useState([]);
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
@@ -65,7 +62,6 @@ const DashBoardQTV = () => {
 
   const [recruitments, setRecruitments] = useState([]);
   const paramsString = queryString.stringify(filters);
-  console.log("paramsString", paramsString);
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
 
@@ -73,8 +69,6 @@ const DashBoardQTV = () => {
     const requestUrl = `http://localhost:4000/tinTuyenDungs/soLuongDanhGiaTheoTin?${paramsString}`;
     try {
       const response = await axios.get(requestUrl);
-      console.log("...soLuongDanhGiaTheoTin [vinh]", response.data.data);
-      console.log("Aaaaaaaaaaaa", response.data);
       setRecruitments(response.data.data);
       setTotalCount(response?.data?.pagination?.total);
       setPagination(response?.data?.pagination);
@@ -107,12 +101,7 @@ const DashBoardQTV = () => {
   //   setPage(pg);
   // };
   const handleFiltersStatusChange = (newFilters) => {
-    console.log("New filters: ", newFilters);
-    console.log("+VINH+;", {
-      ...filters,
-      page: 1,
-      trangThai: newFilters,
-    });
+
     setFilters({
       ...filters,
       page: 1,
@@ -120,7 +109,6 @@ const DashBoardQTV = () => {
     });
   };
   const handleFiltersChange = (newFilters) => {
-    console.log("New filters: ", newFilters);
     setFilters({
       ...filters,
       page: 1,
@@ -165,19 +153,19 @@ const DashBoardQTV = () => {
     useState(false);
   const [recruitmentReviewLeast, setRecruitmentReviewLeast] = useState([]);
   const [totalReviewLeast, setTotalReviewLeast] = useState([]);
+  const getRecruitmentReviewLeast = async () => {
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/tinTuyenDungCoNguyCoKhoa`;
+    try {
+      const response = await axios.get(requestUrl);
+      setRecruitmentReviewLeast(response?.data?.data);
+      setTotalReviewLeast(response?.data?.pagination?.total);
+      setIsSubmit(false);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   useEffect(() => {
-    const getRecruitmentReviewLeast = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/tinTuyenDungCoNguyCoKhoa`;
-      try {
-        const response = await axios.get(requestUrl);
-        setRecruitmentReviewLeast(response?.data?.data);
-        setTotalReviewLeast(response?.data?.pagination?.total);
-        setIsSubmit(false);
-        console.log("response getRecruitmentReviewLeast", response);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
+
     getRecruitmentReviewLeast();
   }, [isGetRecruitmentReviewLeast]);
 
@@ -276,6 +264,7 @@ const DashBoardQTV = () => {
   useEffect(() => {
     getTotalStatus();
     getDataListFilters();
+    getRecruitmentReviewLeast();
   }, [isSubmit]);
 
   return (
@@ -355,7 +344,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue="Chọn ngành nghề"
                             onChange={(e) => {
-                              console.log("1. ", e);
                               if (e) {
                                 // selectCareer(e);
                                 // delete filters.tieuDe;
@@ -441,7 +429,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue={t("common.typeWork")}
                             onChange={(e) => {
-                              console.log("1. ", e);
                               // delete filters.tieuDe;
                               // delete filters.nganhNghe;
                               // delete filters.linhVuc;
@@ -592,7 +579,7 @@ const DashBoardQTV = () => {
                                               >
                                                 <>
                                                   {item?.trangThai ==
-                                                  "Chờ duyệt" ? (
+                                                    "Chờ duyệt" ? (
                                                     <>
                                                       <li
                                                         onClick={() => {
@@ -694,9 +681,8 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Chờ xét duyệt (${
-                        totalChoDuyet ? totalChoDuyet : 0
-                      })`}
+                      tab={`Chờ xét duyệt (${totalChoDuyet ? totalChoDuyet : 0
+                        })`}
                       key="1"
                     >
                       <div className="row">
@@ -720,7 +706,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue="Chọn ngành nghề"
                             onChange={(e) => {
-                              console.log("1. ", e);
                               if (e) {
                                 // selectCareer(e);
                                 // delete filters.tieuDe;
@@ -806,7 +791,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue={t("common.typeWork")}
                             onChange={(e) => {
-                              console.log("1. ", e);
                               // delete filters.tieuDe;
                               // delete filters.nganhNghe;
                               // delete filters.linhVuc;
@@ -1031,7 +1015,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue="Chọn ngành nghề"
                             onChange={(e) => {
-                              console.log("1. ", e);
                               if (e) {
                                 // selectCareer(e);
                                 // delete filters.tieuDe;
@@ -1117,7 +1100,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue={t("common.typeWork")}
                             onChange={(e) => {
-                              console.log("1. ", e);
                               // delete filters.tieuDe;
                               // delete filters.nganhNghe;
                               // delete filters.linhVuc;
@@ -1345,7 +1327,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue="Chọn ngành nghề"
                             onChange={(e) => {
-                              console.log("1. ", e);
                               if (e) {
                                 // selectCareer(e);
                                 // delete filters.tieuDe;
@@ -1431,7 +1412,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue={t("common.typeWork")}
                             onChange={(e) => {
-                              console.log("1. ", e);
                               // delete filters.tieuDe;
                               // delete filters.nganhNghe;
                               // delete filters.linhVuc;
@@ -1648,7 +1628,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue="Chọn ngành nghề"
                             onChange={(e) => {
-                              console.log("1. ", e);
                               if (e) {
                                 // selectCareer(e);
                                 // delete filters.tieuDe;
@@ -1734,7 +1713,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue={t("common.typeWork")}
                             onChange={(e) => {
-                              console.log("1. ", e);
                               // delete filters.tieuDe;
                               // delete filters.nganhNghe;
                               // delete filters.linhVuc;
@@ -1962,7 +1940,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue="Chọn ngành nghề"
                             onChange={(e) => {
-                              console.log("1. ", e);
                               if (e) {
                                 // selectCareer(e);
                                 // delete filters.tieuDe;
@@ -2048,7 +2025,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue={t("common.typeWork")}
                             onChange={(e) => {
-                              console.log("1. ", e);
                               // delete filters.tieuDe;
                               // delete filters.nganhNghe;
                               // delete filters.linhVuc;
@@ -2241,9 +2217,8 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Đánh giá kém (${
-                        totalReviewLeast ? totalReviewLeast : 0
-                      })`}
+                      tab={`Đánh giá kém (${totalReviewLeast ? totalReviewLeast : 0
+                        })`}
                       key="9"
                     >
                       <div className="row">
@@ -2267,7 +2242,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue="Chọn ngành nghề"
                             onChange={(e) => {
-                              console.log("1. ", e);
                               if (e) {
                                 // selectCareer(e);
                                 // delete filters.tieuDe;
@@ -2353,7 +2327,6 @@ const DashBoardQTV = () => {
                             }
                             defaultValue={t("common.typeWork")}
                             onChange={(e) => {
-                              console.log("1. ", e);
                               // delete filters.tieuDe;
                               // delete filters.nganhNghe;
                               // delete filters.linhVuc;
@@ -2512,17 +2485,34 @@ const DashBoardQTV = () => {
                                                   class="dropdown-menu"
                                                   aria-labelledby="dropdownMenuButton1"
                                                 >
-                                                  <li
-                                                    onClick={() => {
-                                                      handleAddButtonClickDetailBlock(
-                                                        item?.tinTuyenDung?._id
-                                                      );
-                                                    }}
-                                                  >
-                                                    <span class="dropdown-item">
-                                                      Khóa
-                                                    </span>
-                                                  </li>
+                                                  <>
+                                                    {item?.tinTuyenDung?.trangThai == 'Khóa' ? (
+                                                      <li
+                                                        onClick={() => {
+                                                          handleAddButtonClickDetailBlock(
+                                                            item?.tinTuyenDung?._id
+                                                          );
+                                                        }}
+                                                      >
+                                                        <span class="dropdown-item">
+                                                          Mở khóa
+                                                        </span>
+                                                      </li>
+                                                    ) : item?.tinTuyenDung?.trangThai == 'Đã duyệt' ? (
+                                                      <li
+                                                        onClick={() => {
+                                                          handleAddButtonClickDetailBlock(
+                                                            item?.tinTuyenDung?._id
+                                                          );
+                                                        }}
+                                                      >
+                                                        <span class="dropdown-item">
+                                                          Khóa
+                                                        </span>
+                                                      </li>
+                                                    )
+                                                      : (null)}
+                                                  </>
                                                   <li
                                                     onClick={() => {
                                                       handleAddButtonClickDetailDelete(
@@ -2547,7 +2537,7 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         </div>
-                        {recruitments.length < 1 && (
+                        {recruitmentReviewLeast.length < 1 && (
                           <div className="col-12">
                             <div
                               className="alert alert-warning text-center"
@@ -2557,9 +2547,8 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-
                         <div className="col-12">
-                          {recruitments.length !== 0 && (
+                          {recruitmentReviewLeast.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
                               pagination={pagination}
