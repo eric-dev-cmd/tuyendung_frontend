@@ -172,6 +172,78 @@ const NewForProfileDetail = () => {
     getRecruitmentById();
   }, []);
 
+  const getListRecruitmentByEmployerFilterParams = async () => {
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhaTuyenDung`;
+    const requestUrlTalent = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang`;
+    try {
+      // const r = array.filter((elem) => anotherArray.find(({ id }) => elem.id === id) && elem.sub);
+      const response = await axiosClient.get(requestUrl);
+      const responseTalent = await axiosClient.get(requestUrlTalent);
+
+      let recruitmentByEmployer;
+      let listRecruitmentByEmployer = []
+      response.data.map(item => {
+        recruitmentByEmployer = {
+          idTin: item._id,
+          tieuDe: item.tieuDe,
+          tenNganhNghe: item.nganhNghe.tenNganhNghe,
+          tenLinhVuc: item.nganhNghe.linhVuc.tenLinhVuc,
+        }
+        listRecruitmentByEmployer.push(recruitmentByEmployer);
+      });
+
+      let talent;
+      let listTalent = []
+      responseTalent.data.map(item => {
+        talent = {
+          idDon: item.donTuyenDung._id,
+          tieuDe: item.donTuyenDung.tinTuyenDung.tieuDe,
+          tenNganhNghe: item.donTuyenDung.tinTuyenDung.nganhNghe.tenNganhNghe,
+          tenLinhVuc: item.donTuyenDung.tinTuyenDung.nganhNghe.linhVuc.tenLinhVuc,
+          email: item.donTuyenDung.ungTuyenVien.taiKhoan.email,
+          tenUngTuyenVien: item.donTuyenDung.ungTuyenVien.ten
+        }
+        listTalent.push(talent);
+      });
+
+      const res = listTalent.filter(item => listRecruitmentByEmployer.find(({ tenNganhNghe }) => tenNganhNghe == item.tenNganhNghe))
+
+      return res;
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+
+  const handleSendEmailTalent = async (recruitment) => {
+    try {
+      const listTalent = await getListRecruitmentByEmployerFilterParams();
+      listTalent.map(item => {
+        if (item.tenNganhNghe == recruitment.nganhNghe.tenNganhNghe) {
+            console.log('tieu de', recruitment.nganhNghe.tenNganhNghe, recruitment.tieuDe);
+            console.log('dc gui mail', item.tenUngTuyenVien, item.email);
+        }
+      })
+      // const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
+      // await axios.delete(requestUrl).then((res) => {
+      //   if (res?.data?.status == "success") {
+      //     setIsSubmit(true);
+      //     toast.success("Cập nhật thành công", {
+      //       position: "bottom-right",
+      //       autoClose: 1000,
+      //       hideProgressBar: false,
+      //       closeOnClick: true,
+      //       pauseOnHover: true,
+      //       draggable: true,
+      //       progress: undefined,
+      //     });
+      //   }
+      // });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <Fragment>
       <Helmet>
@@ -284,6 +356,21 @@ const NewForProfileDetail = () => {
                             Làm mới
                           </Button>
                         </div>
+                        <div className="col-4 ms-3">
+                          <span>Gửi email đến ứng viên tiềm năng</span>
+                          <Button
+                            className="d-flex align-items-center justify-content-center"
+                            type="primary"
+                            // icon={<GrFormRefresh />}
+                            onClick={() => {
+                              handleSendEmailTalent(
+                                recruitmentById
+                              );
+                            }}
+                          >
+                            Gửi
+                          </Button>
+                        </div>
                       </div>
 
                       <div className="row mt-3">
@@ -317,6 +404,7 @@ const NewForProfileDetail = () => {
                                         ungTuyenVien,
                                         tinTuyenDung,
                                         trangThai,
+                                        tiemNang
                                       } = item?.donTuyenDung;
                                       return (
                                         <tr key={index}>
@@ -326,6 +414,7 @@ const NewForProfileDetail = () => {
                                             </p>
                                           </td>
                                           <td>
+                                            <span> {tiemNang && 'Tiềm năng'} </span>
                                             <p className="text-sm fw-bold mb-0">
                                               {ungTuyenVien?.ten}
                                             </p>

@@ -83,10 +83,14 @@ const MainNavigationAdmin = () => {
       setTotalCount(response.pagination.total);
       setPagination(response.pagination);
       setIsSubmit(false);
+
     } catch (error) {
       console.log(error.response);
     }
   };
+
+
+
   useEffect(() => {
     let mounted = true;
 
@@ -164,6 +168,7 @@ const MainNavigationAdmin = () => {
       console.log(error.response);
     }
   };
+
   useEffect(() => {
     getTotalStatus();
   }, []);

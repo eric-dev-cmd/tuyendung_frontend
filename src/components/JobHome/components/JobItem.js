@@ -155,39 +155,22 @@ const JobItem = (props) => {
                 </p>
               </Tooltip>
             </div>
-            {isFavorite ?
-              (<div
-                className={jobItemFavoriteWrapper}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleUnSubmitFavorite();
-                }}
+            <div
+              className={jobItemFavoriteWrapper}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmitFavorite();
+              }}
+            >
+              <div
+                className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${isHightLightFavorite ? "text-danger" : ""
+                  }`}
               >
-                <div
-                  className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${isHightLightFavorite ? "text-danger" : ""
-                    }`}
-                >
-                  <AiFillHeart
-                    className={`fs-18 `}
-                  />
-                </div>
-              </div>) :
-              (<div
-                className={jobItemFavoriteWrapper}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSubmitFavorite();
-                }}
-              >
-                <div
-                  className={`jobItemFavorite border border-secondary rounded position-absolute top-0 end-0 px-2 badge bg-light text-dark ${isHightLightFavorite ? "text-danger" : ""
-                    }`}
-                >
-                  <AiFillHeart
-                    className={`fs-18 text-danger `}
-                  />
-                </div>
-              </div>)}
+                <AiFillHeart
+                  className={`fs-18 ${isFavorite ? " text-danger" : ""} `}
+                />
+              </div>
+            </div>
           </div>
           <div className="d-flex mt-2">
             <div className="jobItemSalary cursorDefault">
