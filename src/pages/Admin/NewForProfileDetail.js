@@ -7,12 +7,12 @@ import {
   Tabs,
   DatePicker,
 } from "antd";
-import axios from "axios";
 import queryString from "query-string";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import PostFiltersForm from "../../components/Admin/PostFiltersForm";
 import axiosClient from "../../services/axiosClient";
+import axios from "axios";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
@@ -172,58 +172,29 @@ const NewForProfileDetail = () => {
     getRecruitmentById();
   }, []);
 
-  const getListRecruitmentByEmployerFilterParams = async () => {
-    const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhaTuyenDung`;
-    const requestUrlTalent = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang`;
-    try {
-      // const r = array.filter((elem) => anotherArray.find(({ id }) => elem.id === id) && elem.sub);
-      const response = await axiosClient.get(requestUrl);
-      const responseTalent = await axiosClient.get(requestUrlTalent);
-
-      let recruitmentByEmployer;
-      let listRecruitmentByEmployer = []
-      response.data.map(item => {
-        recruitmentByEmployer = {
-          idTin: item._id,
-          tieuDe: item.tieuDe,
-          tenNganhNghe: item.nganhNghe.tenNganhNghe,
-          tenLinhVuc: item.nganhNghe.linhVuc.tenLinhVuc,
-        }
-        listRecruitmentByEmployer.push(recruitmentByEmployer);
-      });
-
-      let talent;
-      let listTalent = []
-      responseTalent.data.map(item => {
-        talent = {
-          idDon: item.donTuyenDung._id,
-          tieuDe: item.donTuyenDung.tinTuyenDung.tieuDe,
-          tenNganhNghe: item.donTuyenDung.tinTuyenDung.nganhNghe.tenNganhNghe,
-          tenLinhVuc: item.donTuyenDung.tinTuyenDung.nganhNghe.linhVuc.tenLinhVuc,
-          email: item.donTuyenDung.ungTuyenVien.taiKhoan.email,
-          tenUngTuyenVien: item.donTuyenDung.ungTuyenVien.ten
-        }
-        listTalent.push(talent);
-      });
-
-      const res = listTalent.filter(item => listRecruitmentByEmployer.find(({ tenNganhNghe }) => tenNganhNghe == item.tenNganhNghe))
-
-      return res;
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
-
   const handleSendEmailTalent = async (recruitment) => {
+    const requestUrlTalent = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang`;
+    const requestUrlSendEmail = `http://localhost:4000/tinTuyenDungs/sendEmail`;
     try {
-      const listTalent = await getListRecruitmentByEmployerFilterParams();
-      listTalent.map(item => {
-        if (item.tenNganhNghe == recruitment.nganhNghe.tenNganhNghe) {
-            console.log('tieu de', recruitment.nganhNghe.tenNganhNghe, recruitment.tieuDe);
-            console.log('dc gui mail', item.tenUngTuyenVien, item.email);
-        }
+      await axiosClient.get(requestUrlTalent).then(res => {
+        res?.data?.map(async item => {
+          if (item?.donTuyenDung?.tinTuyenDung?.nganhNghe?._id === recruitment?.nganhNghe?._id) {
+            const sendMail = {
+              email: 'catluynh99@gmail.com', //item?.donTuyenDung?.ungTuyenVien?.taiKhoan?.email,
+              subject: `Jobs Board gửi ${item?.donTuyenDung?.ungTuyenVien?.ten} việc làm mới phù hợp với bạn ngày ${TimeUtils.formatDateTime(
+                recruitment?.ngayTao,
+                "DD-MM-YYYY"
+              )}`,
+              message: `Xin chào <strong>${item?.donTuyenDung?.ungTuyenVien?.ten}</strong> <br> <strong>Jobs Board</strong> gửi bạn việc làm phù hợp mới ngày ${TimeUtils.formatDateTime(
+                recruitment?.ngayTao,
+                "DD-MM-YYYY"
+              )} <br> Vui lòng click vào link này để biết thêm thông tin chi tiết: http://localhost:3000/job-detail/${recruitment._id}`
+            }
+            await axios.post(requestUrlSendEmail, sendMail)
+          }
+        })
       })
+
       // const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
       // await axios.delete(requestUrl).then((res) => {
       //   if (res?.data?.status == "success") {

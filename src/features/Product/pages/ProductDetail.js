@@ -110,10 +110,10 @@ const ProductDetail = (props) => {
   }, []);
 
   //CALL API
-  const getRecruitmentById = async () => {
+  const getRecruitmentByIdAndStatus = async () => {
     // setLoading(true);
     try {
-      const response = await RecruitmentApi.getRecruitmentById(slug);
+      const response = await RecruitmentApi.getRecruitmentByIdAndStatus(slug);
       setDetail(response.data);
       setPhucLois(response.data.phucLoi);
       setYeuCaus(response.data.yeuCau);
@@ -187,7 +187,7 @@ const ProductDetail = (props) => {
     let timeout = null;
     if (slug) {
       console.log("Call api depen");
-      timeout = setTimeout(() => getRecruitmentById(), 1000);
+      timeout = setTimeout(() => getRecruitmentByIdAndStatus(), 1000);
     }
     return () => clearTimeout(timeout);
   }, [slug]);
