@@ -156,6 +156,7 @@ const NewJob = () => {
       const response = await EmployeerApi.createRecruitment(payload)
         .then((res) => {
           if (res?.status == "success") {
+            console.log('aaaaaaaaaaaaaaaaaa')
             toast.success("Đăng tin tuyển dụng thành công", {
               position: "bottom-right",
               autoClose: 1000,

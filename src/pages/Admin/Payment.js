@@ -9,8 +9,7 @@ export const Payment = ({ }) => {
     const getPayMent = async () => {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/thanhToan`;
       try {
-        await axiosClient.post(requestUrl).then((res) => {
-        });
+        await axiosClient.post(requestUrl);
       } catch (error) {
         console.log(error.response);
       }

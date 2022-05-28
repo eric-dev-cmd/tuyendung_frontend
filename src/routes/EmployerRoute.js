@@ -19,7 +19,7 @@ const EmployerRoute = ({ component: Component, ...restOfProps }) => {
   useEffect(() => {
     if (isAuthenticated && roles === NHA_TUYEN_DUNG) {
       console.log("1. co quyen");
-      history.push("/employer/dashboard");
+     // history.push("/employer/dashboard");
     } else if (!isAuthenticated) {
       // history.push("/login")
       <Redirect to="/login" />;

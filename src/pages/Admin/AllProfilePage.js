@@ -48,7 +48,7 @@ const AllProfilePage = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
-    limit: 2,
+    limit: 5,
   });
   const [pagination, setPagination] = useState({
     page: 1,

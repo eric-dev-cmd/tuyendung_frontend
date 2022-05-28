@@ -57,7 +57,6 @@ const AllProfilePage = () => {
 
   const [recruitments, setRecruitments] = useState([]);
 
-  // console.log("paramsString", paramsString);
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
   const [pagination, setPagination] = useState({
@@ -77,7 +76,6 @@ const AllProfilePage = () => {
     const requestUrl = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang?${paramsString}`;
     try {
       const response = await axiosClient.get(requestUrl);
-      console.log("response", response.data);
       setRecruitments(response.data);
       setTotalCount(response.pagination.total);
       setPagination(response.pagination);
@@ -135,12 +133,6 @@ const AllProfilePage = () => {
     setPage(pg);
   };
   const handleFiltersStatusChange = (newFilters) => {
-    console.log("New filters: ", newFilters);
-    console.log("+VINH+;", {
-      ...filters,
-      page: 1,
-      trangThai: newFilters,
-    });
     setFilters({
       ...filters,
       page: 1,
@@ -148,7 +140,6 @@ const AllProfilePage = () => {
     });
   };
   const handleFiltersChange = (newFilters) => {
-    console.log("New filters: ", newFilters);
     setFilters({
       ...filters,
       page: 1,
@@ -165,7 +156,6 @@ const AllProfilePage = () => {
     setIsShowModalProfile(true);
   };
   const handleSubmitModalProfile = () => {
-    console.log("Submit modal profile");
   };
   const renderModalProfile = useMemo(() => {
     if (!isShowModalProfile) return null;
@@ -207,7 +197,11 @@ const AllProfilePage = () => {
       }
     };
     getTotalApplication();
+
   }, []);
+
+
+  
 
   // xóa đơn ứng tuyển
   const handleAddButtonClickDelete = async (id) => {
@@ -307,10 +301,9 @@ const AllProfilePage = () => {
                     onChange={(e) => {
                       setValue(e);
                       handleFiltersStatusChange(e);
-                      console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalAll ? totalAll :0})`} key="4">
+                    <TabPane tab={`Tất cả (${totalAll ? totalAll : 0})`} key="4">
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm
@@ -325,10 +318,8 @@ const AllProfilePage = () => {
                             placeholder="Thời gian tạo"
                             optionFilterProp="children"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                             onSearch={(value) => {
-                              console.log("Value search", value);
                             }}
                             filterOption={(input, option) =>
                               option.children
@@ -346,7 +337,6 @@ const AllProfilePage = () => {
                             style={{ width: "100%" }}
                             defaultValue="lucy"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                           >
                             <Option value="jack">Đăng gần nhất</Option>
@@ -592,10 +582,8 @@ const AllProfilePage = () => {
                             placeholder="Thời gian nộp đơn"
                             optionFilterProp="children"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                             onSearch={(value) => {
-                              console.log("Value search", value);
                             }}
                             filterOption={(input, option) =>
                               option.children
@@ -611,7 +599,6 @@ const AllProfilePage = () => {
                             style={{ width: "100%" }}
                             defaultValue="lucy"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                           >
                             <Option value="jack">Đăng gần nhất</Option>
@@ -835,10 +822,8 @@ const AllProfilePage = () => {
                             placeholder="Thời gian tạo"
                             optionFilterProp="children"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                             onSearch={(value) => {
-                              console.log("Value search", value);
                             }}
                             filterOption={(input, option) =>
                               option.children
@@ -856,7 +841,6 @@ const AllProfilePage = () => {
                             style={{ width: "100%" }}
                             defaultValue="lucy"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                           >
                             <Option value="jack">Đăng gần nhất</Option>
@@ -1080,10 +1064,8 @@ const AllProfilePage = () => {
                             placeholder="Thời gian tạo"
                             optionFilterProp="children"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                             onSearch={(value) => {
-                              console.log("Value search", value);
                             }}
                             filterOption={(input, option) =>
                               option.children
@@ -1101,7 +1083,6 @@ const AllProfilePage = () => {
                             style={{ width: "100%" }}
                             defaultValue="lucy"
                             onChange={(value) => {
-                              console.log("Value", value);
                             }}
                           >
                             <Option value="jack">Đăng gần nhất</Option>
