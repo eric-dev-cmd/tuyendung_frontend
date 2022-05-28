@@ -67,7 +67,7 @@ const DashBoardQTVEmployer = () => {
     try {
       const response = await axios.get(requestUrl);
       setRecruitments(response.data.data);
-      setTotalCount(response?.data?.pagination?.total);
+      setTotalCount(response?.data?.pagination?.total?.tong);
       setPagination(response?.data?.pagination);
       setIsSubmit(false);
     } catch (error) {

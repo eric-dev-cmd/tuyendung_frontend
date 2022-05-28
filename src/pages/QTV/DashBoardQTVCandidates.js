@@ -69,7 +69,7 @@ const DashBoardQTVCandidates = () => {
     try {
       const response = await axiosClient.get(requestUrl);
       setRecruitments(response.data);
-      setTotalCount(response.pagination.total);
+      setTotalCount(response.pagination.total?.tong);
       setPagination(response.pagination);
       setIsSubmit(false);
     } catch (error) {
