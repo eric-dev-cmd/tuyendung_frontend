@@ -44,6 +44,7 @@ const ModalProfileDetail = ({
     ungTuyenVien,
     tiemNang,
     ngayUngTuyen,
+    trangThai,
     _id
   } = user?.donTuyenDung;
   console.log("Trung Vinh user", user);
@@ -93,7 +94,7 @@ const ModalProfileDetail = ({
     try {
       const requestUrl = `http://localhost:4000/donUngTuyens/chapNhanDonUngTuyen/${id}`;
       await axiosClient.patch(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
+        if (res?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
@@ -116,7 +117,7 @@ const ModalProfileDetail = ({
     try {
       const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
       await axiosClient.patch(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
+        if (res?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
