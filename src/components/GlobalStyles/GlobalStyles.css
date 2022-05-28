@@ -209,3 +209,39 @@ input[type="radio"]{
   cursor: pointer;
   transition: color 200ms;
 }
+.bg-about{
+  background: transparent linear-gradient(288deg,#deffe2,#efffef) 0 0 no-repeat padding-box !important;
+}
+.about h2{
+  color: #00b14f;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+.about h3{
+  color: #212f3f;
+    font-size: 14px;
+    line-height: 22px;
+    margin-bottom: 23px;
+    margin-top: 18px;
+    text-align: center;
+}
+.ptb-40{
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
+.box-content{
+  border-radius: 20px;
+  padding: 25px 30px;
+}
+.box-content p{
+  color: #3d6089;
+    font-size: 24px;
+    font-weight: 700;
+}
+.box-content span{
+
+  color: #555;
+  font-size: 14px;
+  line-height: 22px;
+}

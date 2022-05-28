@@ -26,6 +26,7 @@ import { Helmet } from "react-helmet";
 import NavbarQTV from "./components/navbar/NavbarQTV";
 import axiosClient from "../../services/axiosClient";
 import { toast } from "react-toastify";
+import { RiRefreshLine } from "react-icons/ri";
 
 const { Option } = Select;
 
@@ -346,28 +347,6 @@ const DashBoardQTVCandidates = () => {
                             <Option value="tom">Tom</Option>
                           </Select>
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -377,6 +356,7 @@ const DashBoardQTVCandidates = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>

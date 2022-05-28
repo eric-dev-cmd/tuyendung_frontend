@@ -322,6 +322,71 @@ const Home = () => {
             </div>
           </JobProvider>
         </Layout>
+        {/* <div>
+          <div className="bg-white ptb-40">
+            <div className="container">
+              <div className="row">
+                <div className="col-12 col-md-12">
+                  <div className="about">
+                    <h2 class="py-3">Về chúng tôi</h2>
+                    <h3>
+                      TopCV là công ty công nghệ nhân sự (HR Tech) hàng đầu Việt
+                      Nam. Với năng lực lõi là công nghệ, đặc biệt là trí tuệ
+                      nhân tạo (AI), sứ mệnh của TopCV đặt ra cho mình là thay
+                      đổi thị trường tuyển dụng - nhân sự ngày một hiệu quả hơn.
+                      Bằng công nghệ, chúng tôi tạo ra nền tảng cho phép người
+                      lao động tạo CV, phát triển được các kỹ năng cá nhân, xây
+                      dựng hình ảnh chuyên nghiệp trong mắt nhà tuyển dụng và
+                      tiếp cận với các cơ hội việc làm phù hợp.
+                    </h3>
+                  </div>
+                </div>
+                <div className="col-12 col-md-12">
+                  <div className="bg-about rounded ptb-40">
+                    <div className="row">
+                      <div class="box-content">
+                        <div class="row mb-10">
+                          <div class="col-md-3">
+                            <p>30.000+</p>
+                            <span>
+                              Ứng viên đang bật tìm việc trung bình/thời điểm
+                            </span>
+                          </div>
+                          <div class="col-md-3">
+                            <p>90.000+</p>
+                            <span>Doanh nghiệp sử dụng dịch vụ</span>
+                          </div>
+                          <div class="col-md-3">
+                            <p>120.000+</p>
+                            <span>Nhà tuyển dụng sử dụng thường xuyên</span>
+                          </div>
+                          <div class="col-md-3">
+                            <p>200.000+</p>
+                            <span>Ứng viên mới mỗi tháng</span>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3">
+                            <p>3.000.000+</p>
+                            <span>Lượt ứng viên truy cập hàng tháng</span>
+                          </div>
+                          <div class="col-md-3">
+                            <p>4.000.000+</p>
+                            <span>Ứng viên tiềm năng</span>
+                          </div>
+                          <div class="col-md-3">
+                            <p>60%</p>
+                            <span>Ứng viên có trên 2 năm kinh nghiệm</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> */}
         <FooterHome />
       </div>
     </Fragment>

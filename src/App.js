@@ -51,8 +51,6 @@ function App(props) {
       <Switch>
         <Route path="/" component={Home} exact />
         <Route exact path="/access-denied" component={AccessDenied} />
-
-        <Route path="/access-denied" component={AccessDenied} exact />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={Register} />
         {/* <Route exact path="/appled-jobs" component={AppliedJobsPage} />*/}

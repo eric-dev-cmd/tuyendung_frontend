@@ -25,6 +25,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import NavbarQTV from "./components/navbar/NavbarQTV";
 import { toast } from "react-toastify";
+import { RiRefreshLine } from "react-icons/ri";
 
 const { Option } = Select;
 
@@ -211,7 +212,6 @@ const DashBoardQTVEmployer = () => {
     getDataListFilters();
   }, [isSubmit]);
 
-
   return (
     <Fragment>
       <Helmet>
@@ -344,28 +344,6 @@ const DashBoardQTVEmployer = () => {
                             <Option value="tom">Tom</Option>
                           </Select>
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -375,7 +353,7 @@ const DashBoardQTVEmployer = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
