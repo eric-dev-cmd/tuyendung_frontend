@@ -1,3 +1,8 @@
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Input, Layout, Select } from "antd";
+import axios from "axios";
+import moment from "moment";
+import queryString from "query-string";
 import React, {
   Fragment,
   useContext,
@@ -5,17 +10,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Layout, Select } from "antd";
 import { useTranslation } from "react-i18next";
-import { DatePicker, Space } from "antd";
-import moment from "moment";
-import { useCommonContext } from "./context/commonContext";
-import { filter, isEmpty, isUndefined } from "lodash";
 import { useHistory } from "react-router-dom";
-import queryString from "query-string";
-import axios from "axios";
 import { SearchContext } from "../../context/SearchContextProvider";
+import { useCommonContext } from "./context/commonContext";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -32,16 +30,16 @@ const SearchCommon = ({ careers, fields, locations }) => {
   const typingTimeOutRef = useRef(null);
   const [career, selectCareer] = useState();
   const [filters, setFilters] = useState({
-    tieuDe: "",
-    nganhNghe: "",
-    linhVuc: "",
-    diaDiem: "",
-    soNamKinhNghiem: "",
-    viTri: "",
-    tuNgay: "",
-    denNgay: "",
-    page: 1,
-    loaiCongViec: "",
+    // tieuDe: "",
+    // nganhNghe: "",
+    // linhVuc: "",
+    // diaDiem: "",
+    // soNamKinhNghiem: "",
+    // viTri: "",
+    // tuNgay: "",
+    // denNgay: "",
+    // page: 1,
+    // loaiCongViec: "",
   });
   const paramsString = queryString.stringify(filters);
   const [recruitmentList, setRecruitmentList] = useState([]);
@@ -88,14 +86,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
     typingTimeOutRef.current = setTimeout(() => {
       setKeyword(kw);
     }, 500);
-    delete filters.nganhNghe;
-    delete filters.linhVuc;
-    delete filters.diaDiem;
-    delete filters.soNamKinhNghiem;
-    delete filters.tuNgay;
-    delete filters.denNgay;
-    delete filters.viTri;
-    delete filters.loaiCongViec;
+    // delete filters.nganhNghe;
+    //     delete filters.linhVuc;
+    // delete filters.diaDiem;
+    // delete filters.soNamKinhNghiem;
+    // delete filters.tuNgay;
+    // delete filters.denNgay;
+    // delete filters.viTri;
+    // delete filters.loaiCongViec;
     setFilters({
       ...filters,
       page: 1,
@@ -121,7 +119,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
       setShowItem(true);
     }
 
-    history.push(`/search?${paramsString}`);
+    history.replace(`/search?${paramsString}`);
   };
 
   useEffect(() => {
@@ -221,14 +219,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 onChange={(e) => {
                   console.log("1. ", e);
                   if (e) {
-                    delete filters.tieuDe;
-                    delete filters.nganhNghe;
-                    delete filters.diaDiem;
-                    delete filters.soNamKinhNghiem;
-                    delete filters.tuNgay;
-                    delete filters.denNgay;
-                    delete filters.viTri;
-                    delete filters.loaiCongViec;
+                    // delete filters.tieuDe;
+                    // delete filters.nganhNghe;
+                    // delete filters.diaDiem;
+                    // delete filters.soNamKinhNghiem;
+                    // delete filters.tuNgay;
+                    // delete filters.denNgay;
+                    // delete filters.viTri;
+                    // delete filters.loaiCongViec;
                     setFilters({
                       ...filters,
                       page: 1,
@@ -264,14 +262,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue="Chọn địa điểm"
                 onChange={(e) => {
                   console.log("3. ", e);
-                  delete filters.tieuDe;
-                  delete filters.nganhNghe;
-                  delete filters.linhVuc;
-                  delete filters.soNamKinhNghiem;
-                  delete filters.tuNgay;
-                  delete filters.denNgay;
-                  delete filters.viTri;
-                  delete filters.loaiCongViec;
+                  // delete filters.tieuDe;
+                  // delete filters.nganhNghe;
+                  // delete filters.linhVuc;
+                  // delete filters.soNamKinhNghiem;
+                  // delete filters.tuNgay;
+                  // delete filters.denNgay;
+                  // delete filters.viTri;
+                  // delete filters.loaiCongViec;
                   setFilters({
                     ...filters,
                     page: 1,
@@ -305,14 +303,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 }
                 defaultValue="Chọn cấp bậc"
                 onChange={(e) => {
-                  delete filters.tieuDe;
-                  delete filters.nganhNghe;
-                  delete filters.linhVuc;
-                  delete filters.soNamKinhNghiem;
-                  delete filters.tuNgay;
-                  delete filters.denNgay;
-                  delete filters.diaDiem;
-                  delete filters.loaiCongViec;
+                  // delete filters.tieuDe;
+                  // delete filters.nganhNghe;
+                  // delete filters.linhVuc;
+                  // delete filters.soNamKinhNghiem;
+                  // delete filters.tuNgay;
+                  // delete filters.denNgay;
+                  // delete filters.diaDiem;
+                  // delete filters.loaiCongViec;
                   setFilters({
                     ...filters,
                     page: 1,
@@ -360,14 +358,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue={t("common.typeWork")}
                 onChange={(e) => {
                   console.log("1. ", e);
-                  delete filters.tieuDe;
-                  delete filters.nganhNghe;
-                  delete filters.linhVuc;
-                  delete filters.soNamKinhNghiem;
-                  delete filters.tuNgay;
-                  delete filters.denNgay;
-                  delete filters.viTri;
-                  delete filters.diaDiem;
+                  // delete filters.tieuDe;
+                  // delete filters.nganhNghe;
+                  // delete filters.linhVuc;
+                  // delete filters.soNamKinhNghiem;
+                  // delete filters.tuNgay;
+                  // delete filters.denNgay;
+                  // delete filters.viTri;
+                  // delete filters.diaDiem;
                   setFilters({
                     ...filters,
                     page: 1,
@@ -403,14 +401,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                 defaultValue={t("common.experience")}
                 onChange={(e) => {
                   console.log("1. ", e);
-                  delete filters.tieuDe;
-                  delete filters.nganhNghe;
-                  delete filters.linhVuc;
-                  delete filters.loaiCongViec;
-                  delete filters.tuNgay;
-                  delete filters.denNgay;
-                  delete filters.viTri;
-                  delete filters.diaDiem;
+                  // delete filters.tieuDe;
+                  // delete filters.nganhNghe;
+                  // delete filters.linhVuc;
+                  // delete filters.loaiCongViec;
+                  // delete filters.tuNgay;
+                  // delete filters.denNgay;
+                  // delete filters.viTri;
+                  // delete filters.diaDiem;
                   setFilters({
                     ...filters,
                     page: 1,
