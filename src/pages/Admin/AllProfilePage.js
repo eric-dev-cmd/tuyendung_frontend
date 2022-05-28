@@ -76,6 +76,8 @@ const AllProfilePage = () => {
     const paramsString = queryString.stringify(filters);
     try {
       const response = await RecruitmentApi.getListProfile(paramsString);
+      const a = recruitments.find(yeuCauDoTuoi => yeuCauDoTuoi = true)
+      console.log('aaaaaaaaaa', a)
       setRecruitments(response.data);
       setPagination(response.pagination);
       setIsSubmit(false);
@@ -415,9 +417,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -456,7 +458,7 @@ const AllProfilePage = () => {
                                                 >
                                                   <>
                                                     {trangThai ==
-                                                    "Thất bại" ? null : (
+                                                      "Thất bại" ? null : (
                                                       <span class="dropdown-item">
                                                         Ứng viên tiềm năng
                                                       </span>
@@ -675,9 +677,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -890,9 +892,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1114,9 +1116,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />

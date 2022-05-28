@@ -64,6 +64,8 @@ const ProductDetail = (props) => {
   const [moTas, setMoTas] = useState(detail.moTa || "");
   const [yeuCaus, setYeuCaus] = useState(detail.yeuCau || "");
   const [isShowModal, setIsShowModal] = useState(false);
+  const [checkAppliedJob, setCheckAppliedJob] = useState();
+  const [role, setRole] = useState();
   const history = useHistory();
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
   const userId = useSelector((state) => state?.userLogin?.user?.taiKhoan._id);
@@ -149,12 +151,13 @@ const ProductDetail = (props) => {
       if (response?.data.length === 0) {
         history.push("/404-error");
       } else {
-        console.log("response?.data status", response);
-
         setDetail(response?.data);
+        setCheckAppliedJob(response?.checkUngTuyen);
         setPhucLois(response?.data.phucLoi);
         setYeuCaus(response?.data.yeuCau);
         setMoTas(response?.data.moTa);
+        setRole(user?.taiKhoan.loaiTaiKhoan);
+        console.log('aaaaaaaaaaa', role)
         // setLoading(false);
       }
     } catch (error) {
@@ -225,13 +228,11 @@ const ProductDetail = (props) => {
   useEffect(() => {
     let timeout = null;
     if (slug) {
-      console.log("Call api depen");
       timeout = setTimeout(() => getRecruitmentByIdAndStatus(), 1000);
     }
     return () => clearTimeout(timeout);
   }, [slug, user?.taiKhoan._id]);
 
-  console.log("... logger detail", detail);
   const handleSubmitModal = async (payload) => {
     try {
       await CandidateApplicationForm.createApplicationForm(payload);
@@ -270,8 +271,8 @@ const ProductDetail = (props) => {
           // clearErrors();
         }}
         onSubmit={handleSubmitModal}
-        // detail={detail}
-        // isEdit={isEdit}
+      // detail={detail}
+      // isEdit={isEdit}
       />
     );
   }, [isShowModal]);
@@ -291,6 +292,8 @@ const ProductDetail = (props) => {
   const [totalFourStar, setTotalFourStar] = useState();
   const [totalFiveStar, setTotalFiveStar] = useState();
   const [totalAll, setTotalAll] = useState();
+
+
   useEffect(() => {
     const getTotalStatus = async () => {
       const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai/${slug}`;
@@ -303,19 +306,10 @@ const ProductDetail = (props) => {
             if (item.danhGia.xepLoai == 3) setTotalThreeStar(item.tong);
             if (item.danhGia.xepLoai == 4) setTotalFourStar(item.tong);
             if (item.danhGia.xepLoai == 5) setTotalFiveStar(item.tong);
-            console.log(
-              "sao",
-              totalFirstStar,
-              totalSecondStar,
-              totalThreeStar,
-              totalFiveStar,
-              totalFourStar
-            );
             total = total + item.tong;
             setTotalAll(total);
           });
         });
-        console.log("responseresponse", response);
         // setTotalStatus(response.data.data);
       } catch (error) {
         console.log(error.response);
@@ -347,6 +341,8 @@ const ProductDetail = (props) => {
                   tieuDe={detail.tieuDe}
                   companyInfo={detail.nhaTuyenDung}
                   ngayHetHan={detail.ngayHetHan}
+                  checkAppliedJob={checkAppliedJob}
+                  role={role}
                 />
               </div>
               <div className="my-2">
@@ -401,16 +397,47 @@ const ProductDetail = (props) => {
                                     </span>
                                     <Row gutter={[32, 8]}>
                                       <Col span={6}>
-                                        <Button
-                                          className="form-control d-flex align-items-center justify-content-center py-4 my-4"
-                                          type="primary"
-                                          icon={<BiPaperPlane />}
-                                          onClick={handleAddButtonClick}
-                                        >
-                                          <span className="ps-2">
-                                            {t("productDetail.applyNow")}
-                                          </span>
-                                        </Button>
+                                        <>
+                                          {checkAppliedJob == false ? (
+                                            role == 'nha_tuyen_dung' ?
+                                              (<Button disabled={true}
+                                                className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                type="primary"
+                                                icon={<BiPaperPlane />}
+                                                onClick={handleAddButtonClick}>
+                                                <span className="ps-2">
+                                                  Không thực hiện được
+                                                </span>
+                                              </Button>) :
+                                              role == 'ung_tuyen_vien' ?
+                                                (<Button
+                                                  className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                  type="primary"
+                                                  icon={<BiPaperPlane />}
+                                                  onClick={handleAddButtonClick}>
+                                                  <span className="ps-2">
+                                                    {t("productDetail.applyNow")}
+                                                  </span>
+                                                </Button>) : role == undefined ?
+                                                  (<Button
+                                                    className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                    type="primary"
+                                                    icon={<BiPaperPlane />}
+                                                    onClick={handleAddButtonClick}>
+                                                    <span className="ps-2">
+                                                      {t("productDetail.applyNow")}
+                                                    </span>
+                                                  </Button>) : null
+                                          ) : checkAppliedJob == true ? (<Button disabled={true}
+                                            className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                            type="primary"
+                                            icon={<BiPaperPlane />}
+                                            onClick={handleAddButtonClick}>
+                                            <span className="ps-2">
+                                              Đã ứng tuyển
+                                            </span>
+                                          </Button>) : null}
+                                        </>
                                       </Col>
 
                                       <Col span={3}>
