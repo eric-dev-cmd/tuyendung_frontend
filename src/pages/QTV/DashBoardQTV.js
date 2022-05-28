@@ -25,6 +25,9 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import NavbarQTV from "./components/navbar/NavbarQTV";
 import { toast } from "react-toastify";
+import { RiRefreshLine } from "react-icons/ri";
+import { useCommonContext } from "../../components/Search/context/commonContext";
+import { useTranslation } from "react-i18next";
 
 const { Option } = Select;
 
@@ -33,6 +36,11 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const DashBoardQTV = () => {
+  const { t } = useTranslation();
+  const { listCareers, levels, typeWorks } = useCommonContext();
+  console.log("Ngang nghe", listCareers);
+  console.log("cap bac", listCareers);
+  console.log("Ngang nghe", listCareers);
   const [isSubmit, setIsSubmit] = useState([]);
   const [collapsed, setCollapsed] = React.useState(false);
   const [page, setPage] = useState(1);
@@ -332,95 +340,135 @@ const DashBoardQTV = () => {
                         </div>
                         <div className="col-2">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Tất cả ngành nghề"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn ngành nghề"
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              if (e) {
+                                // selectCareer(e);
+                                // delete filters.tieuDe;
+                                // delete filters.linhVuc;
+                                // delete filters.diaDiem;
+                                // delete filters.soNamKinhNghiem;
+                                // delete filters.tuNgay;
+                                // delete filters.denNgay;
+                                // delete filters.viTri;
+                                // delete filters.loaiCongViec;
+                                setFilters({
+                                  ...filters,
+                                  page: 1,
+                                  nganhNghe: e,
+                                });
+                              }
+                            }}
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {listCareers.map((career, index) => {
+                              return (
+                                <Option key={index} value={career.tenNganhNghe}>
+                                  {career.tenNganhNghe}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
                         <div className="col-2">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Tất cả cấp bậc"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn cấp bậc"
+                            onChange={(e) => {
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.diaDiem;
+                              // delete filters.loaiCongViec;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                viTri: e,
+                              });
+                            }}
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {levels.map((level, index) => {
+                              return (
+                                <Option key={index} value={level.capBac}>
+                                  {level.capBac}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
                         <div className="col-3">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Tất cả hình thức làm việc"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue={t("common.typeWork")}
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.viTri;
+                              // delete filters.diaDiem;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                loaiCongViec: e,
+                              });
                             }}
                           >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
+                            {typeWorks.map((typeWork, index) => {
+                              return (
+                                <Option
+                                  key={index}
+                                  value={typeWork.loaiCongViec}
+                                >
+                                  {typeWork.loaiCongViec}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -430,6 +478,7 @@ const DashBoardQTV = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -656,50 +705,136 @@ const DashBoardQTV = () => {
                         </div>
                         <div className="col-2">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Thời gian tạo"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn ngành nghề"
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              if (e) {
+                                // selectCareer(e);
+                                // delete filters.tieuDe;
+                                // delete filters.linhVuc;
+                                // delete filters.diaDiem;
+                                // delete filters.soNamKinhNghiem;
+                                // delete filters.tuNgay;
+                                // delete filters.denNgay;
+                                // delete filters.viTri;
+                                // delete filters.loaiCongViec;
+                                setFilters({
+                                  ...filters,
+                                  page: 1,
+                                  nganhNghe: e,
+                                });
+                              }
+                            }}
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {listCareers.map((career, index) => {
+                              return (
+                                <Option key={index} value={career.tenNganhNghe}>
+                                  {career.tenNganhNghe}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
                         <div className="col-2">
                           <Select
+                            showSearch
                             style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn cấp bậc"
+                            onChange={(e) => {
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.diaDiem;
+                              // delete filters.loaiCongViec;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                viTri: e,
+                              });
                             }}
                           >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
+                            {levels.map((level, index) => {
+                              return (
+                                <Option key={index} value={level.capBac}>
+                                  {level.capBac}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
+                        <div className="col-3">
+                          <Select
+                            showSearch
+                            style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue={t("common.typeWork")}
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.viTri;
+                              // delete filters.diaDiem;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                loaiCongViec: e,
+                              });
+                            }}
                           >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
+                            {typeWorks.map((typeWork, index) => {
+                              return (
+                                <Option
+                                  key={index}
+                                  value={typeWork.loaiCongViec}
+                                >
+                                  {typeWork.loaiCongViec}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
@@ -708,6 +843,7 @@ const DashBoardQTV = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -880,50 +1016,136 @@ const DashBoardQTV = () => {
                         </div>
                         <div className="col-2">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Thời gian tạo"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn ngành nghề"
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              if (e) {
+                                // selectCareer(e);
+                                // delete filters.tieuDe;
+                                // delete filters.linhVuc;
+                                // delete filters.diaDiem;
+                                // delete filters.soNamKinhNghiem;
+                                // delete filters.tuNgay;
+                                // delete filters.denNgay;
+                                // delete filters.viTri;
+                                // delete filters.loaiCongViec;
+                                setFilters({
+                                  ...filters,
+                                  page: 1,
+                                  nganhNghe: e,
+                                });
+                              }
+                            }}
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {listCareers.map((career, index) => {
+                              return (
+                                <Option key={index} value={career.tenNganhNghe}>
+                                  {career.tenNganhNghe}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
                         <div className="col-2">
                           <Select
+                            showSearch
                             style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn cấp bậc"
+                            onChange={(e) => {
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.diaDiem;
+                              // delete filters.loaiCongViec;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                viTri: e,
+                              });
                             }}
                           >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
+                            {levels.map((level, index) => {
+                              return (
+                                <Option key={index} value={level.capBac}>
+                                  {level.capBac}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
+                        <div className="col-3">
+                          <Select
+                            showSearch
+                            style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue={t("common.typeWork")}
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.viTri;
+                              // delete filters.diaDiem;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                loaiCongViec: e,
+                              });
+                            }}
                           >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
+                            {typeWorks.map((typeWork, index) => {
+                              return (
+                                <Option
+                                  key={index}
+                                  value={typeWork.loaiCongViec}
+                                >
+                                  {typeWork.loaiCongViec}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
@@ -932,6 +1154,7 @@ const DashBoardQTV = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -1107,50 +1330,136 @@ const DashBoardQTV = () => {
                         </div>
                         <div className="col-2">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Thời gian tạo"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn ngành nghề"
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              if (e) {
+                                // selectCareer(e);
+                                // delete filters.tieuDe;
+                                // delete filters.linhVuc;
+                                // delete filters.diaDiem;
+                                // delete filters.soNamKinhNghiem;
+                                // delete filters.tuNgay;
+                                // delete filters.denNgay;
+                                // delete filters.viTri;
+                                // delete filters.loaiCongViec;
+                                setFilters({
+                                  ...filters,
+                                  page: 1,
+                                  nganhNghe: e,
+                                });
+                              }
+                            }}
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {listCareers.map((career, index) => {
+                              return (
+                                <Option key={index} value={career.tenNganhNghe}>
+                                  {career.tenNganhNghe}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
                         <div className="col-2">
                           <Select
+                            showSearch
                             style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn cấp bậc"
+                            onChange={(e) => {
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.diaDiem;
+                              // delete filters.loaiCongViec;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                viTri: e,
+                              });
                             }}
                           >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
+                            {levels.map((level, index) => {
+                              return (
+                                <Option key={index} value={level.capBac}>
+                                  {level.capBac}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
+                        <div className="col-3">
+                          <Select
+                            showSearch
+                            style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue={t("common.typeWork")}
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.viTri;
+                              // delete filters.diaDiem;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                loaiCongViec: e,
+                              });
+                            }}
                           >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
+                            {typeWorks.map((typeWork, index) => {
+                              return (
+                                <Option
+                                  key={index}
+                                  value={typeWork.loaiCongViec}
+                                >
+                                  {typeWork.loaiCongViec}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
@@ -1159,6 +1468,7 @@ const DashBoardQTV = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -1323,50 +1633,136 @@ const DashBoardQTV = () => {
                         </div>
                         <div className="col-2">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Thời gian tạo"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn ngành nghề"
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              if (e) {
+                                // selectCareer(e);
+                                // delete filters.tieuDe;
+                                // delete filters.linhVuc;
+                                // delete filters.diaDiem;
+                                // delete filters.soNamKinhNghiem;
+                                // delete filters.tuNgay;
+                                // delete filters.denNgay;
+                                // delete filters.viTri;
+                                // delete filters.loaiCongViec;
+                                setFilters({
+                                  ...filters,
+                                  page: 1,
+                                  nganhNghe: e,
+                                });
+                              }
+                            }}
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {listCareers.map((career, index) => {
+                              return (
+                                <Option key={index} value={career.tenNganhNghe}>
+                                  {career.tenNganhNghe}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
                         <div className="col-2">
                           <Select
+                            showSearch
                             style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn cấp bậc"
+                            onChange={(e) => {
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.diaDiem;
+                              // delete filters.loaiCongViec;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                viTri: e,
+                              });
                             }}
                           >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
+                            {levels.map((level, index) => {
+                              return (
+                                <Option key={index} value={level.capBac}>
+                                  {level.capBac}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
+                        <div className="col-3">
+                          <Select
+                            showSearch
+                            style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue={t("common.typeWork")}
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.viTri;
+                              // delete filters.diaDiem;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                loaiCongViec: e,
+                              });
+                            }}
                           >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
+                            {typeWorks.map((typeWork, index) => {
+                              return (
+                                <Option
+                                  key={index}
+                                  value={typeWork.loaiCongViec}
+                                >
+                                  {typeWork.loaiCongViec}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
@@ -1375,6 +1771,7 @@ const DashBoardQTV = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -1550,50 +1947,136 @@ const DashBoardQTV = () => {
                         </div>
                         <div className="col-2">
                           <Select
-                            style={{ width: "100%" }}
                             showSearch
-                            placeholder="Thời gian tạo"
+                            style={{ width: "100%" }}
                             optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
                             filterOption={(input, option) =>
                               option.children
                                 .toLowerCase()
                                 .indexOf(input.toLowerCase()) >= 0
                             }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn ngành nghề"
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              if (e) {
+                                // selectCareer(e);
+                                // delete filters.tieuDe;
+                                // delete filters.linhVuc;
+                                // delete filters.diaDiem;
+                                // delete filters.soNamKinhNghiem;
+                                // delete filters.tuNgay;
+                                // delete filters.denNgay;
+                                // delete filters.viTri;
+                                // delete filters.loaiCongViec;
+                                setFilters({
+                                  ...filters,
+                                  page: 1,
+                                  nganhNghe: e,
+                                });
+                              }
+                            }}
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {listCareers.map((career, index) => {
+                              return (
+                                <Option key={index} value={career.tenNganhNghe}>
+                                  {career.tenNganhNghe}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
                         <div className="col-2">
                           <Select
+                            showSearch
                             style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn cấp bậc"
+                            onChange={(e) => {
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.diaDiem;
+                              // delete filters.loaiCongViec;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                viTri: e,
+                              });
                             }}
                           >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
+                            {levels.map((level, index) => {
+                              return (
+                                <Option key={index} value={level.capBac}>
+                                  {level.capBac}
+                                </Option>
+                              );
+                            })}
                           </Select>
                         </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
+                        <div className="col-3">
+                          <Select
+                            showSearch
+                            style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue={t("common.typeWork")}
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.viTri;
+                              // delete filters.diaDiem;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                loaiCongViec: e,
+                              });
+                            }}
                           >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
-                        <div className="col-1 ms-3">
+                            {typeWorks.map((typeWork, index) => {
+                              return (
+                                <Option
+                                  key={index}
+                                  value={typeWork.loaiCongViec}
+                                >
+                                  {typeWork.loaiCongViec}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-1">
                           <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
@@ -1602,6 +2085,7 @@ const DashBoardQTV = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -1763,12 +2247,142 @@ const DashBoardQTV = () => {
                       key="9"
                     >
                       <div className="row">
-                        <div className="col-10">
+                        <div className="col-3">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
                         <div className="col-2">
-                          <Button
+                          <Select
+                            showSearch
                             style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn ngành nghề"
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              if (e) {
+                                // selectCareer(e);
+                                // delete filters.tieuDe;
+                                // delete filters.linhVuc;
+                                // delete filters.diaDiem;
+                                // delete filters.soNamKinhNghiem;
+                                // delete filters.tuNgay;
+                                // delete filters.denNgay;
+                                // delete filters.viTri;
+                                // delete filters.loaiCongViec;
+                                setFilters({
+                                  ...filters,
+                                  page: 1,
+                                  nganhNghe: e,
+                                });
+                              }
+                            }}
+                          >
+                            {listCareers.map((career, index) => {
+                              return (
+                                <Option key={index} value={career.tenNganhNghe}>
+                                  {career.tenNganhNghe}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-2">
+                          <Select
+                            showSearch
+                            style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue="Chọn cấp bậc"
+                            onChange={(e) => {
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.diaDiem;
+                              // delete filters.loaiCongViec;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                viTri: e,
+                              });
+                            }}
+                          >
+                            {levels.map((level, index) => {
+                              return (
+                                <Option key={index} value={level.capBac}>
+                                  {level.capBac}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-3">
+                          <Select
+                            showSearch
+                            style={{ width: "100%" }}
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA, optionB) =>
+                              optionA.children
+                                .toLowerCase()
+                                .localeCompare(optionB.children.toLowerCase())
+                            }
+                            defaultValue={t("common.typeWork")}
+                            onChange={(e) => {
+                              console.log("1. ", e);
+                              // delete filters.tieuDe;
+                              // delete filters.nganhNghe;
+                              // delete filters.linhVuc;
+                              // delete filters.soNamKinhNghiem;
+                              // delete filters.tuNgay;
+                              // delete filters.denNgay;
+                              // delete filters.viTri;
+                              // delete filters.diaDiem;
+                              setFilters({
+                                ...filters,
+                                page: 1,
+                                loaiCongViec: e,
+                              });
+                            }}
+                          >
+                            {typeWorks.map((typeWork, index) => {
+                              return (
+                                <Option
+                                  key={index}
+                                  value={typeWork.loaiCongViec}
+                                >
+                                  {typeWork.loaiCongViec}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                        <div className="col-1">
+                          <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
                             // icon={<GrFormRefresh />}
@@ -1776,6 +2390,7 @@ const DashBoardQTV = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
