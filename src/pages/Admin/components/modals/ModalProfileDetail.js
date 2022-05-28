@@ -279,7 +279,7 @@ const ModalProfileDetail = ({
                   </div>
                 </div>
                 <div className="col-12 mt-3">
-                  {user?.yeuCauDoTuoi == false && < p > Chưa đủ tuổi</p>}
+                  {user?.yeuCauDoTuoi == false && < p  className="text-danger fe-bold"> Chưa đủ tuổi</p>}
                 </div>
                 <div className="row">
                   <div className="col-12 mt-3">

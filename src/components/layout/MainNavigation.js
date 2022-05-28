@@ -8,7 +8,9 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { getUserProfile } from "../../utils/localStorage";
 import Logo from "../../assets/logo/logo_remove_bg.png";
 import { useTranslation } from "react-i18next";
-import { IMAGE_LOGO } from "../../constansts/common";
+import { IMAGE_LOGO, UNG_TUYEN_VIEN } from "../../constansts/common";
+import { NHA_TUYEN_DUNG } from "../../utils/roles";
+
 const logoStyle = {
   height: "35px",
   width: "auto",
@@ -25,6 +27,24 @@ const borderStyle = {
 
 const MainNavigation = () => {
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
+  const [isRoleEmployer, setIsRoleEmployer] = useState(false);
+  // const isAuthenticated = useSelector(
+  //   (state) => state.userLogin.isAuthenticated
+  // );
+  const userQ = useSelector((state) => state.userLogin);
+  const roles = userQ?.user?.taiKhoan?.loaiTaiKhoan;
+  // console.log("isAuthenticated employer::", user);
+  console.log("isAuthenticated employer roles layout::", roles);
+
+  useEffect(() => {
+    if (roles === NHA_TUYEN_DUNG) {
+      setIsRoleEmployer(true);
+      console.log("aaa");
+    } else {
+      setIsRoleEmployer(false);
+      console.log("bbb");
+    }
+  }, [roles]);
   const [user, setUser] = useState(() => {
     return getUserProfile();
   });
@@ -64,6 +84,84 @@ const MainNavigation = () => {
       progress: undefined,
     });
     window.location.reload();
+  };
+  const renderProfileForRole = () => {
+    if (isAuthenticated) {
+      if (roles === UNG_TUYEN_VIEN) {
+        console.log("render logined");
+        return (
+          <>
+            <li className="nav-item mt-1">
+              <NavLink
+                to="/user/profile"
+                className="nav-link d-flex align-items-center"
+                aria-current="page"
+              >
+                <AiOutlinePlusCircle color="white" size="16px" />
+                &nbsp;Hồ sơ của tôi
+              </NavLink>
+            </li>
+            <li className="nav-item dropdown d-flex align-items-center dropdown-toggle">
+              <img
+                style={avatarStyle}
+                src="https://123job.vn/images/no_user.png"
+                alt="Avatar"
+                className="md-avatar rounded-circle nav-link "
+                id="navbarDropdown-profile"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              />
+              <MdArrowDropDown color="white" size="16px" />
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdown-profile"
+              >
+                <li className="dropdown-item pe-none">
+                  <b>{user?.taiKhoan?.tenDangNhap}</b>
+                </li>
+                <li className="dropdown-item bg-none">
+                  <NavLink to="/user/account" className="text-dark">
+                    Thiết lập tài khoản
+                  </NavLink>
+                </li>
+                <li className="dropdown-item bg-none">
+                  <NavLink to="/user/account/password" className="text-dark">
+                    Đổi mật khẩu
+                  </NavLink>
+                </li>
+                <li className="dropdown-item bg-none">
+                  <a
+                    // href="javascript:void(0)"
+                    onClick={logoutHandler}
+                    className="text-decoration-none text-dark"
+                  >
+                    Đăng xuất
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </>
+        );
+      } else {
+        return <></>;
+      }
+    } else if (!isAuthenticated) {
+      return (
+        <>
+          <li className="nav-item mt-1">
+            <NavLink to="/login" className="nav-link" aria-current="page">
+              Đăng nhập
+            </NavLink>
+          </li>
+          <li className="nav-item mt-1">
+            <NavLink to="/sign-up" className="nav-link">
+              Đăng ký
+            </NavLink>
+          </li>
+        </>
+      );
+    }
   };
   return (
     <Fragment>
@@ -128,7 +226,7 @@ const MainNavigation = () => {
               </li>
             </ul>
             <ul className="navbar-nav mb-2 mb-lg-0 z-index-999">
-              {isAuthenticated && (
+              {/* {isAuthenticated && (
                 <li className="nav-item mt-1">
                   <NavLink
                     to="/user/profile"
@@ -139,8 +237,8 @@ const MainNavigation = () => {
                     &nbsp;Hồ sơ của tôi
                   </NavLink>
                 </li>
-              )}
-              {isAuthenticated && (
+              )} */}
+              {/* {isAuthenticated && (
                 <li className="nav-item dropdown d-flex align-items-center dropdown-toggle">
                   <img
                     style={avatarStyle}
@@ -183,9 +281,9 @@ const MainNavigation = () => {
                     </li>
                   </ul>
                 </li>
-              )}
+              )} */}
 
-              {!isAuthenticated && (
+              {/* {!isAuthenticated && (
                 <li className="nav-item mt-1">
                   <NavLink to="/login" className="nav-link" aria-current="page">
                     Đăng nhập
@@ -198,7 +296,8 @@ const MainNavigation = () => {
                     Đăng ký
                   </NavLink>
                 </li>
-              )}
+              )} */}
+              {renderProfileForRole()}
               <li className="nav-item mt-1">
                 <NavLink
                   style={borderStyle}

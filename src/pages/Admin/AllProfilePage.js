@@ -33,6 +33,8 @@ import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import axiosClient from "../../services/axiosClient";
 import { toast } from "react-toastify";
+import NavbarAdmin from "./components/navbar/NavbarAdmin";
+
 
 const { Option } = Select;
 
@@ -234,55 +236,7 @@ const AllProfilePage = () => {
           minHeight: "100vh",
         }}
       >
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={() => setCollapsed(!collapsed)}
-        >
-          <div className="logo" />
-          <Menu
-            theme="dark"
-            //  defaultSelectedKeys={["1"]}
-            mode="inline"
-          >
-            <Menu.Item icon={<DesktopOutlined />} key="1">
-              Trang chủ
-              <Link to="/employer/dashboard" />
-            </Menu.Item>
-            <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="2">
-              <Menu.Item key="21">
-                Quản lý tin
-                <Link to="/employer/dashboard" />
-              </Menu.Item>
-              <Menu.Item key="22">
-                Thêm mới tin
-                <Link to="/employer/job/create" />
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              title="Hồ sơ ứng tuyển"
-              icon={<TeamOutlined />}
-              key="3"
-            >
-              <Menu.Item key="31">
-                Tất cả đơn ứng tuyển
-                <Link to="/employer/job/apply-job/all" />
-              </Menu.Item>
-              <Menu.Item key="32">
-                Đơn tiềm năng tiềm năng
-                <Link to="/employer/job/apply-job/talent" />
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.Item icon={<DesktopOutlined />} key="4">
-              Thông tin công ty
-              <Link to="/employer/account/profile" />
-            </Menu.Item>
-            <Menu.Item icon={<GoSignOut />} key="5">
-              Đăng xuất
-              <Link to="/logout" />
-            </Menu.Item>
-          </Menu>
-        </Sider>
+        <NavbarAdmin />
         <Layout className="site-layout">
           <Header
             className="site-layout-background"
