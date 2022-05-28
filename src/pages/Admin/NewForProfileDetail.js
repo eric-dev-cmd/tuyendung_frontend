@@ -18,6 +18,7 @@ import TimeUtils from "../../utils/timeUtils";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
 import { useParams } from "react-router-dom";
+import { RiMailSendLine, RiRefreshLine } from "react-icons/ri";
 const { RangePicker } = DatePicker;
 
 const { Option } = Select;
@@ -56,7 +57,10 @@ const NewForProfileDetail = () => {
     const getDataListFilters = async () => {
       const paramsString = queryString.stringify(filters);
       try {
-        const response = await RecruitmentApi.getListProfileByRecruitment({ paramsString, id: params.id });
+        const response = await RecruitmentApi.getListProfileByRecruitment({
+          paramsString,
+          id: params.id,
+        });
         console.log("data by trung vinh", response.data);
         setRecruitments(response.data);
         // setTotalCount(response.pagination.total);
@@ -163,7 +167,7 @@ const NewForProfileDetail = () => {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/${params?.id}`;
       try {
         await axiosClient.get(requestUrl).then((res) => {
-          setRecruitmentById(res.data)
+          setRecruitmentById(res.data);
         });
       } catch (error) {
         console.log(error.response);
@@ -267,21 +271,30 @@ const NewForProfileDetail = () => {
                       <div>
                         <span>
                           Địa điểm:{" "}
-                          <span className="ps-5">{recruitmentById?.diaDiem?.quanHuyen}, {recruitmentById?.diaDiem?.tinhThanhPho}</span>
+                          <span className="ps-5">
+                            {recruitmentById?.diaDiem?.quanHuyen},{" "}
+                            {recruitmentById?.diaDiem?.tinhThanhPho}
+                          </span>
                         </span>
                       </div>
                     </div>
                     <div className="col-12">
                       <div>
                         <span>
-                          Mức lương: <span className="ps-4">{recruitmentById?.mucLuong}</span>
+                          Mức lương:{" "}
+                          <span className="ps-4">
+                            {recruitmentById?.mucLuong}
+                          </span>
                         </span>
                       </div>
                     </div>
                     <div className="col-12">
                       <div>
                         <span>
-                          Trạng thái:<span className="ps-4">{recruitmentById?.trangThai}</span>
+                          Trạng thái:
+                          <span className="ps-4">
+                            {recruitmentById?.trangThai}
+                          </span>
                         </span>
                       </div>
                     </div>
@@ -289,10 +302,12 @@ const NewForProfileDetail = () => {
                       <div>
                         <span>
                           Ngày hết hạn:{" "}
-                          <span className="ps-4">{TimeUtils.formatDateTime(
-                            recruitmentById?.ngayHetHan,
-                            "DD-MM-YYYY"
-                          )}</span>
+                          <span className="ps-4">
+                            {TimeUtils.formatDateTime(
+                              recruitmentById?.ngayHetHan,
+                              "DD-MM-YYYY"
+                            )}
+                          </span>
                         </span>
                       </div>
                     </div>
@@ -310,7 +325,10 @@ const NewForProfileDetail = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalAll ? totalAll : 0})`} key="4">
+                    <TabPane
+                      tab={`Tất cả (${totalAll ? totalAll : 0})`}
+                      key="4"
+                    >
                       <div className="row">
                         <div className="col-6">
                           <RangePicker style={{ width: "100%" }} />
@@ -324,22 +342,20 @@ const NewForProfileDetail = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
                         <div className="col-4 ms-3">
-                          <span>Gửi email đến ứng viên tiềm năng</span>
                           <Button
                             className="d-flex align-items-center justify-content-center"
                             type="primary"
-                            // icon={<GrFormRefresh />}
                             onClick={() => {
-                              handleSendEmailTalent(
-                                recruitmentById
-                              );
+                              handleSendEmailTalent(recruitmentById);
                             }}
                           >
-                            Gửi
+                            <RiMailSendLine className="me-2" /> Gửi email tin tuyển dụng đến
+                            ứng viên tiềm năng
                           </Button>
                         </div>
                       </div>
@@ -375,7 +391,7 @@ const NewForProfileDetail = () => {
                                         ungTuyenVien,
                                         tinTuyenDung,
                                         trangThai,
-                                        tiemNang
+                                        tiemNang,
                                       } = item?.donTuyenDung;
                                       return (
                                         <tr key={index}>
@@ -385,7 +401,10 @@ const NewForProfileDetail = () => {
                                             </p>
                                           </td>
                                           <td>
-                                            <span> {tiemNang && 'Tiềm năng'} </span>
+                                            <span>
+                                              {" "}
+                                              {tiemNang && "Tiềm năng"}{" "}
+                                            </span>
                                             <p className="text-sm fw-bold mb-0">
                                               {ungTuyenVien?.ten}
                                             </p>
@@ -451,9 +470,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -526,8 +545,9 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page <= 1 ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   type="button"
@@ -541,8 +561,9 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page >= totalCount ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   className="page-link"
@@ -560,7 +581,10 @@ const NewForProfileDetail = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`} key="1">
+                    <TabPane
+                      tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`}
+                      key="1"
+                    >
                       <div className="row">
                         <div className="col-6">
                           <RangePicker style={{ width: "100%" }} />
@@ -683,9 +707,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -758,8 +782,9 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page <= 1 ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   type="button"
@@ -773,8 +798,9 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page >= totalCount ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   className="page-link"
@@ -792,7 +818,10 @@ const NewForProfileDetail = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`} key="2">
+                    <TabPane
+                      tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`}
+                      key="2"
+                    >
                       <div className="row">
                         <div className="col-6">
                           <RangePicker style={{ width: "100%" }} />
@@ -915,9 +944,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -990,8 +1019,9 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page <= 1 ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   type="button"
@@ -1005,8 +1035,9 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page >= totalCount ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   className="page-link"
@@ -1024,7 +1055,10 @@ const NewForProfileDetail = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`} key="0">
+                    <TabPane
+                      tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`}
+                      key="0"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -1192,9 +1226,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1267,8 +1301,9 @@ const NewForProfileDetail = () => {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li
-                                className={`page-item ${page <= 1 ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page <= 1 ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   type="button"
@@ -1282,8 +1317,9 @@ const NewForProfileDetail = () => {
                                 </button>
                               </li>
                               <li
-                                className={`page-item ${page >= totalCount ? "disabled drop" : ""
-                                  }`}
+                                className={`page-item ${
+                                  page >= totalCount ? "disabled drop" : ""
+                                }`}
                               >
                                 <button
                                   className="page-link"

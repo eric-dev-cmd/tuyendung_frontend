@@ -33,6 +33,8 @@ import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import axiosClient from "../../services/axiosClient";
 import { toast } from "react-toastify";
+import NavbarAdmin from "./components/navbar/NavbarAdmin";
+import { RiRefreshLine } from "react-icons/ri";
 
 const { Option } = Select;
 
@@ -234,55 +236,7 @@ const AllProfilePage = () => {
           minHeight: "100vh",
         }}
       >
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={() => setCollapsed(!collapsed)}
-        >
-          <div className="logo" />
-          <Menu
-            theme="dark"
-            //  defaultSelectedKeys={["1"]}
-            mode="inline"
-          >
-            <Menu.Item icon={<DesktopOutlined />} key="1">
-              Trang chủ
-              <Link to="/employer/dashboard" />
-            </Menu.Item>
-            <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="2">
-              <Menu.Item key="21">
-                Quản lý tin
-                <Link to="/employer/dashboard" />
-              </Menu.Item>
-              <Menu.Item key="22">
-                Thêm mới tin
-                <Link to="/employer/job/create" />
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              title="Hồ sơ ứng tuyển"
-              icon={<TeamOutlined />}
-              key="3"
-            >
-              <Menu.Item key="31">
-                Tất cả đơn ứng tuyển
-                <Link to="/employer/job/apply-job/all" />
-              </Menu.Item>
-              <Menu.Item key="32">
-                Đơn tiềm năng tiềm năng
-                <Link to="/employer/job/apply-job/talent" />
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.Item icon={<DesktopOutlined />} key="4">
-              Thông tin công ty
-              <Link to="/employer/account/profile" />
-            </Menu.Item>
-            <Menu.Item icon={<GoSignOut />} key="5">
-              Đăng xuất
-              <Link to="/logout" />
-            </Menu.Item>
-          </Menu>
-        </Sider>
+        <NavbarAdmin />
         <Layout className="site-layout">
           <Header
             className="site-layout-background"
@@ -322,7 +276,10 @@ const AllProfilePage = () => {
                       console.log("key ABC", e);
                     }}
                   >
-                    <TabPane tab={`Tất cả (${totalAll ? totalAll :0})`} key="4">
+                    <TabPane
+                      tab={`Tất cả (${totalAll ? totalAll : 0})`}
+                      key="4"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm
@@ -330,51 +287,6 @@ const AllProfilePage = () => {
                             title="Tên tin tuyển dụng"
                           />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -384,7 +296,7 @@ const AllProfilePage = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
@@ -503,9 +415,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -544,7 +456,7 @@ const AllProfilePage = () => {
                                                 >
                                                   <>
                                                     {trangThai ==
-                                                      "Thất bại" ? null : (
+                                                    "Thất bại" ? null : (
                                                       <span class="dropdown-item">
                                                         Ứng viên tiềm năng
                                                       </span>
@@ -594,7 +506,10 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT: 0})`} key="1">
+                    <TabPane
+                      tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`}
+                      key="1"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
@@ -760,9 +675,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -846,56 +761,14 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Chấp nhận (${totalDaUT ? totalDaUT : 0})`} key="2">
+                    <TabPane
+                      tab={`Chấp nhận (${totalDaUT ? totalDaUT : 0})`}
+                      key="2"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -905,6 +778,7 @@ const AllProfilePage = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -1016,9 +890,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1109,56 +983,15 @@ const AllProfilePage = () => {
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`} key="0">
+                    <TabPane
+                      tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`}
+                      key="0"
+                    >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
+
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -1168,7 +1001,7 @@ const AllProfilePage = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
@@ -1281,9 +1114,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />

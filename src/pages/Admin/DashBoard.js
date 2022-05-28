@@ -13,6 +13,7 @@ import NavbarAdmin from "./components/navbar/NavbarAdmin";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import Pagination from "../../components/Pagination/Pagination";
+import { RiRefreshLine } from "react-icons/ri";
 
 const { Option } = Select;
 
@@ -83,13 +84,10 @@ const MainNavigationAdmin = () => {
       setTotalCount(response.pagination.total);
       setPagination(response.pagination);
       setIsSubmit(false);
-
     } catch (error) {
       console.log(error.response);
     }
   };
-
-
 
   useEffect(() => {
     let mounted = true;
@@ -283,51 +281,6 @@ const MainNavigationAdmin = () => {
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -337,7 +290,7 @@ const MainNavigationAdmin = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
@@ -446,7 +399,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <>
                                                   {item?.trangThai ==
-                                                    "Đã duyệt" ? (
+                                                  "Đã duyệt" ? (
                                                     <>
                                                       <li
                                                         onClick={() => {
@@ -514,51 +467,6 @@ const MainNavigationAdmin = () => {
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -568,7 +476,7 @@ const MainNavigationAdmin = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
@@ -709,59 +617,15 @@ const MainNavigationAdmin = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Đang tuyển dụng (${totalDaDuyet ? totalDaDuyet : 0
-                        })`}
+                      tab={`Đang tuyển dụng (${
+                        totalDaDuyet ? totalDaDuyet : 0
+                      })`}
                       key="2"
                     >
                       <div className="row">
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -771,7 +635,7 @@ const MainNavigationAdmin = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
@@ -853,8 +717,8 @@ const MainNavigationAdmin = () => {
                                             <>
                                               {item?.trangThai ==
                                                 "Đã duyệt" && (
-                                                  <span>Đang tuyển dụng</span>
-                                                )}
+                                                <span>Đang tuyển dụng</span>
+                                              )}
                                             </>
                                           </td>
                                           <td className="text-center cursor-pointer align-middle pointer">
@@ -935,51 +799,6 @@ const MainNavigationAdmin = () => {
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -989,7 +808,7 @@ const MainNavigationAdmin = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
@@ -1136,51 +955,6 @@ const MainNavigationAdmin = () => {
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -1190,6 +964,7 @@ const MainNavigationAdmin = () => {
                               window.location.reload();
                             }}
                           >
+                            <RiRefreshLine className="me-2" />
                             Làm mới
                           </Button>
                         </div>
@@ -1338,51 +1113,7 @@ const MainNavigationAdmin = () => {
                         <div className="col-2">
                           <PostFiltersForm onSubmit={handleFiltersChange} />
                         </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
-                          <Button
-                            style={{ width: "120px" }}
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            icon={<SearchOutlined />}
-                          >
-                            Tìm kiếm
-                          </Button>
-                        </div> */}
+
                         <div className="col-1 ms-3">
                           <Button
                             className="d-flex align-items-center justify-content-center"
@@ -1392,7 +1123,7 @@ const MainNavigationAdmin = () => {
                               window.location.reload();
                             }}
                           >
-                            Làm mới
+                            <RiRefreshLine className="me-2" /> Làm mới
                           </Button>
                         </div>
                       </div>
