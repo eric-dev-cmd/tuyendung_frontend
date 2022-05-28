@@ -15,7 +15,6 @@ import { useProductContext } from "../context/ProductContext";
 
 const ProductGeneralInfomation = (props) => {
   const { t } = useTranslation();
-  console.log("props diaDiem", props);
   const [location, setLocation] = useState(props.diaDiem || {});
   return (
     <Fragment>
@@ -142,6 +141,43 @@ const ProductGeneralInfomation = (props) => {
                 </Col>
               </Row>
             </div>
+            <div className="column-detail-4 my-3">
+              <Row>
+                <Col span={12}>
+                  <Row>
+                    <Col span={3} className="d-flex align-items-center">
+                      <Avatar src="https://www.topcv.vn/v4/image/job-detail/icon/3.svg" />
+                    </Col>
+                    <Col span={21}>
+                      {" "}
+                      <p>
+                        {" "}
+                        <strong className="mb-2">Ngành nghề</strong>
+                      </p>
+                      <p>{props?.nganhNghe?.tenNganhNghe}</p>
+                    </Col>
+                  </Row>
+                </Col>
+
+                <Col span={12}>
+                  <Row>
+                    <Col span={3} className="d-flex align-items-center">
+                      <Avatar src="https://www.topcv.vn/v4/image/job-detail/icon/7.svg" />
+                    </Col>
+                    <Col span={21}>
+                      {" "}
+                      <p>
+                        {" "}
+                        <strong className="mb-2">Độ tuổi</strong>
+                      </p>
+                      <p>
+                        {props?.tuoiTu} - {props?.denTuoi}
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </div>
           </div>
         </Col>
         <Col span={8}>
@@ -185,14 +221,10 @@ const ProductGeneralInfomation = (props) => {
                     <p className="fw-bolder mb-3">Mô tả công việc</p>
                     <div>
                       <div className="mb-2">
-                        <Timeline>
-                          {props?.moTa}
-                        </Timeline>
+                        <Timeline>{props?.moTa}</Timeline>
                       </div>
                     </div>
-                    <p className="fw-bolder mb-3">
-                      Yêu cầu ứng viên
-                    </p>
+                    <p className="fw-bolder mb-3">Yêu cầu ứng viên</p>
                     <div>
                       <div className="">
                         <Timeline>{props?.yeuCau}</Timeline>

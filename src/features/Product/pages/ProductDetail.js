@@ -78,12 +78,8 @@ const ProductDetail = (props) => {
   });
   const [recruitmentsLinhVuc, setRecruitmentsLinhVuc] = useState([]);
   // Việc làm liên quan
-
   const getListRelatedJob = async () => {
     const paramsString = queryString.stringify(filterRelatedJob);
-
-    console.log("filterRelatedJob, filterRelatedJob", filterRelatedJob);
-    console.log("filterRelatedJob, filterRelatedJob", paramsString);
     try {
       const response = await RecruitmentApi.getListRecruitmentFilterParams(
         filterRelatedJob
@@ -100,10 +96,6 @@ const ProductDetail = (props) => {
       const params = {
         paramsString,
       };
-      console.log("params paramsString", params);
-
-      console.log("params paramsString", paramsString);
-
       const response = await ReviewApi.getReviewFilterById(
         slug,
         params.paramsString
@@ -122,7 +114,6 @@ const ProductDetail = (props) => {
     // setLoading(true);
     try {
       const response = await ReviewApi.getReviewById(slug);
-      console.log("response?.data review", response);
       setReviews(response);
       // setLoading(false);
     } catch (error) {
@@ -130,14 +121,12 @@ const ProductDetail = (props) => {
       console.log("error", error);
     }
   };
-  console.log("detail ttv", detail);
   useEffect(() => {
     getListReviewById();
   }, []);
 
   useEffect(() => {
     getListRelatedJob();
-    console.log("filterRelatedJob", filterRelatedJob);
   }, [filterRelatedJob]);
 
   //CALL API
@@ -157,7 +146,6 @@ const ProductDetail = (props) => {
         setYeuCaus(response?.data.yeuCau);
         setMoTas(response?.data.moTa);
         setRole(user?.taiKhoan.loaiTaiKhoan);
-        console.log('aaaaaaaaaaa', role)
         // setLoading(false);
       }
     } catch (error) {
@@ -206,7 +194,6 @@ const ProductDetail = (props) => {
     };
     try {
       const response = await InterestedJobApi.creatInterestedJob(payload);
-      console.log("response", response);
       if (response.status === "success") {
         toast.success("Lưu việc làm quan tâm thành công", {
           position: "bottom-right",
@@ -271,15 +258,14 @@ const ProductDetail = (props) => {
           // clearErrors();
         }}
         onSubmit={handleSubmitModal}
-      // detail={detail}
-      // isEdit={isEdit}
+        // detail={detail}
+        // isEdit={isEdit}
       />
     );
   }, [isShowModal]);
 
   const handleAddButtonClick = (e) => {
     e.preventDefault();
-    console.log("isAuthenticated", isAuthenticated);
     if (isAuthenticated) {
       setIsShowModal(true);
     } else {
@@ -292,7 +278,6 @@ const ProductDetail = (props) => {
   const [totalFourStar, setTotalFourStar] = useState();
   const [totalFiveStar, setTotalFiveStar] = useState();
   const [totalAll, setTotalAll] = useState();
-
 
   useEffect(() => {
     const getTotalStatus = async () => {
@@ -372,8 +357,10 @@ const ProductDetail = (props) => {
                           moTa={splitDescription()}
                           yeuCau={splitRequirement()}
                           phucLoi={splitPhucLoi()}
-                          diaDiem={detail.diaDiem}
-                          nganhNghe={detail.nganhNghe}
+                          diaDiem={detail?.diaDiem}
+                          nganhNghe={detail?.nganhNghe}
+                          tuoiTu={detail?.tuoiTu}
+                          denTuoi={detail?.denTuoi}
                         />
                       </div>
                       {/* Mô tả công việc */}
@@ -399,44 +386,54 @@ const ProductDetail = (props) => {
                                       <Col span={6}>
                                         <>
                                           {checkAppliedJob == false ? (
-                                            role == 'nha_tuyen_dung' ?
-                                              (<Button disabled={true}
+                                            role == "nha_tuyen_dung" ? (
+                                              <Button
+                                                disabled={true}
                                                 className="form-control d-flex align-items-center justify-content-center py-4 my-4"
                                                 type="primary"
                                                 icon={<BiPaperPlane />}
-                                                onClick={handleAddButtonClick}>
+                                                onClick={handleAddButtonClick}
+                                              >
                                                 <span className="ps-2">
                                                   Không thực hiện được
                                                 </span>
-                                              </Button>) :
-                                              role == 'ung_tuyen_vien' ?
-                                                (<Button
-                                                  className="form-control d-flex align-items-center justify-content-center py-4 my-4"
-                                                  type="primary"
-                                                  icon={<BiPaperPlane />}
-                                                  onClick={handleAddButtonClick}>
-                                                  <span className="ps-2">
-                                                    {t("productDetail.applyNow")}
-                                                  </span>
-                                                </Button>) : role == undefined ?
-                                                  (<Button
-                                                    className="form-control d-flex align-items-center justify-content-center py-4 my-4"
-                                                    type="primary"
-                                                    icon={<BiPaperPlane />}
-                                                    onClick={handleAddButtonClick}>
-                                                    <span className="ps-2">
-                                                      {t("productDetail.applyNow")}
-                                                    </span>
-                                                  </Button>) : null
-                                          ) : checkAppliedJob == true ? (<Button disabled={true}
-                                            className="form-control d-flex align-items-center justify-content-center py-4 my-4"
-                                            type="primary"
-                                            icon={<BiPaperPlane />}
-                                            onClick={handleAddButtonClick}>
-                                            <span className="ps-2">
-                                              Đã ứng tuyển
-                                            </span>
-                                          </Button>) : null}
+                                              </Button>
+                                            ) : role == "ung_tuyen_vien" ? (
+                                              <Button
+                                                className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                type="primary"
+                                                icon={<BiPaperPlane />}
+                                                onClick={handleAddButtonClick}
+                                              >
+                                                <span className="ps-2">
+                                                  {t("productDetail.applyNow")}
+                                                </span>
+                                              </Button>
+                                            ) : role == undefined ? (
+                                              <Button
+                                                className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                type="primary"
+                                                icon={<BiPaperPlane />}
+                                                onClick={handleAddButtonClick}
+                                              >
+                                                <span className="ps-2">
+                                                  {t("productDetail.applyNow")}
+                                                </span>
+                                              </Button>
+                                            ) : null
+                                          ) : checkAppliedJob == true ? (
+                                            <Button
+                                              disabled={true}
+                                              className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                              type="primary"
+                                              icon={<BiPaperPlane />}
+                                              onClick={handleAddButtonClick}
+                                            >
+                                              <span className="ps-2">
+                                                Đã ứng tuyển
+                                              </span>
+                                            </Button>
+                                          ) : null}
                                         </>
                                       </Col>
 
@@ -465,14 +462,14 @@ const ProductDetail = (props) => {
                       </div>
                     </TabPane>
                     <TabPane tab={t("productDetail.tabs.header.tab2")} key="2">
-                      <div className="px-3 py-3 bg-white ">
+                      <div className="px-3 py-3 bg-white rounded">
                         <ProductCompanyGeneralInfomation
                           companyInfo={detail.nhaTuyenDung}
                         />
                       </div>
                     </TabPane>
                     <TabPane tab={t("productDetail.tabs.header.tab3")} key="3">
-                      <div className="px-1 py-3 bg-white ">
+                      <div className="px-3 py-3 bg-white ">
                         <div className="row">
                           <JobList recruitments={recruitmentsLinhVuc} />
                         </div>
@@ -491,7 +488,6 @@ const ProductDetail = (props) => {
                     <Tabs
                       defaultActiveKey="7"
                       onChange={(key) => {
-                        console.log(key);
                         if (key == 7) {
                           setFilterReview({
                             ...filterReview,
