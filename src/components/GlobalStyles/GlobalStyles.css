@@ -175,8 +175,9 @@
   display: none;
 }
 .bg-title{
-  background: #e8e0e0;
+  background: #F8F8F8;
     padding-top: 10px;
+    border-radius: 8px;
 }
 .px-4-8{
   padding: 4px 8px;

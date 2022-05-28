@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -39,14 +39,8 @@ const ModalProfileDetail = ({
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const {
-    tinTuyenDung,
-    ungTuyenVien,
-    tiemNang,
-    ngayUngTuyen,
-    trangThai,
-    _id
-  } = user?.donTuyenDung;
+  const { tinTuyenDung, ungTuyenVien, tiemNang, ngayUngTuyen, trangThai, _id } =
+    user?.donTuyenDung;
   console.log("Trung Vinh user", user);
 
   const resetValue = () => {
@@ -105,6 +99,7 @@ const ModalProfileDetail = ({
             draggable: true,
             progress: undefined,
           });
+          onCloseModal(false);
         }
       });
     } catch (error) {
@@ -128,6 +123,7 @@ const ModalProfileDetail = ({
             draggable: true,
             progress: undefined,
           });
+          onCloseModal(false);
         }
       });
     } catch (error) {
@@ -135,8 +131,7 @@ const ModalProfileDetail = ({
     }
   };
 
-  useEffect(() => {
-  }, [isSubmit]);
+  useEffect(() => {}, [isSubmit]);
 
   return (
     <div>
@@ -280,7 +275,9 @@ const ModalProfileDetail = ({
                   </div>
                 </div>
                 <div className="col-12 mt-3">
-                  {user?.yeuCauDoTuoi == false && < p  className="text-danger fe-bold"> Chưa đủ tuổi</p>}
+                  {user?.yeuCauDoTuoi == false && (
+                    <p className="text-danger fe-bold"> Chưa đủ tuổi</p>
+                  )}
                 </div>
                 <div className="row">
                   <div className="col-12 mt-3">
@@ -290,20 +287,19 @@ const ModalProfileDetail = ({
                         className="text-center text-white rounded"
                         style={{ background: "#4e83a6" }}
                         onClick={() => {
-                          handleAddButtonClickAccept(
-                            _id
-                          );
+                          handleAddButtonClickAccept(_id);
                         }}
                         disabled={user?.yeuCauDoTuoi ? false : true}
                       >
                         Chấp nhận
                       </Button>
-                      <Button size="large" className="rounded"
+                      <Button
+                        size="large"
+                        className="rounded"
                         onClick={() => {
-                          handleAddButtonClickDeny(
-                            _id
-                          );
-                        }}>
+                          handleAddButtonClickDeny(_id);
+                        }}
+                      >
                         Từ chối
                       </Button>
                     </div>
@@ -329,10 +325,12 @@ const ModalProfileDetail = ({
                     <p className="d-flex align-items-center pt-1">
                       {" "}
                       <AiOutlineCalendar style={{ fontSize: "21px" }} />{" "}
-                      <span className="ps-2 pt-1">{TimeUtils.formatDateTime(
-                        ungTuyenVien?.ngaySinh,
-                        "DD-MM-YYYY"
-                      )}</span>
+                      <span className="ps-2 pt-1">
+                        {TimeUtils.formatDateTime(
+                          ungTuyenVien?.ngaySinh,
+                          "DD-MM-YYYY"
+                        )}
+                      </span>
                     </p>
                     <p className="d-flex align-items-center">
                       {" "}
@@ -348,7 +346,9 @@ const ModalProfileDetail = ({
                     <p className="d-flex align-items-center">
                       {" "}
                       <HiOutlineMail style={{ fontSize: "20px" }} />{" "}
-                      <span className="ps-2">{ungTuyenVien?.taiKhoan?.email}</span>
+                      <span className="ps-2">
+                        {ungTuyenVien?.taiKhoan?.email}
+                      </span>
                     </p>
                     <p className="d-flex align-items-center">
                       {" "}
@@ -521,8 +521,8 @@ const ModalProfileDetail = ({
             </div>
           </div>
         </div>
-      </Modal >
-    </div >
+      </Modal>
+    </div>
   );
 };
 
