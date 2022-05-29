@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb, Input, Tooltip, Button } from "antd";
+import { Layout, Menu, Breadcrumb, Input, Tooltip, Button, Modal } from "antd";
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -166,50 +166,67 @@ const DashBoardQTVCandidates = () => {
   }, [isGetRecruitmentReviewLeast]);
 
   //Khóa tài khoản
-  const handleAddButtonClickBlock = async (id) => {
-    const requestUrl = `http://localhost:4000/quanTriViens/khoataikhoan/${id}`;
-    try {
-      const response = await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+  const confirmLock = (id, status) =>
+    Modal.confirm({
+      title: "Bạn chắc chắn muốn khóa tài khoản này?",
+      // content: "first",
+      okText: "Đồng ý",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/quanTriViens/khoataikhoan/${id}`;
+          const response = await axios.patch(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
           });
         }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
+      },
+    });
   //Mở khóa tài khoản
-  const handleAddButtonClickUnBlock = async (id) => {
-    const requestUrl = `http://localhost:4000/quanTriViens/motaikhoan/${id}`;
-    try {
-      const response = await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+  const confirmUnLock = (id) =>
+    Modal.confirm({
+      title: "Bạn chắc chắn muốn mở khóa tài khoản này?",
+      // content: "first",
+      okText: "Đồng ý",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/quanTriViens/motaikhoan/${id}`;
+          const response = await axios.patch(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
           });
         }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+      },
+    });
 
   useEffect(() => {
     getDataListFilters();
@@ -402,9 +419,7 @@ const DashBoardQTVCandidates = () => {
                                             {item?.taiKhoan?.trangThai ? (
                                               <li
                                                 onClick={() => {
-                                                  handleAddButtonClickBlock(
-                                                    item?._id
-                                                  );
+                                                  confirmLock(item?._id);
                                                 }}
                                               >
                                                 <span class="dropdown-item">
@@ -414,9 +429,7 @@ const DashBoardQTVCandidates = () => {
                                             ) : (
                                               <li
                                                 onClick={() => {
-                                                  handleAddButtonClickUnBlock(
-                                                    item?._id
-                                                  );
+                                                  confirmUnLock(item?._id);
                                                 }}
                                               >
                                                 <span class="dropdown-item">

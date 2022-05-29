@@ -652,6 +652,17 @@ const MainNavigationAdmin = () => {
                                           >
                                             <li
                                               onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
                                                 confirmDeleteDrop(item?._id);
                                               }}
                                             >
@@ -817,6 +828,17 @@ const MainNavigationAdmin = () => {
                                             class="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                           >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
                                             <li
                                               onClick={() => {
                                                 confirmDeleteStop(item?._id);
@@ -989,6 +1011,17 @@ const MainNavigationAdmin = () => {
                                           >
                                             <li
                                               onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
                                                 confirmDeleteDrop(item?._id);
                                               }}
                                             >
@@ -1148,6 +1181,17 @@ const MainNavigationAdmin = () => {
                                             class="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                           >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
                                             <li
                                               onClick={() => {
                                                 confirmDeleteDrop(item?._id);
@@ -1310,6 +1354,17 @@ const MainNavigationAdmin = () => {
                                             class="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                           >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
                                             <li
                                               onClick={() => {
                                                 confirmDeleteDrop(item?._id);

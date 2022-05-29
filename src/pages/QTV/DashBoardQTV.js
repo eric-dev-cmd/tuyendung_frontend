@@ -1,34 +1,19 @@
-import { Layout, Menu, Breadcrumb, Input, Tooltip, Button, Modal } from "antd";
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import io from "socket.io-client";
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { FaListUl, FaUserPlus } from "react-icons/fa";
-import { GoSignOut } from "react-icons/go";
-import { Link } from "react-router-dom";
-import { Tabs } from "antd";
-import { Select } from "antd";
-import { GrFormRefresh } from "react-icons/gr";
-import { FaEllipsisV } from "react-icons/fa";
-import RecruitmentApi from "../../services/recruitmentApi";
-import TimeUtils from "../../utils/timeUtils";
-import ReactPaginate from "react-paginate";
-import Pagination from "../../components/Pagination/Pagination";
-import PostFiltersForm from "../../components/Admin/PostFiltersForm";
-import queryString from "query-string";
+import { Breadcrumb, Button, Layout, Menu, Modal, Select, Tabs } from "antd";
 import axios from "axios";
+import queryString from "query-string";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
-import NavbarQTV from "./components/navbar/NavbarQTV";
-import { toast } from "react-toastify";
-import { RiRefreshLine } from "react-icons/ri";
-import { useCommonContext } from "../../components/Search/context/commonContext";
 import { useTranslation } from "react-i18next";
+import { FaUserPlus } from "react-icons/fa";
+import { RiRefreshLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import Pagination from "../../components/Pagination/Pagination";
+import { useCommonContext } from "../../components/Search/context/commonContext";
+import TimeUtils from "../../utils/timeUtils";
+import NavbarQTV from "./components/navbar/NavbarQTV";
+import ModalNewDetail from "./components/modal/ModalNewDetail";
 
 const { Option } = Select;
 
@@ -100,16 +85,6 @@ const DashBoardQTV = () => {
     };
   }, [filters]);
 
-  // const prevPage = async () => {
-  //   const pg = page === 1 ? 1 : page - 1;
-  //    getListData(pg);
-  //   setPage(pg);
-  // };
-  // const nextPage = async () => {
-  //   const pg = page < Math.ceil(totalCount / pageSize) ? page + 1 : page;
-  //   // getListData(pg);
-  //   setPage(pg);
-  // };
   const handleFiltersStatusChange = (newFilters) => {
     setFilters({
       ...filters,
@@ -307,6 +282,32 @@ const DashBoardQTV = () => {
     getDataListFilters();
     getRecruitmentReviewLeast();
   }, [isSubmit]);
+
+  const [isShowModalDetail, setIsShowModalDetail] = useState(false);
+  const [detail, setDetail] = useState(false);
+  const handleAddButtonClickDetail = (item) => {
+    // setUserProfile(item);
+    // e.preventDefault();
+    console.log("item", item);
+    setDetail(item);
+    setIsShowModalDetail(true);
+  };
+  const renderModalDetail = useMemo(() => {
+    if (!isShowModalDetail) return null;
+
+    return (
+      <ModalNewDetail
+        showModal={isShowModalDetail}
+        // showModal={true}
+        onCloseModal={() => {
+          setIsShowModalDetail(false);
+          // clearErrors();
+        }}
+        detail={detail}
+        // onSubmit={handleSubmitModalProfile}
+      />
+    );
+  }, [isShowModalDetail]);
 
   return (
     <Fragment>
@@ -926,14 +927,14 @@ const DashBoardQTV = () => {
                                             )}
                                           </span>
                                         </p>
-                                        <p>
+                                        {/* <p>
                                           <Link
                                             to={`/job-detail/${item._id}`}
                                             target="_blank"
                                           >
                                             Xem tin đăng trên website
                                           </Link>
-                                        </p>
+                                        </p> */}
                                       </td>
                                       <td className="align-middle">
                                         <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
@@ -959,6 +960,17 @@ const DashBoardQTV = () => {
                                             class="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                           >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
                                             <li
                                               onClick={() => {
                                                 handleAddButtonClickDetailAccept(
@@ -2609,6 +2621,7 @@ const DashBoardQTV = () => {
           </Footer>
         </Layout>
       </Layout>
+      {renderModalDetail}
     </Fragment>
   );
 };
