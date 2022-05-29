@@ -334,6 +334,7 @@ const AllProfilePage = () => {
                                         ungTuyenVien,
                                         tinTuyenDung,
                                         trangThai,
+                                        thongTinLienHe
                                       } = item?.donTuyenDung;
                                       return (
                                         <tr key={index}>
@@ -344,13 +345,13 @@ const AllProfilePage = () => {
                                           </td>
                                           <td>
                                             <p className="text-sm fw-bold mb-0">
-                                              {ungTuyenVien?.ten}
+                                              {thongTinLienHe?.ten}
                                             </p>
                                             <p className="text-sm mb-0">
-                                              {ungTuyenVien?.sdt}
+                                              {thongTinLienHe?.sdt}
                                             </p>
                                             <p className="text-sm mb-0">
-                                              {ungTuyenVien?.taiKhoan?.email}
+                                              {thongTinLienHe?.email}
                                             </p>
                                             <p className="address">
                                               <span className="created">

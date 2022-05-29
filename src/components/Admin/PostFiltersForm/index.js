@@ -25,7 +25,7 @@ const PostFiltersForm = (props) => {
     <Fragment>
       <Input
         className="form-control"
-        placeholder={props.title ? props.title : "Tên công việc"}
+        placeholder={props.title ? props.title : "Tên, sdt"}
         type="text"
         value={searchTerm}
         onChange={handleSearchTermChange}

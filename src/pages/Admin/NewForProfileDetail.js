@@ -401,7 +401,11 @@ const NewForProfileDetail = () => {
                                             </p>
                                           </td>
                                           <td>
-                                            <span>
+                                            <span
+                                              style={{
+                                               
+
+                                              }}>
                                               {" "}
                                               {tiemNang && "Tiềm năng"}{" "}
                                             </span>
@@ -470,9 +474,9 @@ const NewForProfileDetail = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          // onClick={(e) => {
+                                          //   console.log("e", e);
+                                          // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -516,589 +520,583 @@ const NewForProfileDetail = () => {
                                             </div>
                                           </td>
                                         </tr>
-                                      );
+                                  );
                                     })}
-                                  </tbody>
-                                </table>
-                              </div>
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                         </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
+                      </div>
+                      {recruitments.length < 1 && (
+                        <div className="col-12">
+                          <div
+                            className="alert alert-warning text-center"
+                            role="alert"
+                          >
+                            Không có dữ liệu
                           </div>
-                        )}
-                        {/* <div className="col-12">
+                        </div>
+                      )}
+                      {/* <div className="col-12">
                           Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
                           {offset + 10 > totalCount
                             ? totalCount
                             : offset + pageSize}{" "}
                           of {totalCount}
                         </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
+                      <div className="col-12">
+                        <nav aria-label="Page navigation example">
+                          <ul className="pagination justify-content-center">
+                            <li
+                              className={`page-item ${page <= 1 ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                type="button"
+                                className="page-link"
+                                disabled={page <= 1}
+                                onClick={() => {
+                                  prevPage();
+                                }}
                               >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
+                                Trang truớc
+                              </button>
+                            </li>
+                            <li
+                              className={`page-item ${page >= totalCount ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                className="page-link"
+                                type="button"
+                                disabled={page >= totalCount}
+                                onClick={() => {
+                                  nextPage();
+                                }}
                               >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
+                                Trang sau
+                              </button>
+                            </li>
+                          </ul>
+                        </nav>
                       </div>
-                    </TabPane>
-                    <TabPane
-                      tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`}
-                      key="1"
-                    >
-                      <div className="row">
-                        <div className="col-6">
-                          <RangePicker style={{ width: "100%" }} />
-                        </div>
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
+                    </div>
+                  </TabPane>
+                  <TabPane
+                    tab={`Đang ứng tuyển (${totalDangUT ? totalDangUT : 0})`}
+                    key="1"
+                  >
+                    <div className="row">
+                      <div className="col-6">
+                        <RangePicker style={{ width: "100%"}} />
                       </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Thông tin ứng viên</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      const {
-                                        ungTuyenVien,
-                                        tinTuyenDung,
-                                        trangThai,
-                                      } = item?.donTuyenDung;
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {ungTuyenVien?.ten}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.sdt}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.taiKhoan?.email}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayUngTuyen,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <span
-                                                className="text-success pointer"
+                      <div className="col-1 ms-3">
+                        <Button
+                          className="d-flex align-items-center justify-content-center"
+                          type="primary"
+                          // icon={<GrFormRefresh />}
+                          onClick={() => {
+                            window.location.reload();
+                          }}
+                        >
+                          Làm mới
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-12">
+                        <div className="card mb-4">
+                          <div className="card-body px-0 pt-0 pb-2">
+                            <div className="table-responsive p-0">
+                              <table className="table align-items-center justify-content-center mb-0">
+                                <thead className="bg-dark">
+                                  <tr>
+                                    <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                      <strong>STT</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                      <strong> Thông tin ứng viên</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                      <strong>Tin tuyển dụng</strong>
+                                    </th>
+                                    <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                      <strong> Trạng thái</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                      <strong>Thao tác</strong>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {recruitments.map((item, index) => {
+                                    const {
+                                      ungTuyenVien,
+                                      tinTuyenDung,
+                                      trangThai,
+                                    } = item?.donTuyenDung;
+                                    return (
+                                      <tr key={index}>
+                                        <td className="align-middle">
+                                          <p className="text-sm font-weight-bold mb-0 text-center">
+                                            {index + 1}
+                                          </p>
+                                        </td>
+                                        <td>
+                                          <p className="text-sm fw-bold mb-0">
+                                            {ungTuyenVien?.ten}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            {ungTuyenVien?.sdt}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            {ungTuyenVien?.taiKhoan?.email}
+                                          </p>
+                                          <p className="address">
+                                            <span className="created">
+                                              Ngày nộp:{" "}
+                                              {TimeUtils.formatDateTime(
+                                                item?.ngayUngTuyen,
+                                                "DD-MM-YYYY"
+                                              )}
+                                            </span>
+                                          </p>
+                                          <p>
+                                            <span
+                                              className="text-success pointer"
+                                              onClick={() => {
+                                                handleAddButtonClickProfile(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              Xem thông tin ứng tuyến viên
+                                            </span>
+                                          </p>
+                                        </td>
+                                        <td className="">
+                                          <p className="text-sm fw-bold mb-0">
+                                            {tinTuyenDung?.tieuDe}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Số lượng tuyển :{" "}
+                                            {tinTuyenDung?.soLuongTuyen}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Số lượng đã tuyển:{" "}
+                                            {tinTuyenDung?.soLuongDaTuyen}
+                                          </p>
+
+                                          <p className="text-sm mb-0">
+                                            Khu vực:{" "}
+                                            {tinTuyenDung?.diaDiem
+                                              ?.tinhThanhPho +
+                                              "-" +
+                                              tinTuyenDung?.diaDiem
+                                                ?.quanHuyen}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Ngày hết hạn:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              tinTuyenDung?.ngayHetHan,
+                                              "DD-MM-YYYY"
+                                            )}{" "}
+                                          </p>
+                                        </td>
+                                        <td className="text-center align-middle">
+                                          <span>{trangThai}</span>
+                                        </td>
+                                        <td
+                                          className=" cursor-pointer pointer align-middle"
+                                        // onClick={(e) => {
+                                        //   console.log("e", e);
+                                        // }}
+                                        >
+                                          {/* <span className="text-xs font-weight-bold pointer">
+                                              <FaEllipsisV />
+                                            </span> */}
+                                          <div class="dropdown">
+                                            <button
+                                              class="btn btn-secondary dropdown-toggle"
+                                              type="button"
+                                              id="dropdownMenuButton1"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              Chi tiết
+                                            </button>
+                                            <ul
+                                              class="dropdown-menu"
+                                              aria-labelledby="dropdownMenuButton1"
+                                            >
+                                              <li
                                                 onClick={() => {
                                                   handleAddButtonClickProfile(
                                                     item
                                                   );
                                                 }}
                                               >
-                                                Xem thông tin ứng tuyến viên
-                                              </span>
-                                            </p>
-                                          </td>
-                                          <td className="">
-                                            <p className="text-sm fw-bold mb-0">
-                                              {tinTuyenDung?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng tuyển :{" "}
-                                              {tinTuyenDung?.soLuongTuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng đã tuyển:{" "}
-                                              {tinTuyenDung?.soLuongDaTuyen}
-                                            </p>
-
-                                            <p className="text-sm mb-0">
-                                              Khu vực:{" "}
-                                              {tinTuyenDung?.diaDiem
-                                                ?.tinhThanhPho +
-                                                "-" +
-                                                tinTuyenDung?.diaDiem
-                                                  ?.quanHuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Ngày hết hạn:{" "}
-                                              {TimeUtils.formatDateTime(
-                                                tinTuyenDung?.ngayHetHan,
-                                                "DD-MM-YYYY"
-                                              )}{" "}
-                                            </p>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
-                                          </td>
-                                          <td
-                                            className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
-                                          >
-                                            {/* <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span> */}
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickProfile(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xem
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
+                                                <span class="dropdown-item">
+                                                  Xem
+                                                </span>
+                                              </li>
+                                              <li>
+                                                <span class="dropdown-item">
+                                                  Ứng tuyển viên năng
+                                                </span>
+                                              </li>
+                                              <li>
+                                                <span class="dropdown-item">
+                                                  Xóa
+                                                </span>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                         </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
+                      </div>
+                      {recruitments.length < 1 && (
+                        <div className="col-12">
+                          <div
+                            className="alert alert-warning text-center"
+                            role="alert"
+                          >
+                            Không có dữ liệu
                           </div>
-                        )}
-                        {/* <div className="col-12">
+                        </div>
+                      )}
+                      {/* <div className="col-12">
                           Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
                           {offset + 10 > totalCount
                             ? totalCount
                             : offset + pageSize}{" "}
                           of {totalCount}
                         </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
+                      <div className="col-12">
+                        <nav aria-label="Page navigation example">
+                          <ul className="pagination justify-content-center">
+                            <li
+                              className={`page-item ${page <= 1 ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                type="button"
+                                className="page-link"
+                                disabled={page <= 1}
+                                onClick={() => {
+                                  prevPage();
+                                }}
                               >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
+                                Trang truớc
+                              </button>
+                            </li>
+                            <li
+                              className={`page-item ${page >= totalCount ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                className="page-link"
+                                type="button"
+                                disabled={page >= totalCount}
+                                onClick={() => {
+                                  nextPage();
+                                }}
                               >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
+                                Trang sau
+                              </button>
+                            </li>
+                          </ul>
+                        </nav>
                       </div>
-                    </TabPane>
-                    <TabPane
-                      tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`}
-                      key="2"
-                    >
-                      <div className="row">
-                        <div className="col-6">
-                          <RangePicker style={{ width: "100%" }} />
-                        </div>
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
+                    </div>
+                  </TabPane>
+                  <TabPane
+                    tab={`Đã ứng tuyển (${totalDaUT ? totalDaUT : 0})`}
+                    key="2"
+                  >
+                    <div className="row">
+                      <div className="col-6">
+                        <RangePicker style={{ width: "100%" }} />
                       </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Thông tin ứng viên</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      const {
-                                        ungTuyenVien,
-                                        tinTuyenDung,
-                                        trangThai,
-                                      } = item?.donTuyenDung;
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {ungTuyenVien?.ten}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.sdt}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.taiKhoan?.email}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayUngTuyen,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <span
-                                                className="text-success pointer"
+                      <div className="col-1 ms-3">
+                        <Button
+                          className="d-flex align-items-center justify-content-center"
+                          type="primary"
+                          // icon={<GrFormRefresh />}
+                          onClick={() => {
+                            window.location.reload();
+                          }}
+                        >
+                          Làm mới
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-12">
+                        <div className="card mb-4">
+                          <div className="card-body px-0 pt-0 pb-2">
+                            <div className="table-responsive p-0">
+                              <table className="table align-items-center justify-content-center mb-0">
+                                <thead className="bg-dark">
+                                  <tr>
+                                    <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                      <strong>STT</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                      <strong> Thông tin ứng viên</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                      <strong>Tin tuyển dụng</strong>
+                                    </th>
+                                    <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                      <strong> Trạng thái</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                      <strong>Thao tác</strong>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {recruitments.map((item, index) => {
+                                    const {
+                                      ungTuyenVien,
+                                      tinTuyenDung,
+                                      trangThai,
+                                    } = item?.donTuyenDung;
+                                    return (
+                                      <tr key={index}>
+                                        <td className="align-middle">
+                                          <p className="text-sm font-weight-bold mb-0 text-center">
+                                            {index + 1}
+                                          </p>
+                                        </td>
+                                        <td>
+                                          <p className="text-sm fw-bold mb-0">
+                                            {ungTuyenVien?.ten}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            {ungTuyenVien?.sdt}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            {ungTuyenVien?.taiKhoan?.email}
+                                          </p>
+                                          <p className="address">
+                                            <span className="created">
+                                              Ngày nộp:{" "}
+                                              {TimeUtils.formatDateTime(
+                                                item?.ngayUngTuyen,
+                                                "DD-MM-YYYY"
+                                              )}
+                                            </span>
+                                          </p>
+                                          <p>
+                                            <span
+                                              className="text-success pointer"
+                                              onClick={() => {
+                                                handleAddButtonClickProfile(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              Xem thông tin ứng tuyến viên
+                                            </span>
+                                          </p>
+                                        </td>
+                                        <td className="">
+                                          <p className="text-sm fw-bold mb-0">
+                                            {tinTuyenDung?.tieuDe}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Số lượng tuyển :{" "}
+                                            {tinTuyenDung?.soLuongTuyen}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Số lượng đã tuyển:{" "}
+                                            {tinTuyenDung?.soLuongDaTuyen}
+                                          </p>
+
+                                          <p className="text-sm mb-0">
+                                            Khu vực:{" "}
+                                            {tinTuyenDung?.diaDiem
+                                              ?.tinhThanhPho +
+                                              "-" +
+                                              tinTuyenDung?.diaDiem
+                                                ?.quanHuyen}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Ngày hết hạn:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              tinTuyenDung?.ngayHetHan,
+                                              "DD-MM-YYYY"
+                                            )}{" "}
+                                          </p>
+                                        </td>
+                                        <td className="text-center align-middle">
+                                          <span>{trangThai}</span>
+                                        </td>
+                                        <td
+                                          className=" cursor-pointer pointer align-middle"
+                                        // onClick={(e) => {
+                                        //   console.log("e", e);
+                                        // }}
+                                        >
+                                          {/* <span className="text-xs font-weight-bold pointer">
+                                              <FaEllipsisV />
+                                            </span> */}
+                                          <div class="dropdown">
+                                            <button
+                                              class="btn btn-secondary dropdown-toggle"
+                                              type="button"
+                                              id="dropdownMenuButton1"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              Chi tiết
+                                            </button>
+                                            <ul
+                                              class="dropdown-menu"
+                                              aria-labelledby="dropdownMenuButton1"
+                                            >
+                                              <li
                                                 onClick={() => {
                                                   handleAddButtonClickProfile(
                                                     item
                                                   );
                                                 }}
                                               >
-                                                Xem thông tin ứng tuyến viên
-                                              </span>
-                                            </p>
-                                          </td>
-                                          <td className="">
-                                            <p className="text-sm fw-bold mb-0">
-                                              {tinTuyenDung?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng tuyển :{" "}
-                                              {tinTuyenDung?.soLuongTuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng đã tuyển:{" "}
-                                              {tinTuyenDung?.soLuongDaTuyen}
-                                            </p>
-
-                                            <p className="text-sm mb-0">
-                                              Khu vực:{" "}
-                                              {tinTuyenDung?.diaDiem
-                                                ?.tinhThanhPho +
-                                                "-" +
-                                                tinTuyenDung?.diaDiem
-                                                  ?.quanHuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Ngày hết hạn:{" "}
-                                              {TimeUtils.formatDateTime(
-                                                tinTuyenDung?.ngayHetHan,
-                                                "DD-MM-YYYY"
-                                              )}{" "}
-                                            </p>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
-                                          </td>
-                                          <td
-                                            className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
-                                          >
-                                            {/* <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span> */}
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickProfile(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xem
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
+                                                <span class="dropdown-item">
+                                                  Xem
+                                                </span>
+                                              </li>
+                                              <li>
+                                                <span class="dropdown-item">
+                                                  Ứng tuyển viên năng
+                                                </span>
+                                              </li>
+                                              <li>
+                                                <span class="dropdown-item">
+                                                  Xóa
+                                                </span>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                         </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
+                      </div>
+                      {recruitments.length < 1 && (
+                        <div className="col-12">
+                          <div
+                            className="alert alert-warning text-center"
+                            role="alert"
+                          >
+                            Không có dữ liệu
                           </div>
-                        )}
-                        {/* <div className="col-12">
+                        </div>
+                      )}
+                      {/* <div className="col-12">
                           Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
                           {offset + 10 > totalCount
                             ? totalCount
                             : offset + pageSize}{" "}
                           of {totalCount}
                         </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
+                      <div className="col-12">
+                        <nav aria-label="Page navigation example">
+                          <ul className="pagination justify-content-center">
+                            <li
+                              className={`page-item ${page <= 1 ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                type="button"
+                                className="page-link"
+                                disabled={page <= 1}
+                                onClick={() => {
+                                  prevPage();
+                                }}
                               >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
+                                Trang truớc
+                              </button>
+                            </li>
+                            <li
+                              className={`page-item ${page >= totalCount ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                className="page-link"
+                                type="button"
+                                disabled={page >= totalCount}
+                                onClick={() => {
+                                  nextPage();
+                                }}
                               >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
+                                Trang sau
+                              </button>
+                            </li>
+                          </ul>
+                        </nav>
                       </div>
-                    </TabPane>
-                    <TabPane
-                      tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`}
-                      key="0"
-                    >
-                      <div className="row">
-                        <div className="col-2">
-                          <PostFiltersForm onSubmit={handleFiltersChange} />
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            showSearch
-                            placeholder="Thời gian tạo"
-                            optionFilterProp="children"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                            onSearch={(value) => {
-                              console.log("Value search", value);
-                            }}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select>
-                        </div>
-                        <div className="col-2">
-                          <Select
-                            style={{ width: "100%" }}
-                            defaultValue="lucy"
-                            onChange={(value) => {
-                              console.log("Value", value);
-                            }}
-                          >
-                            <Option value="jack">Đăng gần nhất</Option>
-                            <Option value="lucy">Đăng cũ nhất</Option>
-                          </Select>
-                        </div>
-                        {/* <div className="col-1 me-3">
+                    </div>
+                  </TabPane>
+                  <TabPane
+                    tab={`Từ chối(${totalTuChoi ? totalTuChoi : 0})`}
+                    key="0"
+                  >
+                    <div className="row">
+                      <div className="col-2">
+                        <PostFiltersForm onSubmit={handleFiltersChange} />
+                      </div>
+                      <div className="col-2">
+                        <Select
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Thời gian tạo"
+                          optionFilterProp="children"
+                          onChange={(value) => {
+                            console.log("Value", value);
+                          }}
+                          onSearch={(value) => {
+                            console.log("Value search", value);
+                          }}
+                          filterOption={(input, option) =>
+                            option.children
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          }
+                        >
+                          <Option value="jack">Jack</Option>
+                          <Option value="lucy">Lucy</Option>
+                          <Option value="tom">Tom</Option>
+                        </Select>
+                      </div>
+                      <div className="col-2">
+                        <Select
+                          style={{ width: "100%" }}
+                          defaultValue="lucy"
+                          onChange={(value) => {
+                            console.log("Value", value);
+                          }}
+                        >
+                          <Option value="jack">Đăng gần nhất</Option>
+                          <Option value="lucy">Đăng cũ nhất</Option>
+                        </Select>
+                      </div>
+                      {/* <div className="col-1 me-3">
                           <Button
                             style={{ width: "120px" }}
                             className="d-flex align-items-center justify-content-center"
@@ -1108,252 +1106,250 @@ const NewForProfileDetail = () => {
                             Tìm kiếm
                           </Button>
                         </div> */}
-                        <div className="col-1 ms-3">
-                          <Button
-                            className="d-flex align-items-center justify-content-center"
-                            type="primary"
-                            // icon={<GrFormRefresh />}
-                            onClick={() => {
-                              window.location.reload();
-                            }}
-                          >
-                            Làm mới
-                          </Button>
-                        </div>
+                      <div className="col-1 ms-3">
+                        <Button
+                          className="d-flex align-items-center justify-content-center"
+                          type="primary"
+                          // icon={<GrFormRefresh />}
+                          onClick={() => {
+                            window.location.reload();
+                          }}
+                        >
+                          Làm mới
+                        </Button>
                       </div>
-                      <div className="row mt-3">
-                        <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Thông tin ứng viên</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      const {
-                                        ungTuyenVien,
-                                        tinTuyenDung,
-                                        trangThai,
-                                      } = item?.donTuyenDung;
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {ungTuyenVien?.ten}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.sdt}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.taiKhoan?.email}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayUngTuyen,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <span
-                                                className="text-success pointer"
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-12">
+                        <div className="card mb-4">
+                          <div className="card-body px-0 pt-0 pb-2">
+                            <div className="table-responsive p-0">
+                              <table className="table align-items-center justify-content-center mb-0">
+                                <thead className="bg-dark">
+                                  <tr>
+                                    <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                      <strong>STT</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                      <strong> Thông tin ứng viên</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                      <strong>Tin tuyển dụng</strong>
+                                    </th>
+                                    <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                      <strong> Trạng thái</strong>
+                                    </th>
+                                    <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                      <strong>Thao tác</strong>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {recruitments.map((item, index) => {
+                                    const {
+                                      ungTuyenVien,
+                                      tinTuyenDung,
+                                      trangThai,
+                                    } = item?.donTuyenDung;
+                                    return (
+                                      <tr key={index}>
+                                        <td className="align-middle">
+                                          <p className="text-sm font-weight-bold mb-0 text-center">
+                                            {index + 1}
+                                          </p>
+                                        </td>
+                                        <td>
+                                          <p className="text-sm fw-bold mb-0">
+                                            {ungTuyenVien?.ten}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            {ungTuyenVien?.sdt}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            {ungTuyenVien?.taiKhoan?.email}
+                                          </p>
+                                          <p className="address">
+                                            <span className="created">
+                                              Ngày nộp:{" "}
+                                              {TimeUtils.formatDateTime(
+                                                item?.ngayUngTuyen,
+                                                "DD-MM-YYYY"
+                                              )}
+                                            </span>
+                                          </p>
+                                          <p>
+                                            <span
+                                              className="text-success pointer"
+                                              onClick={() => {
+                                                handleAddButtonClickProfile(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              Xem thông tin ứng tuyến viên
+                                            </span>
+                                          </p>
+                                        </td>
+                                        <td className="">
+                                          <p className="text-sm fw-bold mb-0">
+                                            {tinTuyenDung?.tieuDe}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Số lượng tuyển :{" "}
+                                            {tinTuyenDung?.soLuongTuyen}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Số lượng đã tuyển:{" "}
+                                            {tinTuyenDung?.soLuongDaTuyen}
+                                          </p>
+
+                                          <p className="text-sm mb-0">
+                                            Khu vực:{" "}
+                                            {tinTuyenDung?.diaDiem
+                                              ?.tinhThanhPho +
+                                              "-" +
+                                              tinTuyenDung?.diaDiem
+                                                ?.quanHuyen}
+                                          </p>
+                                          <p className="text-sm mb-0">
+                                            Ngày hết hạn:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              tinTuyenDung?.ngayHetHan,
+                                              "DD-MM-YYYY"
+                                            )}{" "}
+                                          </p>
+                                        </td>
+                                        <td className="text-center align-middle">
+                                          <span>{trangThai}</span>
+                                        </td>
+                                        <td
+                                          className=" cursor-pointer pointer align-middle"
+                                        // onClick={(e) => {
+                                        //   console.log("e", e);
+                                        // }}
+                                        >
+                                          {/* <span className="text-xs font-weight-bold pointer">
+                                              <FaEllipsisV />
+                                            </span> */}
+                                          <div class="dropdown">
+                                            <button
+                                              class="btn btn-secondary dropdown-toggle"
+                                              type="button"
+                                              id="dropdownMenuButton1"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              Chi tiết
+                                            </button>
+                                            <ul
+                                              class="dropdown-menu"
+                                              aria-labelledby="dropdownMenuButton1"
+                                            >
+                                              <li
                                                 onClick={() => {
                                                   handleAddButtonClickProfile(
                                                     item
                                                   );
                                                 }}
                                               >
-                                                Xem thông tin ứng tuyến viên
-                                              </span>
-                                            </p>
-                                          </td>
-                                          <td className="">
-                                            <p className="text-sm fw-bold mb-0">
-                                              {tinTuyenDung?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng tuyển :{" "}
-                                              {tinTuyenDung?.soLuongTuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng đã tuyển:{" "}
-                                              {tinTuyenDung?.soLuongDaTuyen}
-                                            </p>
-
-                                            <p className="text-sm mb-0">
-                                              Khu vực:{" "}
-                                              {tinTuyenDung?.diaDiem
-                                                ?.tinhThanhPho +
-                                                "-" +
-                                                tinTuyenDung?.diaDiem
-                                                  ?.quanHuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Ngày hết hạn:{" "}
-                                              {TimeUtils.formatDateTime(
-                                                tinTuyenDung?.ngayHetHan,
-                                                "DD-MM-YYYY"
-                                              )}{" "}
-                                            </p>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
-                                          </td>
-                                          <td
-                                            className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
-                                          >
-                                            {/* <span className="text-xs font-weight-bold pointer">
-                                              <FaEllipsisV />
-                                            </span> */}
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickProfile(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xem
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Ứng tuyển viên năng
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
+                                                <span class="dropdown-item">
+                                                  Xem
+                                                </span>
+                                              </li>
+                                              <li>
+                                                <span class="dropdown-item">
+                                                  Ứng tuyển viên năng
+                                                </span>
+                                              </li>
+                                              <li>
+                                                <span class="dropdown-item">
+                                                  Xóa
+                                                </span>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                         </div>
-                        {recruitments.length < 1 && (
-                          <div className="col-12">
-                            <div
-                              className="alert alert-warning text-center"
-                              role="alert"
-                            >
-                              Không có dữ liệu
-                            </div>
+                      </div>
+                      {recruitments.length < 1 && (
+                        <div className="col-12">
+                          <div
+                            className="alert alert-warning text-center"
+                            role="alert"
+                          >
+                            Không có dữ liệu
                           </div>
-                        )}
-                        {/* <div className="col-12">
+                        </div>
+                      )}
+                      {/* <div className="col-12">
                           Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
                           {offset + 10 > totalCount
                             ? totalCount
                             : offset + pageSize}{" "}
                           of {totalCount}
                         </div> */}
-                        <div className="col-12">
-                          <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-center">
-                              <li
-                                className={`page-item ${
-                                  page <= 1 ? "disabled drop" : ""
+                      <div className="col-12">
+                        <nav aria-label="Page navigation example">
+                          <ul className="pagination justify-content-center">
+                            <li
+                              className={`page-item ${page <= 1 ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                type="button"
+                                className="page-link"
+                                disabled={page <= 1}
+                                onClick={() => {
+                                  prevPage();
+                                }}
                               >
-                                <button
-                                  type="button"
-                                  className="page-link"
-                                  disabled={page <= 1}
-                                  onClick={() => {
-                                    prevPage();
-                                  }}
-                                >
-                                  Trang truớc
-                                </button>
-                              </li>
-                              <li
-                                className={`page-item ${
-                                  page >= totalCount ? "disabled drop" : ""
+                                Trang truớc
+                              </button>
+                            </li>
+                            <li
+                              className={`page-item ${page >= totalCount ? "disabled drop" : ""
                                 }`}
+                            >
+                              <button
+                                className="page-link"
+                                type="button"
+                                disabled={page >= totalCount}
+                                onClick={() => {
+                                  nextPage();
+                                }}
                               >
-                                <button
-                                  className="page-link"
-                                  type="button"
-                                  disabled={page >= totalCount}
-                                  onClick={() => {
-                                    nextPage();
-                                  }}
-                                >
-                                  Trang sau
-                                </button>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
+                                Trang sau
+                              </button>
+                            </li>
+                          </ul>
+                        </nav>
                       </div>
-                    </TabPane>
-                  </Tabs>
-                </div>
+                    </div>
+                  </TabPane>
+                </Tabs>
               </div>
             </div>
-            <div></div>
-            {renderModalProfile}
-          </Content>
-          <Footer
-            style={{
-              textAlign: "center",
-            }}
-          >
-            Ant Design ©2018 Created by Trung Vinh
-          </Footer>
-        </Layout>
+          </div>
+          <div></div>
+          {renderModalProfile}
+        </Content>
+        <Footer
+          style={{
+            textAlign: "center",
+          }}
+        >
+          Ant Design ©2018 Created by Trung Vinh
+        </Footer>
       </Layout>
-    </Fragment>
+    </Layout>
+    </Fragment >
   );
 };
 export default NewForProfileDetail;
