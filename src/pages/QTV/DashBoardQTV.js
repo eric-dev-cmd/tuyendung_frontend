@@ -7,6 +7,7 @@ import {
   UserOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
+import io from 'socket.io-client'
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { FaListUl, FaUserPlus } from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
@@ -35,7 +36,18 @@ const { TabPane } = Tabs;
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
+
+
 const DashBoardQTV = () => {
+  const [socket, setSocket] = useState(null);
+  useEffect(async () => {
+    if (!socket) {
+      const st = io.connect('http://localhost:4000')
+      setSocket(st)
+
+    }
+  }, [socket])
+
   const { t } = useTranslation();
   const { listCareers, levels, typeWorks } = useCommonContext();
   const [isSubmit, setIsSubmit] = useState([]);
@@ -72,8 +84,8 @@ const DashBoardQTV = () => {
       setRecruitments(response.data.data);
       setTotalCount(response?.data?.pagination?.total);
       setPagination(response?.data?.pagination);
-
       setIsSubmit(false);
+      console.log('socket', socket)
     } catch (error) {
       console.log(error.response);
     }
@@ -196,7 +208,7 @@ const DashBoardQTV = () => {
   const handleAddButtonClickDetailAccept = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/duyetTin/${id}`;
-      await axios.patch(requestUrl).then((res) => {
+      await axios.patch(requestUrl).then(async (res) => {
         if (res?.data?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
@@ -208,6 +220,8 @@ const DashBoardQTV = () => {
             draggable: true,
             progress: undefined,
           });
+          await socket.emit("duyet-tin-tuyen-dung", { id: id })
+          console.log('socket', socket)
         }
       });
     } catch (error) {
