@@ -54,46 +54,24 @@ const NavbarQTV = (props) => {
             <Link to="/admin/dashboard" />
           </Menu.Item>
           <Menu.Item icon={<DesktopOutlined />} key="2">
-            Tin tuyển dụng
+            Quản lý tin đăng tuyển
             <Link to="/admin/dashboard" />
           </Menu.Item>
-          <Menu.Item icon={<DesktopOutlined />} key="3">
-            Nhà tuyển dụng
-            <Link to="/admin/employers" />
-          </Menu.Item>
-          <Menu.Item icon={<DesktopOutlined />} key="4">
-            Ứng tuyển viên
-            <Link to="/admin/candidates" />
-          </Menu.Item>
-          {/* <Menu.SubMenu title="Tin tuyển dụng" icon={<FaListUl />} key="sub1">
-            <Menu.Item key="2">
-              Quản lý tin
-              <Link to="/employer/dashboard" />
-            </Menu.Item>
-            <Menu.Item key="3">
-              Thêm mới tin
-              <Link to="/employer/job/create" />
-            </Menu.Item>
-          </Menu.SubMenu>
+
           <Menu.SubMenu
-            title="Hồ sơ ứng tuyển"
+            title="Quản lý tài khoản"
             icon={<TeamOutlined />}
             key="sub2"
           >
-            <Link to="/employer/job/apply-job/all" />
-            <Menu.Item key="4">
-              Tất cả hồ sơ
-              <Link to="/employer/job/apply-job/all" />
+            <Menu.Item icon={<DesktopOutlined />} key="3">
+              Nhà tuyển dụng
+              <Link to="/admin/employers" />
             </Menu.Item>
-            <Menu.Item key="5">
-              Hồ sơ tiềm năng
-              <Link to="/employer/job/apply-job/talent" />
+            <Menu.Item icon={<DesktopOutlined />} key="4">
+              Ứng tuyển viên
+              <Link to="/admin/candidates" />
             </Menu.Item>
-          </Menu.SubMenu> */}
-          <Menu.Item icon={<DesktopOutlined />} key="6">
-            Thông tin quản trị viên
-            <Link to="/admin/profile" />
-          </Menu.Item>
+          </Menu.SubMenu>
           <Menu.Item icon={<GoSignOut />} key="7" onClick={logoutHandler}>
             Đăng xuất
             <Link to="/" />

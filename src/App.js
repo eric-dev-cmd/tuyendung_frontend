@@ -37,6 +37,7 @@ import AccessDenied from "./components/AccessDenied";
 import { Payment } from "./pages/Admin/Payment";
 import EmployerRoute from "./routes/EmployerRoute";
 import AdminRoute from "./routes/AdminRoute";
+import UpdateJob from "./pages/Admin/UpdateJob";
 
 function App(props) {
   return (
@@ -68,6 +69,11 @@ function App(props) {
         {/* EMPLOYER START */}
         <EmployerRoute exact path="/employer/dashboard" component={DashBoard} />
         <EmployerRoute exact path="/employer/job/create" component={NewJob} />
+        <EmployerRoute
+          exact
+          path="/employer/job/update/:id"
+          component={UpdateJob}
+        />
         <EmployerRoute
           exact
           path="/employer/job/detail/:id"

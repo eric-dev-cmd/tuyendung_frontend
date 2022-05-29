@@ -71,12 +71,12 @@ const ModalDeny = ({ showModal, onCloseModal, isEdit, user, ...props }) => {
               save();
             }}
           >
-            Lưu
+            Đồng ý
           </Button>,
         ]}
       >
         <div className="row">
-          <div className="col-12">Lý do từ chối đơn ứng tuyển</div>
+          <div className="col-12">Xác nhận lý do từ chối đơn ứng tuyển</div>
           <div className="col-12 mt-4">
             <TextArea
               showCount

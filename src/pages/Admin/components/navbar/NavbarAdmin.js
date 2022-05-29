@@ -81,12 +81,12 @@ const NavbarAdmin = (props) => {
             <Menu.Item
               key="3"
               onClick={() => {
-                // if (totalAll >= 3) {
-                //   history.replace('/employer/job/payment')
-                // } else if (totalAll < 3) {
-                //   history.replace('/employer/job/create')
-                // }
-                history.replace("/employer/job/create");
+                if (totalAll >= 3) {
+                  history.replace("/employer/job/payment");
+                } else if (totalAll < 3) {
+                  history.replace("/employer/job/create");
+                }
+                // history.replace("/employer/job/create");
               }}
             >
               Thêm mới tin

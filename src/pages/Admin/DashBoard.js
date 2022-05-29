@@ -475,6 +475,22 @@ const MainNavigationAdmin = () => {
                                                 // handleAddButtonClickDetailDelete(
                                                 //   item?._id
                                                 // );
+                                                // confirmDeleteDrop(item?._id);
+                                              }}
+                                            >
+                                              <Link
+                                                to={`/employer/job/update/${item?._id}`}
+                                              >
+                                                <span class="dropdown-item">
+                                                  Cập nhật tin tuyển dụng
+                                                </span>
+                                              </Link>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                // handleAddButtonClickDetailDelete(
+                                                //   item?._id
+                                                // );
                                                 confirmDeleteDrop(item?._id);
                                               }}
                                             >

@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb, Input, Tooltip, Button } from "antd";
+import { Layout, Menu, Breadcrumb, Input, Tooltip, Button, Modal } from "antd";
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -178,27 +178,36 @@ const DashBoardQTV = () => {
   }, [isGetRecruitmentReviewLeast]);
 
   // xóa tin
-  const handleAddButtonClickDetailDelete = async (id) => {
-    try {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
-      await axios.delete(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+  const confirmDeleteDrop = (id) =>
+    Modal.confirm({
+      title: "Bạn chắc chắn muốn xóa tin tuyển dụng này?",
+      // content: "first",
+      okText: "Đồng ý",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
+          await axios.delete(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
           });
         }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+      },
+    });
 
   // duyệt tin
   const handleAddButtonClickDetailAccept = async (id) => {
@@ -226,50 +235,72 @@ const DashBoardQTV = () => {
   };
 
   // mở / khóa tin
-  const handleAddButtonClickDetailBlock = async (id) => {
-    try {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/khoaTin/${id}`;
-      await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+
+  const confirmLockAndUnLock = (id, status) =>
+    Modal.confirm({
+      title:
+        status == "Khóa"
+          ? "Bạn chắc chắn muốn mở khóa cho tin tuyển dụng này?"
+          : "Bạn chắc chắn muốn khóa cho tin tuyển dụng này?",
+      // content: "first",
+      okText: "Đồng ý",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/tinTuyenDungs/khoaTin/${id}`;
+          await axios.patch(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
           });
         }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+      },
+    });
 
   // Từ chối
-  const handleAddButtonClickDetailDeny = async (id) => {
-    try {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/tuChoiTin/${id}`;
-      await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+  const confirmDetailDeny = (id) =>
+    Modal.confirm({
+      title: "Bạn chắc chắn từ chối duyệt tin tuyển dụng này?",
+      // content: "first",
+      okText: "Đồng ý",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/tinTuyenDungs/tuChoiTin/${id}`;
+          await axios.patch(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
           });
         }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+      },
+    });
 
   useEffect(() => {
     getTotalStatus();
@@ -483,7 +514,7 @@ const DashBoardQTV = () => {
 
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive">
+                          <div className="">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -506,6 +537,8 @@ const DashBoardQTV = () => {
                               </thead>
                               <tbody>
                                 {recruitments.map((item, index) => {
+                                  console.log("trung vinh", item);
+
                                   return (
                                     <tr key={index}>
                                       <td className="align-middle">
@@ -600,7 +633,7 @@ const DashBoardQTV = () => {
                                                   </li>
                                                   <li
                                                     onClick={() => {
-                                                      handleAddButtonClickDetailDeny(
+                                                      confirmDetailDeny(
                                                         item?._id
                                                       );
                                                     }}
@@ -615,8 +648,9 @@ const DashBoardQTV = () => {
                                                 <>
                                                   <li
                                                     onClick={() => {
-                                                      handleAddButtonClickDetailBlock(
-                                                        item?._id
+                                                      confirmLockAndUnLock(
+                                                        item?._id,
+                                                        item?.trangThai
                                                       );
                                                     }}
                                                   >
@@ -629,8 +663,9 @@ const DashBoardQTV = () => {
                                                 <>
                                                   <li
                                                     onClick={() => {
-                                                      handleAddButtonClickDetailBlock(
-                                                        item?._id
+                                                      confirmLockAndUnLock(
+                                                        item?._id,
+                                                        item?.trangThai
                                                       );
                                                     }}
                                                   >
@@ -643,9 +678,7 @@ const DashBoardQTV = () => {
                                             </>
                                             <li
                                               onClick={() => {
-                                                handleAddButtonClickDetailDelete(
-                                                  item?._id
-                                                );
+                                                confirmDeleteDrop(item?._id);
                                               }}
                                             >
                                               <span class="dropdown-item">
@@ -838,7 +871,7 @@ const DashBoardQTV = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive">
+                          <div className="">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -939,9 +972,7 @@ const DashBoardQTV = () => {
                                             </li>
                                             <li
                                               onClick={() => {
-                                                handleAddButtonClickDetailDeny(
-                                                  item?._id
-                                                );
+                                                confirmDetailDeny(item?._id);
                                               }}
                                             >
                                               <span class="dropdown-item">
@@ -950,9 +981,7 @@ const DashBoardQTV = () => {
                                             </li>
                                             <li
                                               onClick={() => {
-                                                handleAddButtonClickDetailDelete(
-                                                  item?._id
-                                                );
+                                                confirmDeleteDrop(item?._id);
                                               }}
                                             >
                                               <span class="dropdown-item">
@@ -1143,7 +1172,7 @@ const DashBoardQTV = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive">
+                          <div className="">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -1245,8 +1274,9 @@ const DashBoardQTV = () => {
                                           >
                                             <li
                                               onClick={() => {
-                                                handleAddButtonClickDetailBlock(
-                                                  item?._id
+                                                confirmLockAndUnLock(
+                                                  item?._id,
+                                                  item?.trangThai
                                                 );
                                               }}
                                             >
@@ -1256,9 +1286,7 @@ const DashBoardQTV = () => {
                                             </li>
                                             <li
                                               onClick={() => {
-                                                handleAddButtonClickDetailDelete(
-                                                  item?._id
-                                                );
+                                                confirmDeleteDrop(item?._id);
                                               }}
                                             >
                                               <span class="dropdown-item">
@@ -1452,7 +1480,7 @@ const DashBoardQTV = () => {
                         <div className="col-12">
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
+                              <div className=" p-0">
                                 <table className="table align-items-center justify-content-center mb-0">
                                   <thead className="bg-dark">
                                     <tr>
@@ -1556,7 +1584,7 @@ const DashBoardQTV = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -1753,7 +1781,7 @@ const DashBoardQTV = () => {
                         <div className="col-12">
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
+                              <div className=" p-0">
                                 <table className="table align-items-center justify-content-center mb-0">
                                   <thead className="bg-dark">
                                     <tr>
@@ -1857,8 +1885,9 @@ const DashBoardQTV = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailBlock(
-                                                      item?._id
+                                                    confirmLockAndUnLock(
+                                                      item?._id,
+                                                      item?.trangThai
                                                     );
                                                   }}
                                                 >
@@ -1868,7 +1897,7 @@ const DashBoardQTV = () => {
                                                 </li>
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -2065,7 +2094,7 @@ const DashBoardQTV = () => {
                         <div className="col-12">
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
+                              <div className=" p-0">
                                 <table className="table align-items-center justify-content-center mb-0">
                                   <thead className="bg-dark">
                                     <tr>
@@ -2169,7 +2198,7 @@ const DashBoardQTV = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -2371,7 +2400,7 @@ const DashBoardQTV = () => {
                         <div className="col-12">
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
+                              <div className=" p-0">
                                 <table className="table align-items-center justify-content-center mb-0">
                                   <thead className="bg-dark">
                                     <tr>
@@ -2395,6 +2424,7 @@ const DashBoardQTV = () => {
                                   <tbody>
                                     {recruitmentReviewLeast.map(
                                       (item, index) => {
+                                        console.log("review", item);
                                         return (
                                           <tr key={index + 1}>
                                             <td className="align-middle">
@@ -2489,9 +2519,11 @@ const DashBoardQTV = () => {
                                                       ?.trangThai == "Khóa" ? (
                                                       <li
                                                         onClick={() => {
-                                                          handleAddButtonClickDetailBlock(
+                                                          confirmLockAndUnLock(
                                                             item?.tinTuyenDung
-                                                              ?._id
+                                                              ?._id,
+                                                            item?.tinTuyenDung
+                                                              ?.trangThai
                                                           );
                                                         }}
                                                       >
@@ -2504,9 +2536,11 @@ const DashBoardQTV = () => {
                                                       "Đã duyệt" ? (
                                                       <li
                                                         onClick={() => {
-                                                          handleAddButtonClickDetailBlock(
+                                                          confirmLockAndUnLock(
                                                             item?.tinTuyenDung
-                                                              ?._id
+                                                              ?._id,
+                                                            item?.tinTuyenDung
+                                                              ?.trangThai
                                                           );
                                                         }}
                                                       >
@@ -2518,7 +2552,7 @@ const DashBoardQTV = () => {
                                                   </>
                                                   <li
                                                     onClick={() => {
-                                                      handleAddButtonClickDetailDelete(
+                                                      confirmDeleteDrop(
                                                         item?.tinTuyenDung?._id
                                                       );
                                                     }}
