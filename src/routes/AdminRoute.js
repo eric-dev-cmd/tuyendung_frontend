@@ -23,6 +23,8 @@ const AdminRoute = ({ component: Component, ...restOfProps }) => {
     } else if (!isAuthenticated) {
       // history.push("/login")
       <Redirect to="/login" />;
+    } else if (![QUAN_TRI_VIEN].includes(roles)) {
+      history.replace("/access-denied");
     }
   }, [isAuthenticated, roles]);
 

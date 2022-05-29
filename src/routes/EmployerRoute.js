@@ -19,11 +19,11 @@ const EmployerRoute = ({ component: Component, ...restOfProps }) => {
   useEffect(() => {
     if (isAuthenticated && roles === NHA_TUYEN_DUNG) {
       console.log("1. co quyen");
-     // history.push("/employer/dashboard");
+      // history.push("/employer/dashboard");
     } else if (!isAuthenticated) {
       // history.push("/login")
       <Redirect to="/login" />;
-    } else if (![NHA_TUYEN_DUNG, QUAN_TRI_VIEN].includes(roles)) {
+    } else if (![NHA_TUYEN_DUNG].includes(roles)) {
       history.replace("/access-denied");
     }
   }, [isAuthenticated, roles]);
