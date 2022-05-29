@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Layout, Menu, Select, Tabs } from "antd";
+import { Breadcrumb, Button, Layout, Menu, Modal, Select, Tabs } from "antd";
 import axios from "axios";
 import queryString from "query-string";
 import React, { Fragment, useEffect, useState, useRef } from "react";
@@ -136,6 +136,67 @@ const MainNavigationAdmin = () => {
       tieuDe: newFilters.searchTerm,
     });
   };
+  // Modal confirm delete
+  const confirmDeleteStop = (id) =>
+    Modal.confirm({
+      title: "Bạn chắc chắn muốn dừng tin tuyển dụng này?",
+      // content: "first",
+      onOk: async () => {
+        try {
+          console.log("item id", id);
+          console.log("Clicked confirm");
+          const requestUrl = `http://localhost:4000/tinTuyenDungs/dungTuyen/${id}`;
+          await axios.patch(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
+          });
+        }
+      },
+    });
+  const confirmDeleteDrop = (id) =>
+    Modal.confirm({
+      title: "Bạn chắc chắn muốn xóa tin tuyển dụng này?",
+      // content: "first",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
+          await axios.delete(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
+          });
+        }
+      },
+    });
   const [totalStatus, setTotalStatus] = useState();
   const [totalDungTuyen, setTotalDungTuyen] = useState();
   const [totalChoDuyet, setTotalChoDuyet] = useState();
@@ -170,52 +231,6 @@ const MainNavigationAdmin = () => {
   useEffect(() => {
     getTotalStatus();
   }, []);
-
-  // xóa tin
-  const handleAddButtonClickDetailDelete = async (id) => {
-    try {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
-      await axios.delete(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
-  // dừng tin
-  const handleAddButtonClickDetailStop = async (id) => {
-    try {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/dungTuyen/${id}`;
-      await axios.patch(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
 
   useEffect(() => {
     // getListData();
@@ -403,7 +418,9 @@ const MainNavigationAdmin = () => {
                                                     <>
                                                       <li
                                                         onClick={() => {
-                                                          handleAddButtonClickDetailStop(
+                                                          // confirmDeleteStop(item?._id)
+
+                                                          confirmDeleteStop(
                                                             item?._id
                                                           );
                                                         }}
@@ -417,7 +434,10 @@ const MainNavigationAdmin = () => {
                                                 </>
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    // handleAddButtonClickDetailDelete(
+                                                    //   item?._id
+                                                    // );
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -574,7 +594,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -738,7 +758,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailStop(
+                                                    confirmDeleteStop(
                                                       item?._id
                                                     );
                                                   }}
@@ -749,7 +769,7 @@ const MainNavigationAdmin = () => {
                                                 </li>
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -906,7 +926,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -1063,7 +1083,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}
@@ -1221,7 +1241,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
+                                                    confirmDeleteDrop(
                                                       item?._id
                                                     );
                                                   }}

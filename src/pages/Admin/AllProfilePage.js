@@ -6,6 +6,7 @@ import {
   Tooltip,
   Button,
   Dropdown,
+  Modal,
 } from "antd";
 import {
   DesktopOutlined,
@@ -76,8 +77,7 @@ const AllProfilePage = () => {
     const paramsString = queryString.stringify(filters);
     try {
       const response = await RecruitmentApi.getListProfile(paramsString);
-      const a = recruitments.find(yeuCauDoTuoi => yeuCauDoTuoi = true)
-      console.log('aaaaaaaaaa', a)
+      const a = recruitments.find((yeuCauDoTuoi) => (yeuCauDoTuoi = true));
       setRecruitments(response.data);
       setPagination(response.pagination);
       setIsSubmit(false);
@@ -181,29 +181,6 @@ const AllProfilePage = () => {
     getTotalApplication();
   }, []);
 
-  // xóa đơn ứng tuyển
-  const handleAddButtonClickDelete = async (id) => {
-    try {
-      const requestUrl = `http://localhost:4000/donUngTuyens/${id}`;
-      await axios.delete(requestUrl).then((res) => {
-        if (res?.data?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
   // ứng viêm tiềm năng
   const handleAddButtonClickTalent = async (id) => {
     try {
@@ -226,6 +203,37 @@ const AllProfilePage = () => {
       console.log(error.response);
     }
   };
+
+  // Modal confirm don ung tuyen
+  const confirmDeleteProfile = (id) =>
+    Modal.confirm({
+      title: `Bạn chắc chắn muốn xóa đơn ứng tuyển này?`,
+      // content: "first",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/donUngTuyens/${id}`;
+          await axios.delete(requestUrl).then((res) => {
+            if (res?.data?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            }
+          });
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
+          });
+        }
+      },
+    });
 
   useEffect(() => {
     getDataListFilters();
@@ -417,9 +425,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -458,7 +466,7 @@ const AllProfilePage = () => {
                                                 >
                                                   <>
                                                     {trangThai ==
-                                                      "Thất bại" ? null : (
+                                                    "Thất bại" ? null : (
                                                       <span class="dropdown-item">
                                                         Ứng viên tiềm năng
                                                       </span>
@@ -467,8 +475,8 @@ const AllProfilePage = () => {
                                                 </li>
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDelete(
-                                                      item?.donTuyenDung._id
+                                                    confirmDeleteProfile(
+                                                      item?.donTuyenDung?._id
                                                     );
                                                   }}
                                                 >
@@ -677,9 +685,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -722,8 +730,8 @@ const AllProfilePage = () => {
                                                 </li>
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDelete(
-                                                      item?.donTuyenDung._id
+                                                    confirmDeleteProfile(
+                                                      item?.donTuyenDung?._id
                                                     );
                                                   }}
                                                 >
@@ -892,9 +900,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -937,8 +945,8 @@ const AllProfilePage = () => {
                                                 </li>
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDelete(
-                                                      item?.donTuyenDung._id
+                                                    confirmDeleteProfile(
+                                                      item?.donTuyenDung?._id
                                                     );
                                                   }}
                                                 >
@@ -1116,9 +1124,9 @@ const AllProfilePage = () => {
                                           </td>
                                           <td
                                             className=" cursor-pointer pointer align-middle"
-                                          // onClick={(e) => {
-                                          //   console.log("e", e);
-                                          // }}
+                                            // onClick={(e) => {
+                                            //   console.log("e", e);
+                                            // }}
                                           >
                                             {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
@@ -1150,8 +1158,8 @@ const AllProfilePage = () => {
                                                 </li>
                                                 <li
                                                   onClick={() => {
-                                                    handleAddButtonClickDelete(
-                                                      item?.donTuyenDung._id
+                                                    confirmDeleteProfile(
+                                                      item?.donTuyenDung?._id
                                                     );
                                                   }}
                                                 >

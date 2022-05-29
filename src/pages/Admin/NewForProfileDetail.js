@@ -19,6 +19,7 @@ import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
 import { useParams } from "react-router-dom";
 import { RiMailSendLine, RiRefreshLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 const { RangePicker } = DatePicker;
 
 const { Option } = Select;
@@ -180,24 +181,33 @@ const NewForProfileDetail = () => {
     const requestUrlTalent = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang`;
     const requestUrlSendEmail = `http://localhost:4000/tinTuyenDungs/sendEmail`;
     try {
-      await axiosClient.get(requestUrlTalent).then(res => {
-        res?.data?.map(async item => {
-          if (item?.donTuyenDung?.tinTuyenDung?.nganhNghe?._id === recruitment?.nganhNghe?._id) {
+      await axiosClient.get(requestUrlTalent).then((res) => {
+        res?.data?.map(async (item) => {
+          if (
+            item?.donTuyenDung?.tinTuyenDung?.nganhNghe?._id ===
+            recruitment?.nganhNghe?._id
+          ) {
             const sendMail = {
-              email: 'catluynh99@gmail.com', //item?.donTuyenDung?.ungTuyenVien?.taiKhoan?.email,
-              subject: `Jobs Board gửi ${item?.donTuyenDung?.ungTuyenVien?.ten} việc làm mới phù hợp với bạn ngày ${TimeUtils.formatDateTime(
+              email: "catluynh99@gmail.com", //item?.donTuyenDung?.ungTuyenVien?.taiKhoan?.email,
+              subject: `Jobs Board gửi ${
+                item?.donTuyenDung?.ungTuyenVien?.ten
+              } việc làm mới phù hợp với bạn ngày ${TimeUtils.formatDateTime(
                 recruitment?.ngayTao,
                 "DD-MM-YYYY"
               )}`,
-              message: `Xin chào <strong>${item?.donTuyenDung?.ungTuyenVien?.ten}</strong> <br> <strong>Jobs Board</strong> gửi bạn việc làm phù hợp mới ngày ${TimeUtils.formatDateTime(
+              message: `Xin chào <strong>${
+                item?.donTuyenDung?.ungTuyenVien?.ten
+              }</strong> <br> <strong>Jobs Board</strong> gửi bạn việc làm phù hợp mới ngày ${TimeUtils.formatDateTime(
                 recruitment?.ngayTao,
                 "DD-MM-YYYY"
-              )} <br> Vui lòng click vào link này để biết thêm thông tin chi tiết: http://localhost:3000/job-detail/${recruitment._id}`
-            }
-            await axios.post(requestUrlSendEmail, sendMail)
+              )} <br> Vui lòng click vào link này để biết thêm thông tin chi tiết: http://localhost:3000/job-detail/${
+                recruitment._id
+              }`,
+            };
+            await axios.post(requestUrlSendEmail, sendMail);
           }
-        })
-      })
+        });
+      });
 
       // const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
       // await axios.delete(requestUrl).then((res) => {
@@ -214,6 +224,28 @@ const NewForProfileDetail = () => {
       //     });
       //   }
       // });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  // ứng viêm tiềm năng
+  const handleAddButtonClickTalent = async (id) => {
+    try {
+      const requestUrl = `http://localhost:4000/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
+      await axios.patch(requestUrl).then((res) => {
+        if (res?.data?.status == "success") {
+          // setIsSubmit(true);
+          toast.success("Cập nhật thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -354,8 +386,8 @@ const NewForProfileDetail = () => {
                               handleSendEmailTalent(recruitmentById);
                             }}
                           >
-                            <RiMailSendLine className="me-2" /> Gửi email tin tuyển dụng đến
-                            ứng viên tiềm năng
+                            <RiMailSendLine className="me-2" /> Gửi email tin
+                            tuyển dụng đến ứng viên tiềm năng
                           </Button>
                         </div>
                       </div>
@@ -502,7 +534,13 @@ const NewForProfileDetail = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Ứng tuyển viên năng
                                                   </span>
@@ -739,7 +777,13 @@ const NewForProfileDetail = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Ứng tuyển viên năng
                                                   </span>
@@ -976,7 +1020,13 @@ const NewForProfileDetail = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Ứng tuyển viên năng
                                                   </span>
@@ -1258,7 +1308,13 @@ const NewForProfileDetail = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li>
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickTalent(
+                                                      item?._id
+                                                    );
+                                                  }}
+                                                >
                                                   <span class="dropdown-item">
                                                     Ứng tuyển viên năng
                                                   </span>
