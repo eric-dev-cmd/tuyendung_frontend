@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import Pagination from "../../components/Pagination/Pagination";
 import { RiRefreshLine } from "react-icons/ri";
+import io from 'socket.io-client'
 
 const { Option } = Select;
 
@@ -22,6 +23,16 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const MainNavigationAdmin = () => {
+
+  const [socket, setSocket] = useState(null);
+  useEffect(async () => {
+    if (!socket) {
+      const st = io.connect('http://localhost:4000')
+      setSocket(st)
+
+    }
+  }, [socket])
+
   const [isSubmit, setIsSubmit] = useState([]);
 
   const [collapsed, setCollapsed] = React.useState(false);
@@ -84,6 +95,10 @@ const MainNavigationAdmin = () => {
       setTotalCount(response.pagination.total);
       setPagination(response.pagination);
       setIsSubmit(false);
+      socket.on('res-duyet-tin-tuyen-dung', (data) => {
+        getDataListFilters();
+      })
+      console.log('socket', socket)
     } catch (error) {
       console.log(error.response);
     }
@@ -221,7 +236,10 @@ const MainNavigationAdmin = () => {
           setIsSubmit(false);
         });
       });
-
+      socket.on('res-duyet-tin-tuyen-dung', (data) => {
+        getTotalStatus();
+        console.log('sau sokcet', totalChoDuyet);
+      })
       setTotalStatus(response.data.data);
     } catch (error) {
       console.log(error.response);
@@ -414,7 +432,7 @@ const MainNavigationAdmin = () => {
                                               >
                                                 <>
                                                   {item?.trangThai ==
-                                                  "Đã duyệt" ? (
+                                                    "Đã duyệt" ? (
                                                     <>
                                                       <li
                                                         onClick={() => {
@@ -637,9 +655,8 @@ const MainNavigationAdmin = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Đang tuyển dụng (${
-                        totalDaDuyet ? totalDaDuyet : 0
-                      })`}
+                      tab={`Đang tuyển dụng (${totalDaDuyet ? totalDaDuyet : 0
+                        })`}
                       key="2"
                     >
                       <div className="row">
@@ -737,8 +754,8 @@ const MainNavigationAdmin = () => {
                                             <>
                                               {item?.trangThai ==
                                                 "Đã duyệt" && (
-                                                <span>Đang tuyển dụng</span>
-                                              )}
+                                                  <span>Đang tuyển dụng</span>
+                                                )}
                                             </>
                                           </td>
                                           <td className="text-center cursor-pointer align-middle pointer">

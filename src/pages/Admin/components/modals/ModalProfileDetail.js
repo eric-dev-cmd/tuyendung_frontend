@@ -39,7 +39,7 @@ const ModalProfileDetail = ({
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const { tinTuyenDung, ungTuyenVien, tiemNang, ngayUngTuyen, trangThai, _id } =
+  const { tinTuyenDung, ungTuyenVien, tiemNang, ngayUngTuyen, trangThai, _id, thongTinLienHe } =
     user?.donTuyenDung;
   console.log("Trung Vinh user", user);
 
@@ -184,7 +184,7 @@ const ModalProfileDetail = ({
               </div>
               <div className="col-9">
                 <span>
-                  <strong>{ungTuyenVien?.ten}</strong>
+                  <strong>{thongTinLienHe?.ten}</strong>
                 </span>
                 <div>
                   {/* {moment(ngayUngTuyen).locale("vi").startOf("day").fromNow()} */}
@@ -232,7 +232,7 @@ const ModalProfileDetail = ({
                       </div>
                     </div>
                     <div className="col-8 mt-3">
-                      <i>{ungTuyenVien?.ten}</i>
+                      <i>{thongTinLienHe?.ten}</i>
                     </div>
                   </div>
                   <div className="row">
@@ -247,7 +247,7 @@ const ModalProfileDetail = ({
                       </div>
                     </div>
                     <div className="col-8 mt-3">
-                      <i>{ungTuyenVien?.taiKhoan?.email}</i>
+                      <i>{thongTinLienHe?.email}</i>
                     </div>
                   </div>
                   <div className="row">
@@ -262,7 +262,7 @@ const ModalProfileDetail = ({
                       </div>
                     </div>
                     <div className="col-8 mt-3">
-                      <i>{ungTuyenVien?.sdt}</i>
+                      <i>{thongTinLienHe?.sdt}</i>
                     </div>
                   </div>
                   <div className="row">
@@ -270,7 +270,7 @@ const ModalProfileDetail = ({
                       <strong>Lời giới thiệu</strong>
                     </div>
                     <div className="col-12 mt-3">
-                      <p>{ungTuyenVien?.loiGioiThieu}</p>
+                      <p>{thongTinLienHe?.loiGioiThieu}</p>
                     </div>
                   </div>
                 </div>
@@ -313,7 +313,7 @@ const ModalProfileDetail = ({
               <div className="col-4 bg-core text-white pt-20 pb-30">
                 <div className="p-1">
                   <h3 className="text-center mb-0 text-white">
-                    <strong>{ungTuyenVien?.ten}</strong>
+                    <strong>{thongTinLienHe?.ten}</strong>
                   </h3>
                   <p className="text-center">
                     {ungTuyenVien?.viTriMuonUngTuyen}{" "}
@@ -341,13 +341,13 @@ const ModalProfileDetail = ({
                     <p className="d-flex align-items-center">
                       {" "}
                       <BsTelephoneFill style={{ fontSize: "16px" }} />{" "}
-                      <span className="ps-2">{ungTuyenVien?.sdt}</span>
+                      <span className="ps-2">{thongTinLienHe?.sdt}</span>
                     </p>
                     <p className="d-flex align-items-center">
                       {" "}
                       <HiOutlineMail style={{ fontSize: "20px" }} />{" "}
                       <span className="ps-2">
-                        {ungTuyenVien?.taiKhoan?.email}
+                        {thongTinLienHe?.email}
                       </span>
                     </p>
                     <p className="d-flex align-items-center">

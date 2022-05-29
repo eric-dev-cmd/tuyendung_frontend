@@ -33,7 +33,7 @@ const RecruitmentApi = {
     return axiosClient.get(url);
   },
   getListProfile: (params) => {
-    const url = `/donUngTuyens/timKiemTheoNhaTuyenDung?${params}`;
+    const url = `/donUngTuyens/timKiemTheoNhaTuyenDung1?${params}`;
     return axiosClient.get(url);
   },
   getListProfileTalent: (params) => {

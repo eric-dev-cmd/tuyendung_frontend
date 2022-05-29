@@ -433,7 +433,7 @@ const NewForProfileDetail = () => {
                                             </p>
                                           </td>
                                           <td>
-                                            <span>
+                                            <span style={{}}>
                                               {" "}
                                               {tiemNang && "Tiềm năng"}{" "}
                                             </span>
@@ -777,13 +777,7 @@ const NewForProfileDetail = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickTalent(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
+                                                <li>
                                                   <span class="dropdown-item">
                                                     Ứng tuyển viên năng
                                                   </span>
@@ -1020,13 +1014,7 @@ const NewForProfileDetail = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickTalent(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
+                                                <li>
                                                   <span class="dropdown-item">
                                                     Ứng tuyển viên năng
                                                   </span>
@@ -1308,13 +1296,7 @@ const NewForProfileDetail = () => {
                                                     Xem
                                                   </span>
                                                 </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickTalent(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
+                                                <li>
                                                   <span class="dropdown-item">
                                                     Ứng tuyển viên năng
                                                   </span>
