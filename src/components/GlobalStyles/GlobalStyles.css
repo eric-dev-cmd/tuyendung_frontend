@@ -246,3 +246,16 @@ input[type="radio"]{
   font-size: 14px;
   line-height: 22px;
 }
+.bg-table{
+  background: #001529;
+}
+.bg-card{
+  background-color: #F8F8F8;
+}
+.fs-14-d{
+  font-size: 0.875rem !important;
+    line-height: 1.6;
+}
+.tieude:hover{
+  color: red;
+}

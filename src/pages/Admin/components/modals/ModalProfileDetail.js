@@ -39,9 +39,17 @@ const ModalProfileDetail = ({
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const { tinTuyenDung, ungTuyenVien, tiemNang, ngayUngTuyen, trangThai, _id, thongTinLienHe } =
-    user?.donTuyenDung;
+  const {
+    tinTuyenDung,
+    ungTuyenVien,
+    tiemNang,
+    ngayUngTuyen,
+    trangThai,
+    _id,
+    thongTinLienHe,
+  } = user?.donTuyenDung;
   console.log("Trung Vinh user", user);
+  console.log("Trung Vinh props", props);
 
   const resetValue = () => {
     console.log("3. Reset value");
@@ -108,28 +116,59 @@ const ModalProfileDetail = ({
   };
 
   // Từ chối đơn ứng tuyển
-  const handleAddButtonClickDeny = async (id) => {
-    try {
-      const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
-      await axiosClient.patch(requestUrl).then((res) => {
-        if (res?.status == "success") {
-          setIsSubmit(true);
-          toast.success("Cập nhật thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+  // const handleAddButtonClickDeny = async (id) => {
+  //   try {
+  //     const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
+  //     await axiosClient.patch(requestUrl).then((res) => {
+  //       if (res?.status == "success") {
+  //         setIsSubmit(true);
+  //         toast.success("Cập nhật thành công", {
+  //           position: "bottom-right",
+  //           autoClose: 1000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //         });
+  //         onCloseModal(false);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+  // Modal confirm don ung tuyen
+  const confirmDeleteProfile = (id) =>
+    Modal.confirm({
+      title: `Bạn chắc chắn muốn từ chối đơn ứng tuyển này?`,
+      // content: "first",
+      onOk: async () => {
+        try {
+          const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
+          await axiosClient.patch(requestUrl).then((res) => {
+            if (res?.status == "success") {
+              setIsSubmit(true);
+              toast.success("Cập nhật thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+              onCloseModal(false);
+            }
           });
-          onCloseModal(false);
+        } catch (error) {
+          Modal.error({
+            title: "error",
+            content: error.message,
+          });
         }
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+      },
+    });
 
   useEffect(() => {}, [isSubmit]);
 
@@ -282,26 +321,32 @@ const ModalProfileDetail = ({
                 <div className="row">
                   <div className="col-12 mt-3">
                     <div className="d-flex align-items-center justify-content-between">
-                      <Button
-                        size="large"
-                        className="text-center text-white rounded"
-                        style={{ background: "#4e83a6" }}
-                        onClick={() => {
-                          handleAddButtonClickAccept(_id);
-                        }}
-                        disabled={user?.yeuCauDoTuoi ? false : true}
-                      >
-                        Chấp nhận
-                      </Button>
-                      <Button
-                        size="large"
-                        className="rounded"
-                        onClick={() => {
-                          handleAddButtonClickDeny(_id);
-                        }}
-                      >
-                        Từ chối
-                      </Button>
+                      {trangThai === "Đã ứng tuyển" ||
+                      trangThai === "Thất bại" ? null : (
+                        <>
+                          <Button
+                            size="large"
+                            className="text-center text-white rounded"
+                            // style={{ background: "#4e83a6" }}
+                            type="primary"
+                            onClick={() => {
+                              handleAddButtonClickAccept(_id);
+                            }}
+                            disabled={user?.yeuCauDoTuoi ? false : true}
+                          >
+                            Chấp nhận
+                          </Button>
+                          <Button
+                            size="large"
+                            className="rounded"
+                            onClick={() => {
+                              confirmDeleteProfile(_id);
+                            }}
+                          >
+                            Từ chối
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -346,9 +391,7 @@ const ModalProfileDetail = ({
                     <p className="d-flex align-items-center">
                       {" "}
                       <HiOutlineMail style={{ fontSize: "20px" }} />{" "}
-                      <span className="ps-2">
-                        {thongTinLienHe?.email}
-                      </span>
+                      <span className="ps-2">{thongTinLienHe?.email}</span>
                     </p>
                     <p className="d-flex align-items-center">
                       {" "}

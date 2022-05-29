@@ -483,190 +483,183 @@ const DashBoardQTV = () => {
 
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.soLuotDanhGia == 0 ? (
-                                                <span className="fst-italic">
-                                                  Không có lượt đánh giá nào
-                                                </span>
-                                              ) : (
-                                                <>
-                                                  <span>
-                                                    Số lượt đánh giá:{" "}
-                                                  </span>
-                                                  {item?.soLuotDanhGia}
-                                                </>
-                                              )}
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
+                          <div className="table-responsive">
+                            <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                              <thead className="bg-table">
+                                <tr>
+                                  <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                    <strong>STT</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Tin tuyển dụng</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Hồ sơ</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Trạng thái</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Thao tác</strong>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {recruitments.map((item, index) => {
+                                  return (
+                                    <tr key={index}>
+                                      <td className="align-middle">
+                                        <p className="text-sm font-weight-bold mb-0 text-center">
+                                          {index + 1}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="text-sm fw-bold mb-0">
+                                          {item?.tieuDe}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {item?.diaDiem?.tinhThanhPho} :{" "}
+                                          {item?.diaDiem?.quanHuyen}
+                                        </p>
+                                        <p className="address">
+                                          <span className="created">
+                                            Ngày tạo:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayTao,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                          &nbsp;
+                                          <span className="apply-date">
+                                            Hạn nộp:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayHetHan,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {item?.soLuotDanhGia == 0 ? (
+                                            <span className="fst-italic">
+                                              Không có lượt đánh giá nào
                                             </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td className=" cursor-pointer pointer align-middle">
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
+                                          ) : (
+                                            <>
+                                              <span>Số lượt đánh giá: </span>
+                                              {item?.soLuotDanhGia}
+                                            </>
+                                          )}
+                                        </p>
+                                        <p>
+                                          <Link
+                                            to={`/job-detail/${item._id}`}
+                                            target="_blank"
+                                          >
+                                            Xem tin đăng trên website
+                                          </Link>
+                                        </p>
+                                      </td>
+                                      <td className="align-middle">
+                                        <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
+                                          <FaUserPlus className="text-danger" />{" "}
+                                          &nbsp; 1 hồ sơ mới
+                                        </span>
+                                      </td>
+                                      <td className="text-center align-middle">
+                                        <span>{item?.trangThai}</span>
+                                      </td>
+                                      <td className=" cursor-pointer pointer align-middle">
+                                        <div class="dropdown">
+                                          <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            Chi tiết
+                                          </button>
+                                          <ul
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton1"
+                                          >
+                                            <>
+                                              {item?.trangThai ==
+                                              "Chờ duyệt" ? (
                                                 <>
-                                                  {item?.trangThai ==
-                                                  "Chờ duyệt" ? (
-                                                    <>
-                                                      <li
-                                                        onClick={() => {
-                                                          handleAddButtonClickDetailAccept(
-                                                            item?._id
-                                                          );
-                                                        }}
-                                                      >
-                                                        <span class="dropdown-item">
-                                                          Duyệt
-                                                        </span>
-                                                      </li>
-                                                      <li
-                                                        onClick={() => {
-                                                          handleAddButtonClickDetailDeny(
-                                                            item?._id
-                                                          );
-                                                        }}
-                                                      >
-                                                        <span class="dropdown-item">
-                                                          Từ chối
-                                                        </span>
-                                                      </li>
-                                                    </>
-                                                  ) : item?.trangThai ==
-                                                    "Đã duyệt" ? (
-                                                    <>
-                                                      <li
-                                                        onClick={() => {
-                                                          handleAddButtonClickDetailBlock(
-                                                            item?._id
-                                                          );
-                                                        }}
-                                                      >
-                                                        <span class="dropdown-item">
-                                                          Khóa
-                                                        </span>
-                                                      </li>
-                                                    </>
-                                                  ) : item?.trangThai ==
-                                                    "Khóa" ? (
-                                                    <>
-                                                      <li
-                                                        onClick={() => {
-                                                          handleAddButtonClickDetailBlock(
-                                                            item?._id
-                                                          );
-                                                        }}
-                                                      >
-                                                        <span class="dropdown-item">
-                                                          Mở khóa
-                                                        </span>
-                                                      </li>
-                                                    </>
-                                                  ) : null}
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickDetailAccept(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
+                                                    <span class="dropdown-item">
+                                                      Duyệt
+                                                    </span>
+                                                  </li>
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickDetailDeny(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
+                                                    <span class="dropdown-item">
+                                                      Từ chối
+                                                    </span>
+                                                  </li>
                                                 </>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                                              ) : item?.trangThai ==
+                                                "Đã duyệt" ? (
+                                                <>
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickDetailBlock(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
+                                                    <span class="dropdown-item">
+                                                      Khóa
+                                                    </span>
+                                                  </li>
+                                                </>
+                                              ) : item?.trangThai == "Khóa" ? (
+                                                <>
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickDetailBlock(
+                                                        item?._id
+                                                      );
+                                                    }}
+                                                  >
+                                                    <span class="dropdown-item">
+                                                      Mở khóa
+                                                    </span>
+                                                  </li>
+                                                </>
+                                              ) : null}
+                                            </>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetailDelete(
+                                                  item?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xóa
+                                              </span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                         {recruitments.length < 1 && (
@@ -845,139 +838,135 @@ const DashBoardQTV = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
+                          <div className="table-responsive">
+                            <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                              <thead className="bg-table">
+                                <tr>
+                                  <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                    <strong>STT</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Tin tuyển dụng</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Hồ sơ</strong>
+                                  </th>
+                                  <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Trạng thái</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Thao tác</strong>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {recruitments.map((item, index) => {
+                                  return (
+                                    <tr key={index + 1}>
+                                      <td className="align-middle">
+                                        <p className="text-sm font-weight-bold mb-0 text-center">
+                                          {index + 1}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="text-sm fw-bold mb-0">
+                                          {item?.tieuDe}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {item?.diaDiem?.tinhThanhPho} :{" "}
+                                          {item?.diaDiem?.quanHuyen}
+                                        </p>
+                                        <p className="address">
+                                          <span className="created">
+                                            Ngày tạo:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayTao,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                          &nbsp;
+                                          <span className="apply-date">
+                                            Hạn nộp:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayHetHan,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <Link
+                                            to={`/job-detail/${item._id}`}
+                                            target="_blank"
+                                          >
+                                            Xem tin đăng trên website
+                                          </Link>
+                                        </p>
+                                      </td>
+                                      <td className="align-middle">
+                                        <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
+                                          <FaUserPlus className="text-danger" />{" "}
+                                          &nbsp; 1 hồ sơ mới
+                                        </span>
+                                      </td>
+                                      <td className="text-center align-middle">
+                                        <span>{item?.trangThai}</span>
+                                      </td>
+                                      <td className="text-center cursor-pointer align-middle pointer">
+                                        <div class="dropdown">
+                                          <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            Chi tiết
+                                          </button>
+                                          <ul
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton1"
+                                          >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetailAccept(
+                                                  item?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Duyệt
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetailDeny(
+                                                  item?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Từ chối
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetailDelete(
+                                                  item?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xóa
+                                              </span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
                                     </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index + 1}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
-                                            </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td className="text-center cursor-pointer align-middle pointer">
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickDetailAccept(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Duyệt
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickDetailDeny(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Từ chối
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                         {recruitments.length < 1 && (
@@ -1154,144 +1143,139 @@ const DashBoardQTV = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Hồ sơ</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      return (
-                                        <tr key={index + 1}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {item?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.diaDiem?.tinhThanhPho} :{" "}
-                                              {item?.diaDiem?.quanHuyen}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày tạo:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayTao,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                              &nbsp;
-                                              <span className="apply-date">
-                                                Hạn nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayHetHan,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {item?.soLuotDanhGia == 0 ? (
-                                                <span className="fst-italic">
-                                                  Không có lượt đánh giá nào
-                                                </span>
-                                              ) : (
-                                                <>
-                                                  <span>
-                                                    Số lượt đánh giá:{" "}
-                                                  </span>
-                                                  {item?.soLuotDanhGia}
-                                                </>
-                                              )}
-                                            </p>
-                                            <p>
-                                              <Link
-                                                to={`/job-detail/${item._id}`}
-                                                target="_blank"
-                                              >
-                                                Xem tin đăng trên website
-                                              </Link>
-                                            </p>
-                                          </td>
-                                          <td className="align-middle">
-                                            <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
-                                              <FaUserPlus className="text-danger" />{" "}
-                                              &nbsp; 1 hồ sơ mới
+                          <div className="table-responsive">
+                            <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                              <thead className="bg-table">
+                                <tr>
+                                  <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                    <strong>STT</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Tin tuyển dụng</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Hồ sơ</strong>
+                                  </th>
+                                  <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Trạng thái</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Thao tác</strong>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {recruitments.map((item, index) => {
+                                  return (
+                                    <tr key={index + 1}>
+                                      <td className="align-middle">
+                                        <p className="text-sm font-weight-bold mb-0 text-center">
+                                          {index + 1}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="text-sm fw-bold mb-0">
+                                          {item?.tieuDe}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {item?.diaDiem?.tinhThanhPho} :{" "}
+                                          {item?.diaDiem?.quanHuyen}
+                                        </p>
+                                        <p className="address">
+                                          <span className="created">
+                                            Ngày tạo:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayTao,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                          &nbsp;
+                                          <span className="apply-date">
+                                            Hạn nộp:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayHetHan,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {item?.soLuotDanhGia == 0 ? (
+                                            <span className="fst-italic">
+                                              Không có lượt đánh giá nào
                                             </span>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{item?.trangThai}</span>
-                                          </td>
-                                          <td className="text-center cursor-pointer align-middle pointer">
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickDetailBlock(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Khóa
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickDetailDelete(
-                                                      item?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                                          ) : (
+                                            <>
+                                              <span>Số lượt đánh giá: </span>
+                                              {item?.soLuotDanhGia}
+                                            </>
+                                          )}
+                                        </p>
+                                        <p>
+                                          <Link
+                                            to={`/job-detail/${item._id}`}
+                                            target="_blank"
+                                          >
+                                            Xem tin đăng trên website
+                                          </Link>
+                                        </p>
+                                      </td>
+                                      <td className="align-middle">
+                                        <span className="text-xs font-weight-bold d-flex align-items-center  text-center">
+                                          <FaUserPlus className="text-danger" />{" "}
+                                          &nbsp; 1 hồ sơ mới
+                                        </span>
+                                      </td>
+                                      <td className="text-center align-middle">
+                                        <span>{item?.trangThai}</span>
+                                      </td>
+                                      <td className="text-center cursor-pointer align-middle pointer">
+                                        <div class="dropdown">
+                                          <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            Chi tiết
+                                          </button>
+                                          <ul
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton1"
+                                          >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetailBlock(
+                                                  item?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Khóa
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetailDelete(
+                                                  item?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xóa
+                                              </span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
+
                         {recruitments.length < 1 && (
                           <div className="col-12">
                             <div

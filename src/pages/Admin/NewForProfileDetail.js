@@ -1,25 +1,26 @@
 import {
+  Badge,
   Breadcrumb,
   Button,
+  DatePicker,
   Layout,
   Menu,
   Select,
   Tabs,
-  DatePicker,
 } from "antd";
+import axios from "axios";
 import queryString from "query-string";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
+import { RiMailSendLine, RiRefreshLine } from "react-icons/ri";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import PostFiltersForm from "../../components/Admin/PostFiltersForm";
 import axiosClient from "../../services/axiosClient";
-import axios from "axios";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
-import { useParams } from "react-router-dom";
-import { RiMailSendLine, RiRefreshLine } from "react-icons/ri";
-import { toast } from "react-toastify";
 const { RangePicker } = DatePicker;
 
 const { Option } = Select;
@@ -47,6 +48,7 @@ const NewForProfileDetail = () => {
   // console.log("paramsString", paramsString);
   const [type, setType] = useState();
   const [value, setValue] = useState(0);
+  const [isSubmit, setIsSubmit] = useState(false);
   useEffect(() => {
     console.log("filters", filters);
     const paramsString = queryString.stringify(filters);
@@ -62,9 +64,9 @@ const NewForProfileDetail = () => {
           paramsString,
           id: params.id,
         });
-        console.log("data by trung vinh", response.data);
-        setRecruitments(response.data);
+        setRecruitments(response?.data);
         // setTotalCount(response.pagination.total);
+        setIsSubmit(false);
       } catch (error) {
         console.log(error.response);
       }
@@ -76,7 +78,7 @@ const NewForProfileDetail = () => {
       mounted = false;
       setRecruitments([]);
     };
-  }, [filters]);
+  }, [filters, isSubmit]);
 
   const prevPage = async () => {
     const pg = page === 1 ? 1 : page - 1;
@@ -234,7 +236,6 @@ const NewForProfileDetail = () => {
       const requestUrl = `http://localhost:4000/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
       await axios.patch(requestUrl).then((res) => {
         if (res?.data?.status == "success") {
-          // setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
             autoClose: 1000,
@@ -244,6 +245,7 @@ const NewForProfileDetail = () => {
             draggable: true,
             progress: undefined,
           });
+          setIsSubmit(true);
         }
       });
     } catch (error) {
@@ -300,47 +302,43 @@ const NewForProfileDetail = () => {
                       </h5>
                     </div>
                     <div className="col-12">
-                      <div>
-                        <span>
-                          Địa điểm:{" "}
-                          <span className="ps-5">
+                      <div className="row">
+                        <div className="col-2">Địa điểm: </div>
+                        <div className="col-8">
+                          <span>
                             {recruitmentById?.diaDiem?.quanHuyen},{" "}
                             {recruitmentById?.diaDiem?.tinhThanhPho}
                           </span>
-                        </span>
+                        </div>
                       </div>
                     </div>
                     <div className="col-12">
-                      <div>
-                        <span>
-                          Mức lương:{" "}
-                          <span className="ps-4">
-                            {recruitmentById?.mucLuong}
-                          </span>
-                        </span>
+                      <div className="row">
+                        <div className="col-2"> Mức lương: </div>
+                        <div className="col-8">
+                          <span>{recruitmentById?.mucLuong}</span>
+                        </div>
                       </div>
                     </div>
                     <div className="col-12">
-                      <div>
-                        <span>
-                          Trạng thái:
-                          <span className="ps-4">
-                            {recruitmentById?.trangThai}
-                          </span>
-                        </span>
+                      <div className="row">
+                        <div className="col-2">Trạng thái: </div>
+                        <div className="col-8">
+                          <span>{recruitmentById?.trangThai}</span>
+                        </div>
                       </div>
                     </div>
                     <div className="col-12">
-                      <div>
-                        <span>
-                          Ngày hết hạn:{" "}
-                          <span className="ps-4">
+                      <div className="row">
+                        <div className="col-2"> Ngày hết hạn: </div>
+                        <div className="col-8">
+                          <span>
                             {TimeUtils.formatDateTime(
                               recruitmentById?.ngayHetHan,
                               "DD-MM-YYYY"
                             )}
                           </span>
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -425,6 +423,7 @@ const NewForProfileDetail = () => {
                                         trangThai,
                                         tiemNang,
                                       } = item?.donTuyenDung;
+                                      console.log("vinh item", item);
                                       return (
                                         <tr key={index}>
                                           <td className="align-middle">
@@ -433,9 +432,14 @@ const NewForProfileDetail = () => {
                                             </p>
                                           </td>
                                           <td>
-                                            <span style={{}}>
+                                            <span>
                                               {" "}
-                                              {tiemNang && "Tiềm năng"}{" "}
+                                              {tiemNang && (
+                                                <Badge.Ribbon
+                                                  text="Tiềm năng"
+                                                  color="red"
+                                                ></Badge.Ribbon>
+                                              )}{" "}
                                             </span>
                                             <p className="text-sm fw-bold mb-0">
                                               {ungTuyenVien?.ten}
@@ -537,7 +541,7 @@ const NewForProfileDetail = () => {
                                                 <li
                                                   onClick={() => {
                                                     handleAddButtonClickTalent(
-                                                      item?._id
+                                                      item?.donTuyenDung._id
                                                     );
                                                   }}
                                                 >

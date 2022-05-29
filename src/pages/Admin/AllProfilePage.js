@@ -313,188 +313,179 @@ const AllProfilePage = () => {
 
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Thông tin ứng viên</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      const {
-                                        ungTuyenVien,
-                                        tinTuyenDung,
-                                        trangThai,
-                                        thongTinLienHe
-                                      } = item?.donTuyenDung;
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {thongTinLienHe?.ten}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {thongTinLienHe?.sdt}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {thongTinLienHe?.email}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayUngTuyen,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <span
-                                                className="text-success pointer"
-                                                onClick={() => {
-                                                  handleAddButtonClickProfile(
-                                                    item
-                                                  );
-                                                }}
-                                              >
-                                                Xem thông tin ứng tuyến viên
-                                              </span>
-                                            </p>
-                                          </td>
-                                          <td className="">
-                                            <p className="text-sm fw-bold mb-0">
-                                              {tinTuyenDung?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng tuyển :{" "}
-                                              {tinTuyenDung?.soLuongTuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng đã tuyển:{" "}
-                                              {tinTuyenDung?.soLuongDaTuyen}
-                                            </p>
-
-                                            <p className="text-sm mb-0">
-                                              Khu vực:{" "}
-                                              {tinTuyenDung?.diaDiem
-                                                ?.tinhThanhPho +
-                                                "-" +
-                                                tinTuyenDung?.diaDiem
-                                                  ?.quanHuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Ngày hết hạn:{" "}
-                                              {TimeUtils.formatDateTime(
-                                                tinTuyenDung?.ngayHetHan,
-                                                "DD-MM-YYYY"
-                                              )}{" "}
-                                            </p>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <>
-                                              {trangThai == "Thất bại" ? (
-                                                <span>Từ chối</span>
-                                              ) : trangThai ==
-                                                "Đã ứng tuyển" ? (
-                                                <span>Chấp nhận</span>
-                                              ) : (
-                                                <span>{trangThai}</span>
-                                              )}
-                                            </>
-                                          </td>
-                                          <td
-                                            className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                          <div className="table-responsive ">
+                            <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                              <thead className="bg-table">
+                                <tr>
+                                  <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                    <strong>STT</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong> Thông tin ứng viên</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Tin tuyển dụng</strong>
+                                  </th>
+                                  <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                    <strong> Trạng thái</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Thao tác</strong>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {recruitments.map((item, index) => {
+                                  const {
+                                    ungTuyenVien,
+                                    tinTuyenDung,
+                                    trangThai,
+                                    thongTinLienHe,
+                                  } = item?.donTuyenDung;
+                                  return (
+                                    <tr key={index}>
+                                      <td className="align-middle">
+                                        <p className="text-sm font-weight-bold mb-0 text-center">
+                                          {index + 1}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="text-sm fw-bold mb-0">
+                                          {thongTinLienHe?.ten}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {thongTinLienHe?.sdt}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {thongTinLienHe?.email}
+                                        </p>
+                                        <p className="address">
+                                          <span className="created">
+                                            Ngày nộp:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayUngTuyen,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <span
+                                            className="text-success pointer"
+                                            onClick={() => {
+                                              handleAddButtonClickProfile(item);
+                                            }}
                                           >
-                                            {/* <span className="text-xs font-weight-bold pointer">
+                                            Xem thông tin ứng tuyến viên
+                                          </span>
+                                        </p>
+                                      </td>
+                                      <td className="">
+                                        <p className="text-sm fw-bold mb-0">
+                                          {tinTuyenDung?.tieuDe}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng tuyển :{" "}
+                                          {tinTuyenDung?.soLuongTuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng đã tuyển:{" "}
+                                          {tinTuyenDung?.soLuongDaTuyen}
+                                        </p>
+
+                                        <p className="text-sm mb-0">
+                                          Khu vực:{" "}
+                                          {tinTuyenDung?.diaDiem?.tinhThanhPho +
+                                            "-" +
+                                            tinTuyenDung?.diaDiem?.quanHuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Ngày hết hạn:{" "}
+                                          {TimeUtils.formatDateTime(
+                                            tinTuyenDung?.ngayHetHan,
+                                            "DD-MM-YYYY"
+                                          )}{" "}
+                                        </p>
+                                      </td>
+                                      <td className="text-center align-middle">
+                                        <>
+                                          {trangThai == "Thất bại" ? (
+                                            <span>Từ chối</span>
+                                          ) : trangThai == "Đã ứng tuyển" ? (
+                                            <span>Chấp nhận</span>
+                                          ) : (
+                                            <span>{trangThai}</span>
+                                          )}
+                                        </>
+                                      </td>
+                                      <td
+                                        className=" cursor-pointer pointer align-middle"
+                                        // onClick={(e) => {
+                                        //   console.log("e", e);
+                                        // }}
+                                      >
+                                        {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
                                             </span> */}
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickProfile(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
+                                        <div class="dropdown">
+                                          <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            Chi tiết
+                                          </button>
+                                          <ul
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton1"
+                                          >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickProfile(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickTalent(
+                                                  item?.donTuyenDung._id
+                                                );
+                                              }}
+                                            >
+                                              <>
+                                                {trangThai ==
+                                                "Thất bại" ? null : (
                                                   <span class="dropdown-item">
-                                                    Xem
+                                                    Ứng viên tiềm năng
                                                   </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickTalent(
-                                                      item?.donTuyenDung._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <>
-                                                    {trangThai ==
-                                                    "Thất bại" ? null : (
-                                                      <span class="dropdown-item">
-                                                        Ứng viên tiềm năng
-                                                      </span>
-                                                    )}
-                                                  </>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    confirmDeleteProfile(
-                                                      item?.donTuyenDung?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                                                )}
+                                              </>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                confirmDeleteProfile(
+                                                  item?.donTuyenDung?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xóa
+                                              </span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                         {recruitments.length < 1 && (
@@ -583,173 +574,165 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Thông tin ứng viên</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      const {
-                                        ungTuyenVien,
-                                        tinTuyenDung,
-                                        trangThai,
-                                      } = item?.donTuyenDung;
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {ungTuyenVien?.ten}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.sdt}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.taiKhoan?.email}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayUngTuyen,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <span
-                                                className="text-success pointer"
-                                                onClick={() => {
-                                                  handleAddButtonClickProfile(
-                                                    item
-                                                  );
-                                                }}
-                                              >
-                                                Xem thông tin ứng tuyến viên
-                                              </span>
-                                            </p>
-                                          </td>
-                                          <td className="">
-                                            <p className="text-sm fw-bold mb-0">
-                                              {tinTuyenDung?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng tuyển :{" "}
-                                              {tinTuyenDung?.soLuongTuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng đã tuyển:{" "}
-                                              {tinTuyenDung?.soLuongDaTuyen}
-                                            </p>
-
-                                            <p className="text-sm mb-0">
-                                              Khu vực:{" "}
-                                              {tinTuyenDung?.diaDiem
-                                                ?.tinhThanhPho +
-                                                "-" +
-                                                tinTuyenDung?.diaDiem
-                                                  ?.quanHuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Ngày hết hạn:{" "}
-                                              {TimeUtils.formatDateTime(
-                                                tinTuyenDung?.ngayHetHan,
-                                                "DD-MM-YYYY"
-                                              )}{" "}
-                                            </p>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <span>{trangThai}</span>
-                                          </td>
-                                          <td
-                                            className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                          <div className="table-responsive ">
+                            <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                              <thead className="bg-table">
+                                <tr>
+                                  <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                    <strong>STT</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong> Thông tin ứng viên</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Tin tuyển dụng</strong>
+                                  </th>
+                                  <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                    <strong> Trạng thái</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Thao tác</strong>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {recruitments.map((item, index) => {
+                                  const {
+                                    ungTuyenVien,
+                                    tinTuyenDung,
+                                    trangThai,
+                                  } = item?.donTuyenDung;
+                                  return (
+                                    <tr key={index}>
+                                      <td className="align-middle">
+                                        <p className="text-sm font-weight-bold mb-0 text-center">
+                                          {index + 1}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="text-sm fw-bold mb-0">
+                                          {ungTuyenVien?.ten}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {ungTuyenVien?.sdt}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {ungTuyenVien?.taiKhoan?.email}
+                                        </p>
+                                        <p className="address">
+                                          <span className="created">
+                                            Ngày nộp:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayUngTuyen,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <span
+                                            className="text-success pointer"
+                                            onClick={() => {
+                                              handleAddButtonClickProfile(item);
+                                            }}
                                           >
-                                            {/* <span className="text-xs font-weight-bold pointer">
+                                            Xem thông tin ứng tuyến viên
+                                          </span>
+                                        </p>
+                                      </td>
+                                      <td className="">
+                                        <p className="text-sm fw-bold mb-0">
+                                          {tinTuyenDung?.tieuDe}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng tuyển :{" "}
+                                          {tinTuyenDung?.soLuongTuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng đã tuyển:{" "}
+                                          {tinTuyenDung?.soLuongDaTuyen}
+                                        </p>
+
+                                        <p className="text-sm mb-0">
+                                          Khu vực:{" "}
+                                          {tinTuyenDung?.diaDiem?.tinhThanhPho +
+                                            "-" +
+                                            tinTuyenDung?.diaDiem?.quanHuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Ngày hết hạn:{" "}
+                                          {TimeUtils.formatDateTime(
+                                            tinTuyenDung?.ngayHetHan,
+                                            "DD-MM-YYYY"
+                                          )}{" "}
+                                        </p>
+                                      </td>
+                                      <td className="text-center align-middle">
+                                        <span>{trangThai}</span>
+                                      </td>
+                                      <td
+                                        className=" cursor-pointer pointer align-middle"
+                                        // onClick={(e) => {
+                                        //   console.log("e", e);
+                                        // }}
+                                      >
+                                        {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
                                             </span> */}
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickProfile(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xem
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickTalent(
-                                                      item?.donTuyenDung._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Ứng viên tiềm năng
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    confirmDeleteProfile(
-                                                      item?.donTuyenDung?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                                        <div class="dropdown">
+                                          <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            Chi tiết
+                                          </button>
+                                          <ul
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton1"
+                                          >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickProfile(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickTalent(
+                                                  item?.donTuyenDung._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Ứng viên tiềm năng
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                confirmDeleteProfile(
+                                                  item?.donTuyenDung?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xóa
+                                              </span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                         {recruitments.length < 1 && (
@@ -796,177 +779,170 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Thông tin ứng viên</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      const {
-                                        ungTuyenVien,
-                                        tinTuyenDung,
-                                        trangThai,
-                                      } = item?.donTuyenDung;
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {ungTuyenVien?.ten}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.sdt}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.taiKhoan?.email}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayUngTuyen,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <span
-                                                className="text-success pointer"
-                                                onClick={() => {
-                                                  handleAddButtonClickProfile(
-                                                    item
-                                                  );
-                                                }}
-                                              >
-                                                Xem thông tin ứng tuyến viên
-                                              </span>
-                                            </p>
-                                          </td>
-                                          <td className="">
-                                            <p className="text-sm fw-bold mb-0">
-                                              {tinTuyenDung?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng tuyển :{" "}
-                                              {tinTuyenDung?.soLuongTuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng đã tuyển:{" "}
-                                              {tinTuyenDung?.soLuongDaTuyen}
-                                            </p>
-
-                                            <p className="text-sm mb-0">
-                                              Khu vực:{" "}
-                                              {tinTuyenDung?.diaDiem
-                                                ?.tinhThanhPho +
-                                                "-" +
-                                                tinTuyenDung?.diaDiem
-                                                  ?.quanHuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Ngày hết hạn:{" "}
-                                              {TimeUtils.formatDateTime(
-                                                tinTuyenDung?.ngayHetHan,
-                                                "DD-MM-YYYY"
-                                              )}{" "}
-                                            </p>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            {trangThai == "Đã ứng tuyển" && (
-                                              <span>Chấp nhận</span>
+                          <div className="table-responsive ">
+                            <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                              <thead className="bg-table">
+                                <tr>
+                                  <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                    <strong>STT</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong> Thông tin ứng viên</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Tin tuyển dụng</strong>
+                                  </th>
+                                  <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                    <strong> Trạng thái</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Thao tác</strong>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {recruitments.map((item, index) => {
+                                  const {
+                                    ungTuyenVien,
+                                    tinTuyenDung,
+                                    trangThai,
+                                  } = item?.donTuyenDung;
+                                  return (
+                                    <tr key={index}>
+                                      <td className="align-middle">
+                                        <p className="text-sm font-weight-bold mb-0 text-center">
+                                          {index + 1}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="text-sm fw-bold mb-0">
+                                          {ungTuyenVien?.ten}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {ungTuyenVien?.sdt}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {ungTuyenVien?.taiKhoan?.email}
+                                        </p>
+                                        <p className="address">
+                                          <span className="created">
+                                            Ngày nộp:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayUngTuyen,
+                                              "DD-MM-YYYY"
                                             )}
-                                          </td>
-                                          <td
-                                            className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <span
+                                            className="text-success pointer"
+                                            onClick={() => {
+                                              handleAddButtonClickProfile(item);
+                                            }}
                                           >
-                                            {/* <span className="text-xs font-weight-bold pointer">
+                                            Xem thông tin ứng tuyến viên
+                                          </span>
+                                        </p>
+                                      </td>
+                                      <td className="">
+                                        <p className="text-sm fw-bold mb-0">
+                                          {tinTuyenDung?.tieuDe}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng tuyển :{" "}
+                                          {tinTuyenDung?.soLuongTuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng đã tuyển:{" "}
+                                          {tinTuyenDung?.soLuongDaTuyen}
+                                        </p>
+
+                                        <p className="text-sm mb-0">
+                                          Khu vực:{" "}
+                                          {tinTuyenDung?.diaDiem?.tinhThanhPho +
+                                            "-" +
+                                            tinTuyenDung?.diaDiem?.quanHuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Ngày hết hạn:{" "}
+                                          {TimeUtils.formatDateTime(
+                                            tinTuyenDung?.ngayHetHan,
+                                            "DD-MM-YYYY"
+                                          )}{" "}
+                                        </p>
+                                      </td>
+                                      <td className="text-center align-middle">
+                                        {trangThai == "Đã ứng tuyển" && (
+                                          <span>Chấp nhận</span>
+                                        )}
+                                      </td>
+                                      <td
+                                        className=" cursor-pointer pointer align-middle"
+                                        // onClick={(e) => {
+                                        //   console.log("e", e);
+                                        // }}
+                                      >
+                                        {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
                                             </span> */}
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickProfile(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xem
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickTalent(
-                                                      item?.donTuyenDung._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Ứng viên tiềm năng
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    confirmDeleteProfile(
-                                                      item?.donTuyenDung?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                                        <div class="dropdown">
+                                          <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            Chi tiết
+                                          </button>
+                                          <ul
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton1"
+                                          >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickProfile(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickTalent(
+                                                  item?.donTuyenDung._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Ứng viên tiềm năng
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                confirmDeleteProfile(
+                                                  item?.donTuyenDung?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xóa
+                                              </span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
+
                         {recruitments.length < 1 && (
                           <div className="col-12">
                             <div
@@ -1018,166 +994,158 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="card mb-4">
-                            <div className="card-body px-0 pt-0 pb-2">
-                              <div className="table-responsive p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
-                                    <tr>
-                                      <th className="text-secondary opacity-7 text-white py-3 text-center">
-                                        <strong>STT</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong> Thông tin ứng viên</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-white py-3">
-                                        <strong>Tin tuyển dụng</strong>
-                                      </th>
-                                      <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
-                                        <strong> Trạng thái</strong>
-                                      </th>
-                                      <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
-                                        <strong>Thao tác</strong>
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {recruitments.map((item, index) => {
-                                      const {
-                                        ungTuyenVien,
-                                        tinTuyenDung,
-                                        trangThai,
-                                      } = item?.donTuyenDung;
-                                      return (
-                                        <tr key={index}>
-                                          <td className="align-middle">
-                                            <p className="text-sm font-weight-bold mb-0 text-center">
-                                              {index + 1}
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <p className="text-sm fw-bold mb-0">
-                                              {ungTuyenVien?.ten}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.sdt}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              {ungTuyenVien?.taiKhoan?.email}
-                                            </p>
-                                            <p className="address">
-                                              <span className="created">
-                                                Ngày nộp:{" "}
-                                                {TimeUtils.formatDateTime(
-                                                  item?.ngayUngTuyen,
-                                                  "DD-MM-YYYY"
-                                                )}
-                                              </span>
-                                            </p>
-                                            <p>
-                                              <span
-                                                className="text-success pointer"
-                                                onClick={() => {
-                                                  handleAddButtonClickProfile(
-                                                    item
-                                                  );
-                                                }}
-                                              >
-                                                Xem thông tin ứng tuyến viên
-                                              </span>
-                                            </p>
-                                          </td>
-                                          <td className="">
-                                            <p className="text-sm fw-bold mb-0">
-                                              {tinTuyenDung?.tieuDe}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng tuyển :{" "}
-                                              {tinTuyenDung?.soLuongTuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Số lượng đã tuyển:{" "}
-                                              {tinTuyenDung?.soLuongDaTuyen}
-                                            </p>
-
-                                            <p className="text-sm mb-0">
-                                              Khu vực:{" "}
-                                              {tinTuyenDung?.diaDiem
-                                                ?.tinhThanhPho +
-                                                "-" +
-                                                tinTuyenDung?.diaDiem
-                                                  ?.quanHuyen}
-                                            </p>
-                                            <p className="text-sm mb-0">
-                                              Ngày hết hạn:{" "}
-                                              {TimeUtils.formatDateTime(
-                                                tinTuyenDung?.ngayHetHan,
-                                                "DD-MM-YYYY"
-                                              )}{" "}
-                                            </p>
-                                          </td>
-                                          <td className="text-center align-middle">
-                                            <>
-                                              {trangThai == "Thất bại" && (
-                                                <span>Từ chối</span>
-                                              )}
-                                            </>
-                                          </td>
-                                          <td
-                                            className=" cursor-pointer pointer align-middle"
-                                            // onClick={(e) => {
-                                            //   console.log("e", e);
-                                            // }}
+                          <div className="table-responsive ">
+                            <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                              <thead className="bg-table">
+                                <tr>
+                                  <th className="text-secondary opacity-7 text-white py-3 text-center">
+                                    <strong>STT</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong> Thông tin ứng viên</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-white py-3">
+                                    <strong>Tin tuyển dụng</strong>
+                                  </th>
+                                  <th className="text-secondary text-center opacity-7 ps-2 text-center text-white py-3">
+                                    <strong> Trạng thái</strong>
+                                  </th>
+                                  <th className="text-secondary opacity-7 ps-2 text-center text-white py-3">
+                                    <strong>Thao tác</strong>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {recruitments.map((item, index) => {
+                                  const {
+                                    ungTuyenVien,
+                                    tinTuyenDung,
+                                    trangThai,
+                                  } = item?.donTuyenDung;
+                                  return (
+                                    <tr key={index}>
+                                      <td className="align-middle">
+                                        <p className="text-sm font-weight-bold mb-0 text-center">
+                                          {index + 1}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="text-sm fw-bold mb-0">
+                                          {ungTuyenVien?.ten}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {ungTuyenVien?.sdt}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          {ungTuyenVien?.taiKhoan?.email}
+                                        </p>
+                                        <p className="address">
+                                          <span className="created">
+                                            Ngày nộp:{" "}
+                                            {TimeUtils.formatDateTime(
+                                              item?.ngayUngTuyen,
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <span
+                                            className="text-success pointer"
+                                            onClick={() => {
+                                              handleAddButtonClickProfile(item);
+                                            }}
                                           >
-                                            {/* <span className="text-xs font-weight-bold pointer">
+                                            Xem thông tin ứng tuyến viên
+                                          </span>
+                                        </p>
+                                      </td>
+                                      <td className="">
+                                        <p className="text-sm fw-bold mb-0">
+                                          {tinTuyenDung?.tieuDe}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng tuyển :{" "}
+                                          {tinTuyenDung?.soLuongTuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Số lượng đã tuyển:{" "}
+                                          {tinTuyenDung?.soLuongDaTuyen}
+                                        </p>
+
+                                        <p className="text-sm mb-0">
+                                          Khu vực:{" "}
+                                          {tinTuyenDung?.diaDiem?.tinhThanhPho +
+                                            "-" +
+                                            tinTuyenDung?.diaDiem?.quanHuyen}
+                                        </p>
+                                        <p className="text-sm mb-0">
+                                          Ngày hết hạn:{" "}
+                                          {TimeUtils.formatDateTime(
+                                            tinTuyenDung?.ngayHetHan,
+                                            "DD-MM-YYYY"
+                                          )}{" "}
+                                        </p>
+                                      </td>
+                                      <td className="text-center align-middle">
+                                        <>
+                                          {trangThai == "Thất bại" && (
+                                            <span>Từ chối</span>
+                                          )}
+                                        </>
+                                      </td>
+                                      <td
+                                        className=" cursor-pointer pointer align-middle"
+                                        // onClick={(e) => {
+                                        //   console.log("e", e);
+                                        // }}
+                                      >
+                                        {/* <span className="text-xs font-weight-bold pointer">
                                               <FaEllipsisV />
                                             </span> */}
-                                            <div class="dropdown">
-                                              <button
-                                                class="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                Chi tiết
-                                              </button>
-                                              <ul
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton1"
-                                              >
-                                                <li
-                                                  onClick={() => {
-                                                    handleAddButtonClickProfile(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xem
-                                                  </span>
-                                                </li>
-                                                <li
-                                                  onClick={() => {
-                                                    confirmDeleteProfile(
-                                                      item?.donTuyenDung?._id
-                                                    );
-                                                  }}
-                                                >
-                                                  <span class="dropdown-item">
-                                                    Xóa
-                                                  </span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                                        <div class="dropdown">
+                                          <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            Chi tiết
+                                          </button>
+                                          <ul
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton1"
+                                          >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickProfile(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
+                                                confirmDeleteProfile(
+                                                  item?.donTuyenDung?._id
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xóa
+                                              </span>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                         {recruitments.length < 1 && (
