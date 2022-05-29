@@ -19,7 +19,7 @@ const AdminRoute = ({ component: Component, ...restOfProps }) => {
   useEffect(() => {
     if (isAuthenticated && roles === QUAN_TRI_VIEN) {
       console.log("1. co quyen");
-      history.push("/admin/dashboard");
+      // history.push("/admin/dashboard");
     } else if (!isAuthenticated) {
       // history.push("/login")
       <Redirect to="/login" />;
