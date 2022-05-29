@@ -1,41 +1,25 @@
 import {
+  Badge,
+  Breadcrumb,
+  Button,
   Layout,
   Menu,
-  Breadcrumb,
-  Input,
-  Tooltip,
-  Button,
-  Dropdown,
   Modal,
+  Select,
+  Tabs,
 } from "antd";
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import axios from "axios";
+import queryString from "query-string";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
-import { FaListUl, FaUserPlus } from "react-icons/fa";
-import { GoSignOut } from "react-icons/go";
-import { Link } from "react-router-dom";
-import { Tabs } from "antd";
-import { Select } from "antd";
-import { GrFormRefresh } from "react-icons/gr";
-import { FaEllipsisV } from "react-icons/fa";
+import { RiRefreshLine } from "react-icons/ri";
+import { toast } from "react-toastify";
+import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import Pagination from "../../components/Pagination/Pagination";
+import axiosClient from "../../services/axiosClient";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
-import ReactPaginate from "react-paginate";
-import Pagination from "../../components/Pagination/Pagination";
-import PostFiltersForm from "../../components/Admin/PostFiltersForm";
-import queryString from "query-string";
-import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
-import axiosClient from "../../services/axiosClient";
-import { toast } from "react-toastify";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
-import { RiRefreshLine } from "react-icons/ri";
 
 const { Option } = Select;
 
@@ -97,16 +81,6 @@ const AllProfilePage = () => {
     };
   }, [filters]);
 
-  const prevPage = async () => {
-    const pg = page === 1 ? 1 : page - 1;
-    // getListData(pg);
-    setPage(pg);
-  };
-  const nextPage = async () => {
-    const pg = page < Math.ceil(totalCount / pageSize) ? page + 1 : page;
-    // getListData(pg);
-    setPage(pg);
-  };
   const handleFiltersStatusChange = (newFilters) => {
     console.log("New filters: ", newFilters);
     console.log("+VINH+;", {
@@ -313,7 +287,7 @@ const AllProfilePage = () => {
 
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -341,6 +315,7 @@ const AllProfilePage = () => {
                                     tinTuyenDung,
                                     trangThai,
                                     thongTinLienHe,
+                                    tiemNang,
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -350,6 +325,15 @@ const AllProfilePage = () => {
                                         </p>
                                       </td>
                                       <td>
+                                        <span>
+                                          {" "}
+                                          {tiemNang && (
+                                            <Badge.Ribbon
+                                              text="Tiềm năng"
+                                              color="red"
+                                            ></Badge.Ribbon>
+                                          )}{" "}
+                                        </span>
                                         <p className="text-sm fw-bold mb-0">
                                           {thongTinLienHe?.ten}
                                         </p>
@@ -460,9 +444,13 @@ const AllProfilePage = () => {
                                             >
                                               <>
                                                 {trangThai ==
-                                                "Thất bại" ? null : (
-                                                  <span class="dropdown-item">
+                                                "Thất bại" ? null : !tiemNang ? (
+                                                  <span className="dropdown-item">
                                                     Ứng viên tiềm năng
+                                                  </span>
+                                                ) : (
+                                                  <span className="dropdown-item">
+                                                    Xóa ứng viên tiềm năng
                                                   </span>
                                                 )}
                                               </>
@@ -574,7 +562,7 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -601,6 +589,7 @@ const AllProfilePage = () => {
                                     ungTuyenVien,
                                     tinTuyenDung,
                                     trangThai,
+                                    tiemNang,
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -610,6 +599,15 @@ const AllProfilePage = () => {
                                         </p>
                                       </td>
                                       <td>
+                                        <span>
+                                          {" "}
+                                          {tiemNang && (
+                                            <Badge.Ribbon
+                                              text="Tiềm năng"
+                                              color="red"
+                                            ></Badge.Ribbon>
+                                          )}{" "}
+                                        </span>
                                         <p className="text-sm fw-bold mb-0">
                                           {ungTuyenVien?.ten}
                                         </p>
@@ -779,7 +777,7 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -806,6 +804,7 @@ const AllProfilePage = () => {
                                     ungTuyenVien,
                                     tinTuyenDung,
                                     trangThai,
+                                    tiemNang,
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -815,6 +814,15 @@ const AllProfilePage = () => {
                                         </p>
                                       </td>
                                       <td>
+                                        <span>
+                                          {" "}
+                                          {tiemNang && (
+                                            <Badge.Ribbon
+                                              text="Tiềm năng"
+                                              color="red"
+                                            ></Badge.Ribbon>
+                                          )}{" "}
+                                        </span>
                                         <p className="text-sm fw-bold mb-0">
                                           {ungTuyenVien?.ten}
                                         </p>
@@ -953,13 +961,6 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
                           {recruitments.length !== 0 && (
                             <Pagination
@@ -994,7 +995,7 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -1021,6 +1022,7 @@ const AllProfilePage = () => {
                                     ungTuyenVien,
                                     tinTuyenDung,
                                     trangThai,
+                                    tiemNang,
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -1030,6 +1032,15 @@ const AllProfilePage = () => {
                                         </p>
                                       </td>
                                       <td>
+                                        <span>
+                                          {" "}
+                                          {tiemNang && (
+                                            <Badge.Ribbon
+                                              text="Tiềm năng"
+                                              color="red"
+                                            ></Badge.Ribbon>
+                                          )}{" "}
+                                        </span>
                                         <p className="text-sm fw-bold mb-0">
                                           {ungTuyenVien?.ten}
                                         </p>
@@ -1158,13 +1169,6 @@ const AllProfilePage = () => {
                             </div>
                           </div>
                         )}
-                        {/* <div className="col-12">
-                          Showing {totalCount === 0 ? 0 : offset + 1} to{" "}
-                          {offset + 10 > totalCount
-                            ? totalCount
-                            : offset + pageSize}{" "}
-                          of {totalCount}
-                        </div> */}
                         <div className="col-12">
                           {recruitments.length !== 0 && (
                             <Pagination

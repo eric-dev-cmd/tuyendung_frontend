@@ -1,42 +1,26 @@
 import {
+  Badge,
+  Breadcrumb,
+  Button,
   Layout,
   Menu,
-  Breadcrumb,
-  Input,
-  Tooltip,
-  Button,
-  Dropdown,
   Modal,
+  Select,
+  Tabs,
 } from "antd";
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import axios from "axios";
+import queryString from "query-string";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
-import { FaListUl, FaUserPlus } from "react-icons/fa";
-import { GoSignOut } from "react-icons/go";
-import { Link } from "react-router-dom";
-import { Tabs } from "antd";
-import { Select } from "antd";
-import { GrFormRefresh } from "react-icons/gr";
-import { FaEllipsisV } from "react-icons/fa";
+import { Helmet } from "react-helmet";
+import { RiRefreshLine } from "react-icons/ri";
+import { toast } from "react-toastify";
+import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import Pagination from "../../components/Pagination/Pagination";
+import axiosClient from "../../services/axiosClient";
 import RecruitmentApi from "../../services/recruitmentApi";
 import TimeUtils from "../../utils/timeUtils";
-import ReactPaginate from "react-paginate";
-import Pagination from "../../components/Pagination/Pagination";
-import PostFiltersForm from "../../components/Admin/PostFiltersForm";
-import queryString from "query-string";
-import axios from "axios";
 import ModalProfileDetail from "./components/modals/ModalProfileDetail";
 import NavbarAdmin from "./components/navbar/NavbarAdmin";
-import { Helmet } from "react-helmet";
-import axiosClient from "../../services/axiosClient";
-import { toast } from "react-toastify";
-import { RiRefreshLine } from "react-icons/ri";
 
 const { Option } = Select;
 
@@ -337,7 +321,7 @@ const AllProfilePage = () => {
 
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -364,6 +348,7 @@ const AllProfilePage = () => {
                                     ungTuyenVien,
                                     tinTuyenDung,
                                     trangThai,
+                                    tiemNang,
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -373,6 +358,15 @@ const AllProfilePage = () => {
                                         </p>
                                       </td>
                                       <td>
+                                        <span>
+                                          {" "}
+                                          {tiemNang && (
+                                            <Badge.Ribbon
+                                              text="Tiềm năng"
+                                              color="red"
+                                            ></Badge.Ribbon>
+                                          )}{" "}
+                                        </span>
                                         <p className="text-sm fw-bold mb-0">
                                           {ungTuyenVien?.ten}
                                         </p>
@@ -479,9 +473,13 @@ const AllProfilePage = () => {
                                             >
                                               <>
                                                 {trangThai ==
-                                                "Thất bại" ? null : (
-                                                  <span class="dropdown-item">
+                                                "Thất bại" ? null : !tiemNang ? (
+                                                  <span className="dropdown-item">
                                                     Ứng viên tiềm năng
+                                                  </span>
+                                                ) : (
+                                                  <span className="dropdown-item">
+                                                    Xóa ứng viên tiềm năng
                                                   </span>
                                                 )}
                                               </>
@@ -552,7 +550,7 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -579,6 +577,7 @@ const AllProfilePage = () => {
                                     ungTuyenVien,
                                     tinTuyenDung,
                                     trangThai,
+                                    tiemNang,
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -588,6 +587,15 @@ const AllProfilePage = () => {
                                         </p>
                                       </td>
                                       <td>
+                                        <span>
+                                          {" "}
+                                          {tiemNang && (
+                                            <Badge.Ribbon
+                                              text="Tiềm năng"
+                                              color="red"
+                                            ></Badge.Ribbon>
+                                          )}{" "}
+                                        </span>
                                         <p className="text-sm fw-bold mb-0">
                                           {ungTuyenVien?.ten}
                                         </p>
@@ -681,10 +689,25 @@ const AllProfilePage = () => {
                                                 Xem
                                               </span>
                                             </li>
-                                            <li>
-                                              <span class="dropdown-item">
-                                                Ứng tuyển viên năng
-                                              </span>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickTalent(
+                                                  item?.donTuyenDung._id
+                                                );
+                                              }}
+                                            >
+                                              <>
+                                                {trangThai ==
+                                                "Thất bại" ? null : !tiemNang ? (
+                                                  <span className="dropdown-item">
+                                                    Ứng viên tiềm năng
+                                                  </span>
+                                                ) : (
+                                                  <span className="dropdown-item">
+                                                    Xóa ứng viên tiềm năng
+                                                  </span>
+                                                )}
+                                              </>
                                             </li>
                                             <li>
                                               <span class="dropdown-item">
@@ -745,7 +768,7 @@ const AllProfilePage = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -772,6 +795,7 @@ const AllProfilePage = () => {
                                     ungTuyenVien,
                                     tinTuyenDung,
                                     trangThai,
+                                    tiemNang,
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -781,6 +805,15 @@ const AllProfilePage = () => {
                                         </p>
                                       </td>
                                       <td>
+                                        <span>
+                                          {" "}
+                                          {tiemNang && (
+                                            <Badge.Ribbon
+                                              text="Tiềm năng"
+                                              color="red"
+                                            ></Badge.Ribbon>
+                                          )}{" "}
+                                        </span>
                                         <p className="text-sm fw-bold mb-0">
                                           {ungTuyenVien?.ten}
                                         </p>
@@ -874,10 +907,25 @@ const AllProfilePage = () => {
                                                 Xem
                                               </span>
                                             </li>
-                                            <li>
-                                              <span class="dropdown-item">
-                                                Ứng tuyển viên năng
-                                              </span>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickTalent(
+                                                  item?.donTuyenDung._id
+                                                );
+                                              }}
+                                            >
+                                              <>
+                                                {trangThai ==
+                                                "Thất bại" ? null : !tiemNang ? (
+                                                  <span className="dropdown-item">
+                                                    Ứng viên tiềm năng
+                                                  </span>
+                                                ) : (
+                                                  <span className="dropdown-item">
+                                                    Xóa ứng viên tiềm năng
+                                                  </span>
+                                                )}
+                                              </>
                                             </li>
                                             <li>
                                               <span class="dropdown-item">

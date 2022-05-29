@@ -19,9 +19,9 @@ const ModalNewDetail = ({
   return (
     <div>
       <Modal
-        // centered
-        // visible={showModal}
-        visible={true}
+        centered
+        visible={showModal}
+        // visible={true}
         // onOk={() => {
         //   console.log("Submit ok");
         // }}

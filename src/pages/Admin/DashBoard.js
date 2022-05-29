@@ -253,8 +253,8 @@ const MainNavigationAdmin = () => {
 
     return (
       <ModalNewDetail
-        // showModal={isShowModalDetail}
-        showModal={true}
+        showModal={isShowModalDetail}
+        // showModal={true}
         onCloseModal={() => {
           setIsShowModalDetail(false);
           // clearErrors();
@@ -339,7 +339,7 @@ const MainNavigationAdmin = () => {
 
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive">
+                          <div className="">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -536,7 +536,7 @@ const MainNavigationAdmin = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -699,7 +699,7 @@ const MainNavigationAdmin = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -873,7 +873,7 @@ const MainNavigationAdmin = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -1034,7 +1034,7 @@ const MainNavigationAdmin = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>
@@ -1196,7 +1196,7 @@ const MainNavigationAdmin = () => {
                       </div>
                       <div className="row mt-3">
                         <div className="col-12">
-                          <div className="table-responsive ">
+                          <div className=" ">
                             <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
                               <thead className="bg-table">
                                 <tr>

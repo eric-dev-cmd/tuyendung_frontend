@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import {
-  Button,
-  Input,
-  Modal,
-  DatePicker,
-  Select,
-  Checkbox,
-  Avatar,
-} from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, DatePicker, Modal, Select } from "antd";
+import axios from "axios";
+import React, { useMemo, useState } from "react";
 import { AiFillStar, AiOutlineCalendar } from "react-icons/ai";
-import { FaUserAlt } from "react-icons/fa";
-import { HiOutlineMail } from "react-icons/hi";
 import { BsTelephoneFill } from "react-icons/bs";
-import { FaLocationArrow } from "react-icons/fa";
-import moment from "moment";
-import TimeUtils from "../../../../utils/timeUtils";
-import axiosClient from "../../../../services/axiosClient";
+import { FaLocationArrow, FaUserAlt } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
 import { toast } from "react-toastify";
+import axiosClient from "../../../../services/axiosClient";
+import TimeUtils from "../../../../utils/timeUtils";
+import ModalDeny from "./ModalDeny";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -57,45 +48,13 @@ const ModalProfileDetail = ({
     // setValue(`${prefixName}.note`, null);
     // setValue(`${prefixName}.attachments`, null);
   };
-  const save = () => {
-    // let data = watch(prefixName);
-    // console.log("running save()");
-    // onSubmitCreate(payload);
-    const payload = {
-      bangCap: typeDegree,
-      donViDaoTao: school,
-      chuyenNganh: specialized,
-      moTa: description,
-      tuNgay: fromDate,
-      denNgay: toDate,
-    };
-    console.log("payload", payload);
-    if (isEdit) {
-      console.log("Call update");
-    } else {
-      console.log("Call create");
-      onSubmitCreate(payload);
-    }
-    // onSubmitCreate();
-    // console.log("Add success");
-  };
-  const onSubmitCreate = (payload) => {
-    props.onSubmit(payload);
-    resetValue();
-    onCloseModal();
-  };
-  function handleChange(value) {
-    setTypeDegree(value);
-  }
-  const handleCreatedDate = () => {
-    const today = new Date();
-  };
 
   // Chấp nhận đơn ứng tuyển
   const handleAddButtonClickAccept = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/donUngTuyens/chapNhanDonUngTuyen/${id}`;
-      await axiosClient.patch(requestUrl).then((res) => {
+      const requestUrlSubmit = `http://localhost:4000/tintuyendungs/sendEmail`;
+      await axiosClient.patch(requestUrl).then(async (res) => {
         if (res?.status == "success") {
           setIsSubmit(true);
           toast.success("Cập nhật thành công", {
@@ -107,6 +66,12 @@ const ModalProfileDetail = ({
             draggable: true,
             progress: undefined,
           });
+          const sendMail = {
+            email: `${thongTinLienHe?.email}`,
+            subject: "CHẤP NHẬN ĐƠN ỨNG TUYỂN",
+            message: `Nhà ứng tuyển đã chấp nhận đơn ứng tuyển của bạn. Vui lòng liên hệ đến email ${tinTuyenDung?.lienHe?.email}`,
+          };
+          await axios.post(requestUrlSubmit, sendMail);
           onCloseModal(false);
         }
       });
@@ -115,29 +80,31 @@ const ModalProfileDetail = ({
     }
   };
 
-  // Từ chối đơn ứng tuyển
-  // const handleAddButtonClickDeny = async (id) => {
-  //   try {
-  //     const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
-  //     await axiosClient.patch(requestUrl).then((res) => {
-  //       if (res?.status == "success") {
-  //         setIsSubmit(true);
-  //         toast.success("Cập nhật thành công", {
-  //           position: "bottom-right",
-  //           autoClose: 1000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //         });
-  //         onCloseModal(false);
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.log(error.response);
-  //   }
-  // };
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [detail, setDetail] = useState(false);
+  const handleAddButtonClickDetail = (item) => {
+    // setUserProfile(item);
+    // e.preventDefault();
+    console.log("item", item);
+    setDetail(item);
+    setIsShowModal(true);
+  };
+  const renderModalDetail = useMemo(() => {
+    if (!isShowModal) return null;
+
+    return (
+      <ModalDeny
+        showModal={isShowModal}
+        // showModal={true}
+        onCloseModal={() => {
+          setIsShowModal(false);
+          // clearErrors();
+        }}
+        detail={detail}
+        // onSubmit={handleSubmitModalProfile}
+      />
+    );
+  }, [isShowModal]);
   // Modal confirm don ung tuyen
   const confirmDeleteProfile = (id) =>
     Modal.confirm({
@@ -169,8 +136,6 @@ const ModalProfileDetail = ({
         }
       },
     });
-
-  useEffect(() => {}, [isSubmit]);
 
   return (
     <div>
@@ -340,7 +305,8 @@ const ModalProfileDetail = ({
                             size="large"
                             className="rounded"
                             onClick={() => {
-                              confirmDeleteProfile(_id);
+                              // confirmDeleteProfile(_id);
+                              handleAddButtonClickDetail(_id);
                             }}
                           >
                             Từ chối
@@ -564,6 +530,7 @@ const ModalProfileDetail = ({
             </div>
           </div>
         </div>
+        {renderModalDetail}
       </Modal>
     </div>
   );
