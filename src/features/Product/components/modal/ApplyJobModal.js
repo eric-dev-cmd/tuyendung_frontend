@@ -1,4 +1,10 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import PropTypes from "prop-types";
 import { Button, Checkbox, Input, Modal } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -6,13 +12,15 @@ import { ProfileContext } from "../../../../context/ProfileContextProvider";
 import { AiFillEdit } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { getUserProfile } from "../../../../utils/localStorage";
+import profileApi from "../../../../services/profileApi";
+import { toast } from "react-toastify";
 
 const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
   const [isEntered, setIsEntered] = useState(false);
-  const [name, setName] = useState();
-  const [phone, setPhone] = useState();
-  const [email, setEmail] = useState();
-  const [introduce, setIntroduce] = useState();
+  const [name, setName] = useState(props?.user?.ten);
+  const [phone, setPhone] = useState(props?.user?.sdt);
+  const [email, setEmail] = useState(props?.user?.taiKhoan?.email);
+  const [introduce, setIntroduce] = useState(props?.user?.loiGioiThieu);
   const [isSendEmail, setIsSendEmail] = useState(false);
   const [applyUser, setApplyUser] = useState({});
   const params = useParams();
@@ -37,10 +45,10 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
       tinTuyenDung: slug,
       guiEmail: isSendEmail,
       thongTinLienHe: {
-        ten: name.trim() || "",
-        sdt: phone.trim() || "",
-        email: email.trim(),
-        loiGioiThieu: introduce.trim() || "",
+        ten: name,
+        sdt: phone,
+        email: email,
+        loiGioiThieu: introduce,
       },
     };
     console.log("Fighting payload", payload);
@@ -50,6 +58,29 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
     props.onSubmit(payload);
     onCloseModal();
   };
+  const [user, setUser] = useState(props?.user);
+  useEffect(() => {
+    const getProfileDetail = async () => {
+      try {
+        console.log("userIduserId", uniqueId);
+        const response = await profileApi.getUngTuyenVien(uniqueId);
+        console.log("get default", response?.data);
+        setUser(response?.data);
+      } catch (error) {
+        toast.error(error, {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    };
+    getProfileDetail();
+  }, []);
+  const test = useRef();
 
   return (
     <div>
@@ -116,10 +147,11 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 size="large"
                 placeholder="Trung Vinh"
                 value={name}
+                // defaultValue={user?.ten}
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-               // defaultValue={props?.user?.ten}
+                defaultValue={name}
               />
             </div>
             <div className="pb-2">
@@ -136,7 +168,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 }}
                 size="large"
                 placeholder="0987079079"
-              //  defaultValue={props?.user?.sdt}
+                defaultValue={phone}
               />
             </div>
             <div className="pb-2">
@@ -153,7 +185,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 }}
                 size="large"
                 placeholder="zunggzing@gmail.com"
-               // defaultValue={props?.user?.taiKhoan?.email}
+                defaultValue={email}
               />
             </div>
             <div className="pb-2">
@@ -168,7 +200,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
                 onChange={(e) => {
                   setIntroduce(e.target.value);
                 }}
-              //  defaultValue={props?.user?.loiGioiThieu}
+                defaultValue={introduce}
               />
             </div>
             <div className="pb-2">
