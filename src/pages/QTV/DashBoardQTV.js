@@ -617,6 +617,17 @@ const DashBoardQTV = () => {
                                             class="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                           >
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
                                             <>
                                               {item?.trangThai ==
                                               "Chờ duyệt" ? (
@@ -1286,6 +1297,17 @@ const DashBoardQTV = () => {
                                           >
                                             <li
                                               onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
+                                              <span class="dropdown-item">
+                                                Xem tin tuyển dụng
+                                              </span>
+                                            </li>
+                                            <li
+                                              onClick={() => {
                                                 confirmLockAndUnLock(
                                                   item?._id,
                                                   item?.trangThai
@@ -1596,6 +1618,17 @@ const DashBoardQTV = () => {
                                               >
                                                 <li
                                                   onClick={() => {
+                                                    handleAddButtonClickDetail(
+                                                      item
+                                                    );
+                                                  }}
+                                                >
+                                                  <span class="dropdown-item">
+                                                    Xem tin tuyển dụng
+                                                  </span>
+                                                </li>
+                                                <li
+                                                  onClick={() => {
                                                     confirmDeleteDrop(
                                                       item?._id
                                                     );
@@ -1895,6 +1928,17 @@ const DashBoardQTV = () => {
                                                 class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetail(
+                                                      item
+                                                    );
+                                                  }}
+                                                >
+                                                  <span class="dropdown-item">
+                                                    Xem tin tuyển dụng
+                                                  </span>
+                                                </li>
                                                 <li
                                                   onClick={() => {
                                                     confirmLockAndUnLock(
@@ -2208,6 +2252,17 @@ const DashBoardQTV = () => {
                                                 class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton1"
                                               >
+                                                <li
+                                                  onClick={() => {
+                                                    handleAddButtonClickDetail(
+                                                      item
+                                                    );
+                                                  }}
+                                                >
+                                                  <span class="dropdown-item">
+                                                    Xem tin tuyển dụng
+                                                  </span>
+                                                </li>
                                                 <li
                                                   onClick={() => {
                                                     confirmDeleteDrop(
@@ -2526,6 +2581,17 @@ const DashBoardQTV = () => {
                                                   class="dropdown-menu"
                                                   aria-labelledby="dropdownMenuButton1"
                                                 >
+                                                  <li
+                                                    onClick={() => {
+                                                      handleAddButtonClickDetail(
+                                                        item
+                                                      );
+                                                    }}
+                                                  >
+                                                    <span class="dropdown-item">
+                                                      Xem tin tuyển dụng
+                                                    </span>
+                                                  </li>
                                                   <>
                                                     {item?.tinTuyenDung
                                                       ?.trangThai == "Khóa" ? (

@@ -219,14 +219,6 @@ const ModalNewDetail = ({
                     </div>
                     <div className="row my-2">
                       <div className="col-4">
-                        <strong className="fs-14-d">Lĩnh vực:</strong>
-                      </div>
-                      <div className="col-8">
-                        {props?.detail?.nganhNghe?.linhVuc?.tenLinhVuc}{" "}
-                      </div>
-                    </div>
-                    <div className="row my-2">
-                      <div className="col-4">
                         <strong className="fs-14-d">Trạng thái:</strong>
                       </div>
                       <div className="col-8">
