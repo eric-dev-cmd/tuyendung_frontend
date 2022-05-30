@@ -14,6 +14,7 @@ import { useCommonContext } from "../../components/Search/context/commonContext"
 import TimeUtils from "../../utils/timeUtils";
 import NavbarQTV from "./components/navbar/NavbarQTV";
 import ModalNewDetail from "./components/modal/ModalNewDetail";
+import ModalNewDetailReview from "./components/modal/ModalNewDetailReview";
 
 const { Option } = Select;
 
@@ -276,6 +277,33 @@ const DashBoardQTV = () => {
         }
       },
     });
+
+  // Đánh giá kém
+  const [isShowModalDetailReview, setIsShowModalDetailReview] = useState(false);
+  const [detailReview, setDetailReview] = useState(false);
+  const handleAddButtonClickDetailReview = (item) => {
+    // setUserProfile(item);
+    // e.preventDefault();
+    console.log("item review catluynh", item);
+    setDetailReview(item);
+    setIsShowModalDetailReview(true);
+  };
+  const renderModalDetailReview = useMemo(() => {
+    if (!isShowModalDetailReview) return null;
+
+    return (
+      <ModalNewDetailReview
+        showModal={isShowModalDetailReview}
+        // showModal={true}
+        onCloseModal={() => {
+          setIsShowModalDetailReview(false);
+          // clearErrors();
+        }}
+        detail={detailReview}
+        // onSubmit={handleSubmitModalProfile}
+      />
+    );
+  }, [isShowModalDetailReview]);
 
   useEffect(() => {
     getTotalStatus();
@@ -2583,7 +2611,7 @@ const DashBoardQTV = () => {
                                                 >
                                                   <li
                                                     onClick={() => {
-                                                      handleAddButtonClickDetail(
+                                                      handleAddButtonClickDetailReview(
                                                         item
                                                       );
                                                     }}
@@ -2687,6 +2715,7 @@ const DashBoardQTV = () => {
           </Footer>
         </Layout>
       </Layout>
+      {renderModalDetailReview}
       {renderModalDetail}
     </Fragment>
   );
