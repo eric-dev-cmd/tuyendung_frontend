@@ -176,14 +176,14 @@ const SearchCommon = ({ careers, fields, locations }) => {
                   console.log("1. ", e);
                   if (e) {
                     selectCareer(e);
-                    delete filters.tieuDe;
-                    delete filters.linhVuc;
-                    delete filters.diaDiem;
-                    delete filters.soNamKinhNghiem;
-                    delete filters.tuNgay;
-                    delete filters.denNgay;
-                    delete filters.viTri;
-                    delete filters.loaiCongViec;
+                    // delete filters.tieuDe;
+                    // delete filters.linhVuc;
+                    // delete filters.diaDiem;
+                    // delete filters.soNamKinhNghiem;
+                    // delete filters.tuNgay;
+                    // delete filters.denNgay;
+                    // delete filters.viTri;
+                    // delete filters.loaiCongViec;
                     setFilters({
                       ...filters,
                       trangThai: 2,

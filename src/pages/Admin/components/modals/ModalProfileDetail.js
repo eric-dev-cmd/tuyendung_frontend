@@ -69,7 +69,7 @@ const ModalProfileDetail = ({
           const sendMail = {
             email: `${thongTinLienHe?.email}`,
             subject: "CHẤP NHẬN ĐƠN ỨNG TUYỂN",
-            message: `Nhà ứng tuyển đã chấp nhận đơn ứng tuyển của bạn. Vui lòng liên hệ đến email ${tinTuyenDung?.lienHe?.email}`,
+            message: `Nhà ứng tuyển đã chấp nhận đơn ứng tuyển của bạn. Vui lòng liên hệ đến email catluynh99@gmail.com để biết thêm chi tiết.`,
           };
           await axios.post(requestUrlSubmit, sendMail);
           onCloseModal(false);
