@@ -32,7 +32,7 @@ const ModalDeny = ({ showModal, onCloseModal, isEdit, user, ...props }) => {
           const sendMail = {
             email: `${res?.data?.thongTinLienHe?.email}`,
             subject: "TỪ CHỐI ĐƠN ỨNG TUYỂN",
-            message: `Nhà ứng tuyển đã từ chối đơn ứng tuyển của bạn. Lý do: ${note}. Vui lòng liên hệ đến email catluynh99@gmail.com để biết thêm chi tiết.`,
+            message: `Nhà ứng tuyển đã từ chối đơn ứng tuyển của bạn. Lý do: ${note}`,
           };
           await axios.post(requestUrlSendEmail, sendMail);
         }
