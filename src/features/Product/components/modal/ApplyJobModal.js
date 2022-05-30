@@ -59,6 +59,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, ...props }) => {
     onCloseModal();
   };
   const [user, setUser] = useState(props?.user);
+  
   useEffect(() => {
     const getProfileDetail = async () => {
       try {

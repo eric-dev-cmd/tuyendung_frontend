@@ -1,30 +1,22 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import {
-  Button,
-  Checkbox,
-  DatePicker,
-  Input,
-  Modal,
-  Select,
-  Avatar,
-} from "antd";
-import TextArea from "antd/lib/input/TextArea";
-import { getUserProfile } from "../../../../utils/localStorage";
 import { AntDesignOutlined } from "@ant-design/icons";
-import axiosClient from "../../../../services/axiosClient";
+import { Avatar, Button, DatePicker, Input, Modal, Select } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import profileApi from "../../../../services/profileApi";
+import { getUserProfile } from "../../../../utils/localStorage";
+import TimeUtils from "../../../../utils/timeUtils";
 
 const { Option } = Select;
 const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
   const user = getUserProfile();
   console.log("user, ", user);
-  const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [numbers, setNumbers] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("");
+  const [name, setName] = useState(props?.user?.ten);
+  const [birthDate, setBirthDate] = useState(props?.user?.ngaySinh);
+  const [numbers, setNumbers] = useState(props?.user?.sdt);
+  const [email, setEmail] = useState(props?.user?.taiKhoan?.email);
+  const [address, setAddress] = useState(props?.user?.diaChi);
+  const [gender, setGender] = useState(props?.user?.gioiTinh);
   const [selectedImage, setSelectedImage] = useState(null);
   const dateFormat = "YYYY-MM-DD";
   const userId = getUserProfile();
@@ -35,6 +27,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
     // setValue(`${prefixName}.attachments`, null);
   };
   console.log("userId", userId?.taiKhoan._id);
+  console.log("props info detail", props);
   const save = () => {
     const payload = {
       ten: name,
@@ -52,6 +45,31 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
     resetValue();
     onCloseModal();
   };
+  const accountUser = getUserProfile();
+  const uniqueId = accountUser.taiKhoan._id;
+  console.log("accountUser", accountUser);
+  const [userInfo, setUserInfo] = useState();
+  useEffect(() => {
+    const getProfileDetail = async () => {
+      try {
+        console.log("userIduserId", uniqueId);
+        const response = await profileApi.getUngTuyenVien(uniqueId);
+        console.log("get default", response?.data);
+        setUserInfo(response?.data);
+      } catch (error) {
+        toast.error(error, {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    };
+    getProfileDetail();
+  }, []);
 
   return (
     <div>
@@ -140,6 +158,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
               setName(e.target.value);
             }}
             value={name}
+            defaultValue={name}
             size="default"
             placeholder="Ví dụ: Trung Vinh"
           />
@@ -152,6 +171,8 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
             <DatePicker
               className="form-control"
               format={dateFormat}
+              name={birthDate}
+              // defaultValue={birthDate}
               onChange={(date, dateString) => {
                 console.log(date);
                 console.log(dateString);
@@ -173,6 +194,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
               setNumbers(e.target.value);
             }}
             value={numbers}
+            defaultValue={numbers}
             size="default"
             placeholder="Ví dụ: 0987059059"
           />
@@ -207,6 +229,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
               setAddress(e.target.value);
             }}
             value={address}
+            defaultValue={address}
             size="default"
             placeholder="Ví dụ: 185 Điện Biên Phủ, Quận 1, Hồ Chí Minh"
           />
@@ -216,7 +239,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
               <span className="text-danger">(*)</span>
             </p>
             <Select
-              defaultValue="Chọn giới tính"
+              defaultValue={gender ? gender : "Chọn giới tính"}
               style={{ width: "100%" }}
               onChange={(value) => {
                 setGender(value);

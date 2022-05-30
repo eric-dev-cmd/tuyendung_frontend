@@ -62,6 +62,28 @@ const ProfileMyPage = ({ ...props }) => {
       setIsEdit(false);
     }
   };
+  const [userInfo, setUserInfo] = useState();
+  useEffect(() => {
+    const getProfileDetail = async () => {
+      try {
+        console.log("userIduserId", user.taiKhoan._id);
+        const response = await profileApi.getUngTuyenVien(user.taiKhoan._id);
+        console.log("get default", response?.data);
+        setUserInfo(response?.data);
+      } catch (error) {
+        toast.error(error, {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    };
+    getProfileDetail();
+  }, []);
 
   useEffect(() => {
     let timeout = null;
@@ -380,6 +402,7 @@ const ProfileMyPage = ({ ...props }) => {
           // clearErrors();
         }}
         onSubmit={handleSubmitModalInformationPersonal}
+        user={userInfo}
       />
     );
   }, [isShowModalInformationPersonal]);
@@ -1076,13 +1099,6 @@ const ProfileMyPage = ({ ...props }) => {
                             onClick={handleAddButtonClickInformation}
                           >
                             Thông tin cá nhân
-                          </Button>
-                          <Button
-                            type="danger"
-                            className="ms-2 rounded"
-                            style={{ width: "150px" }}
-                          >
-                            Xem thêm
                           </Button>
                         </h4>
                       </div>
