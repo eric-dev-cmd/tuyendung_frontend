@@ -24,8 +24,8 @@ ReactDOM.render(
             <ProductProvider>
               <ProfileContextProvider>
                 <SearchContextProvider>
-                  <ConfigProvider locale={vi_VN}>
-                    <App />
+                  <ConfigProvider locale={vi_VN}>      
+                      <App />
                   </ConfigProvider>
                 </SearchContextProvider>
               </ProfileContextProvider>

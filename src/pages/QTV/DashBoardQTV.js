@@ -189,6 +189,7 @@ const DashBoardQTV = () => {
   const handleAddButtonClickDetailAccept = async (id) => {
     try {
       const requestUrl = `http://localhost:4000/tinTuyenDungs/duyetTin/${id}`;
+      const requestUrlSendEmail = `http://localhost:4000/tinTuyenDungs/sendEmail`;
       await axios.patch(requestUrl).then(async (res) => {
         if (res?.data?.status == "success") {
           setIsSubmit(true);
@@ -201,8 +202,12 @@ const DashBoardQTV = () => {
             draggable: true,
             progress: undefined,
           });
-          await socket.emit("duyet-tin-tuyen-dung", { id: id });
-          console.log("socket", socket);
+          const sendMail = {
+            email: 'catluynh99@gmail.com',//`${res?.data?.thongTinLienHe?.email}`,
+            subject: "CHẤP NHẬN TIN TUYỂN DỤNG",
+            message: `Tin tuyển dụng đã được duyệt`,
+          };
+          await axios.post(requestUrlSendEmail, sendMail);
         }
       });
     } catch (error) {
@@ -300,7 +305,7 @@ const DashBoardQTV = () => {
           // clearErrors();
         }}
         detail={detailReview}
-        // onSubmit={handleSubmitModalProfile}
+      // onSubmit={handleSubmitModalProfile}
       />
     );
   }, [isShowModalDetailReview]);
@@ -332,7 +337,7 @@ const DashBoardQTV = () => {
           // clearErrors();
         }}
         detail={detail}
-        // onSubmit={handleSubmitModalProfile}
+      // onSubmit={handleSubmitModalProfile}
       />
     );
   }, [isShowModalDetail]);
@@ -658,7 +663,7 @@ const DashBoardQTV = () => {
                                             </li>
                                             <>
                                               {item?.trangThai ==
-                                              "Chờ duyệt" ? (
+                                                "Chờ duyệt" ? (
                                                 <>
                                                   <li
                                                     onClick={() => {
@@ -757,9 +762,8 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Chờ xét duyệt (${
-                        totalChoDuyet ? totalChoDuyet : 0
-                      })`}
+                      tab={`Chờ xét duyệt (${totalChoDuyet ? totalChoDuyet : 0
+                        })`}
                       key="1"
                     >
                       <div className="row">
@@ -2336,9 +2340,8 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Đánh giá kém (${
-                        totalReviewLeast ? totalReviewLeast : 0
-                      })`}
+                      tab={`Đánh giá kém (${totalReviewLeast ? totalReviewLeast : 0
+                        })`}
                       key="9"
                     >
                       <div className="row">
@@ -2638,7 +2641,7 @@ const DashBoardQTV = () => {
                                                         </span>
                                                       </li>
                                                     ) : item?.tinTuyenDung
-                                                        ?.trangThai ==
+                                                      ?.trangThai ==
                                                       "Đã duyệt" ? (
                                                       <li
                                                         onClick={() => {
