@@ -28,7 +28,7 @@ const SearchPage = (props) => {
 
   const searchProducts = async () => {
     console.log("Call api in search");
-    const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhieuTieuChi${queryParams}`;
+    const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/timKiemTheoNhieuTieuChi${queryParams}`;
     console.log("ttv requestUrl  ", requestUrl);
     try {
       const response = await axios.get(requestUrl);

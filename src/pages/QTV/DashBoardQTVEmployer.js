@@ -63,7 +63,7 @@ const DashBoardQTVEmployer = () => {
   const [value, setValue] = useState(0);
 
   const getDataListFilters = async () => {
-    const requestUrl = `http://localhost:4000/nhaTuyenDungs?${paramsString}`;
+    const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/nhaTuyenDungs?${paramsString}`;
     try {
       const response = await axios.get(requestUrl);
       setRecruitments(response.data.data);
@@ -126,7 +126,7 @@ const DashBoardQTVEmployer = () => {
 
   useEffect(() => {
     const getTotalStatus = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThai`;
+      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/tongSoTinTheoTrangThai`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
           res.data.data.map((item) => {
@@ -150,7 +150,7 @@ const DashBoardQTVEmployer = () => {
   const [recruitmentReviewLeast, setRecruitmentReviewLeast] = useState([]);
   useEffect(() => {
     const getRecruitmentReviewLeast = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/tinTuyenDungCoNguyCoKhoa`;
+      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/tinTuyenDungCoNguyCoKhoa`;
       try {
         const response = await axios.get(requestUrl);
         setRecruitmentReviewLeast(response?.data?.data);
@@ -170,7 +170,7 @@ const DashBoardQTVEmployer = () => {
       okText: "Đồng ý",
       onOk: async () => {
         try {
-          const requestUrl = `http://localhost:4000/quanTriViens/khoataikhoan/${id}`;
+          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/quanTriViens/khoataikhoan/${id}`;
           const response = await axios.patch(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);
@@ -201,7 +201,7 @@ const DashBoardQTVEmployer = () => {
       okText: "Đồng ý",
       onOk: async () => {
         try {
-          const requestUrl = `http://localhost:4000/quanTriViens/motaikhoan/${id}`;
+          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/quanTriViens/motaikhoan/${id}`;
           const response = await axios.patch(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);

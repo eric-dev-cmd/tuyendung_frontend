@@ -52,8 +52,8 @@ const ModalProfileDetail = ({
   // Chấp nhận đơn ứng tuyển
   const handleAddButtonClickAccept = async (id) => {
     try {
-      const requestUrl = `http://localhost:4000/donUngTuyens/chapNhanDonUngTuyen/${id}`;
-      const requestUrlSubmit = `http://localhost:4000/tintuyendungs/sendEmail`;
+      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/chapNhanDonUngTuyen/${id}`;
+      const requestUrlSubmit = `https://web-tuyen-dung-be.herokuapp.com/tintuyendungs/sendEmail`;
       await axiosClient.patch(requestUrl).then(async (res) => {
         if (res?.status == "success") {
           setIsSubmit(true);
@@ -112,7 +112,7 @@ const ModalProfileDetail = ({
       // content: "first",
       onOk: async () => {
         try {
-          const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
+          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/tuChoiDonUngTuyen/${id}`;
           await axiosClient.patch(requestUrl).then((res) => {
             if (res?.status == "success") {
               setIsSubmit(true);

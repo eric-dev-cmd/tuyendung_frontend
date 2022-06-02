@@ -125,7 +125,7 @@ const SearchCommon = ({ careers, fields, locations }) => {
 
   useEffect(() => {
     const searchProducts = async () => {
-      const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhieuTieuChi?${paramsString}`;
+      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/timKiemTheoNhieuTieuChi?${paramsString}`;
       try {
         // const response = await productApi.searchProducts(keyword);
         const response = await axios.get(requestUrl);

@@ -132,7 +132,7 @@ const InformationPersonal = ({ showModal, onCloseModal, ...props }) => {
             onChange={(event) => {
               let formData = new FormData();
               formData.append("file", event.target.files[0]);
-              const requestUrl = `http://localhost:4000/ungtuyenviens/capNhatAvatar`;
+              const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/ungtuyenviens/capNhatAvatar`;
               axios({
                 method: "patch",
                 url: requestUrl,
