@@ -136,7 +136,7 @@ const AllProfilePage = () => {
   useEffect(() => {
     const getTotalApplication = async () => {
       let total = 0;
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/demDonUngTuyenTheoTrangThai`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyenTheoTrangThai`;
       try {
         const response = await axiosClient.get(requestUrl).then((res) => {
           res.data.map((item) => {
@@ -158,7 +158,7 @@ const AllProfilePage = () => {
   // ứng viêm tiềm năng
   const handleAddButtonClickTalent = async (id) => {
     try {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
       await axios.patch(requestUrl).then((res) => {
         if (res?.data?.status == "success") {
           setIsSubmit(true);
@@ -185,7 +185,7 @@ const AllProfilePage = () => {
       // content: "first",
       onOk: async () => {
         try {
-          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/${id}`;
+          const requestUrl = `http://localhost:4000/donUngTuyens/${id}`;
           await axios.delete(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);
@@ -316,6 +316,7 @@ const AllProfilePage = () => {
                                     trangThai,
                                     thongTinLienHe,
                                     tiemNang,
+                                    ngayUngTuyen
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -347,7 +348,7 @@ const AllProfilePage = () => {
                                           <span className="created">
                                             Ngày nộp:{" "}
                                             {TimeUtils.formatDateTime(
-                                              item?.ngayUngTuyen,
+                                              ngayUngTuyen,
                                               "DD-MM-YYYY"
                                             )}
                                           </span>

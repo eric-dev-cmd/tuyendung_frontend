@@ -281,7 +281,7 @@ const ProductDetail = (props) => {
 
   useEffect(() => {
     const getTotalStatus = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/danhGias/demDanhGiaTheoXepLoai/${slug}`;
+      const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai/${slug}`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
           let total = 0;

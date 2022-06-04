@@ -10,6 +10,10 @@ import { toast } from "react-toastify";
 import axiosClient from "../../../../services/axiosClient";
 import TimeUtils from "../../../../utils/timeUtils";
 import ModalDeny from "./ModalDeny";
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -40,7 +44,6 @@ const ModalProfileDetail = ({
     thongTinLienHe,
   } = user?.donTuyenDung;
   console.log("Trung Vinh user", user);
-  console.log("Trung Vinh props", props);
 
   const resetValue = () => {
     console.log("3. Reset value");
@@ -52,8 +55,8 @@ const ModalProfileDetail = ({
   // Chấp nhận đơn ứng tuyển
   const handleAddButtonClickAccept = async (id) => {
     try {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/chapNhanDonUngTuyen/${id}`;
-      const requestUrlSubmit = `https://web-tuyen-dung-be.herokuapp.com/tintuyendungs/sendEmail`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/chapNhanDonUngTuyen/${id}`;
+      const requestUrlSubmit = `http://localhost:4000/tintuyendungs/sendEmail`;
       await axiosClient.patch(requestUrl).then(async (res) => {
         if (res?.status == "success") {
           setIsSubmit(true);
@@ -101,7 +104,7 @@ const ModalProfileDetail = ({
           // clearErrors();
         }}
         detail={detail}
-        // onSubmit={handleSubmitModalProfile}
+      // onSubmit={handleSubmitModalProfile}
       />
     );
   }, [isShowModal]);
@@ -112,7 +115,7 @@ const ModalProfileDetail = ({
       // content: "first",
       onOk: async () => {
         try {
-          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/tuChoiDonUngTuyen/${id}`;
+          const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
           await axiosClient.patch(requestUrl).then((res) => {
             if (res?.status == "success") {
               setIsSubmit(true);
@@ -136,6 +139,8 @@ const ModalProfileDetail = ({
         }
       },
     });
+
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   return (
     <div>
@@ -287,7 +292,7 @@ const ModalProfileDetail = ({
                   <div className="col-12 mt-3">
                     <div className="d-flex align-items-center justify-content-between">
                       {trangThai === "Đã ứng tuyển" ||
-                      trangThai === "Thất bại" ? null : (
+                        trangThai === "Thất bại" ? null : (
                         <>
                           <Button
                             size="large"
@@ -320,214 +325,237 @@ const ModalProfileDetail = ({
             </div>
           </div>
           <div className="col-9">
-            <div className="row">
-              <div className="col-4 bg-core text-white pt-20 pb-30">
-                <div className="p-1">
-                  <h3 className="text-center mb-0 text-white">
-                    <strong>{thongTinLienHe?.ten}</strong>
-                  </h3>
-                  <p className="text-center">
-                    {ungTuyenVien?.viTriMuonUngTuyen}{" "}
-                  </p>
-                  <div className="text-center">
-                    <Avatar shape="square" size={120} icon={<UserOutlined />} />
+            {ungTuyenVien.cv ? (
+              <div
+                style={{
+                  height: '50rem',
+                  width: '50rem',
+                  margin: '1rem auto',
+                }}
+              >
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist/build/pdf.worker.min.js">
+                  <div style={{
+                    height: '50rem',
+                    width: '50rem',
+                    margin: '1rem auto',
+                  }}>
+                    <Viewer fileUrl={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${ungTuyenVien?.cv}`}
+                      plugins={[defaultLayoutPluginInstance]} />
                   </div>
-                  <div className="mt-2">
-                    <p className="d-flex align-items-center pt-1">
-                      {" "}
-                      <AiOutlineCalendar style={{ fontSize: "21px" }} />{" "}
-                      <span className="ps-2 pt-1">
-                        {TimeUtils.formatDateTime(
-                          ungTuyenVien?.ngaySinh,
-                          "DD-MM-YYYY"
-                        )}
-                      </span>
-                    </p>
-                    <p className="d-flex align-items-center">
-                      {" "}
-                      <UserOutlined style={{ fontSize: "20px" }} />{" "}
-                      <span className="ps-2">{ungTuyenVien?.gioiTinh}</span>
-                    </p>
+                </Worker>
 
-                    <p className="d-flex align-items-center">
-                      {" "}
-                      <BsTelephoneFill style={{ fontSize: "16px" }} />{" "}
-                      <span className="ps-2">{thongTinLienHe?.sdt}</span>
+              </div>
+            ) : (
+              <div className="row">
+                <div className="col-4 bg-core text-white pt-20 pb-30">
+                  <div className="p-1">
+                    <h3 className="text-center mb-0 text-white">
+                      <strong>{thongTinLienHe?.ten}</strong>
+                    </h3>
+                    <p className="text-center">
+                      {ungTuyenVien?.viTriMuonUngTuyen}{" "}
                     </p>
-                    <p className="d-flex align-items-center">
-                      {" "}
-                      <HiOutlineMail style={{ fontSize: "20px" }} />{" "}
-                      <span className="ps-2">{thongTinLienHe?.email}</span>
-                    </p>
-                    <p className="d-flex align-items-center">
-                      {" "}
-                      <FaLocationArrow style={{ fontSize: "16px" }} />{" "}
-                      <span className="ps-2">{ungTuyenVien?.diaChi}</span>
-                    </p>
+                    <div className="text-center">
+                      <Avatar shape="square" size={120} icon={<UserOutlined />} />
+                    </div>
+                    <div className="mt-2">
+                      <p className="d-flex align-items-center pt-1">
+                        {" "}
+                        <AiOutlineCalendar style={{ fontSize: "21px" }} />{" "}
+                        <span className="ps-2 pt-1">
+                          {TimeUtils.formatDateTime(
+                            ungTuyenVien?.ngaySinh,
+                            "DD-MM-YYYY"
+                          )}
+                        </span>
+                      </p>
+                      <p className="d-flex align-items-center">
+                        {" "}
+                        <UserOutlined style={{ fontSize: "20px" }} />{" "}
+                        <span className="ps-2">{ungTuyenVien?.gioiTinh}</span>
+                      </p>
+
+                      <p className="d-flex align-items-center">
+                        {" "}
+                        <BsTelephoneFill style={{ fontSize: "16px" }} />{" "}
+                        <span className="ps-2">{thongTinLienHe?.sdt}</span>
+                      </p>
+                      <p className="d-flex align-items-center">
+                        {" "}
+                        <HiOutlineMail style={{ fontSize: "20px" }} />{" "}
+                        <span className="ps-2">{thongTinLienHe?.email}</span>
+                      </p>
+                      <p className="d-flex align-items-center">
+                        {" "}
+                        <FaLocationArrow style={{ fontSize: "16px" }} />{" "}
+                        <span className="ps-2">{ungTuyenVien?.diaChi}</span>
+                      </p>
+                    </div>
                   </div>
-                </div>
-                {/* Mục tiêu nghề nghiệp */}
-                <div>
-                  <div className="bg-white rounded my-2 py-2 text-core fw-bold text-center">
-                    <span>MỤC TIÊU NGHỀ NGHIỆP</span>
+                  {/* Mục tiêu nghề nghiệp */}
+                  <div>
+                    <div className="bg-white rounded my-2 py-2 text-core fw-bold text-center">
+                      <span>MỤC TIÊU NGHỀ NGHIỆP</span>
+                    </div>
+                    <div className="mt-2">
+                      <span className="ps-1">
+                        {ungTuyenVien?.mucTieuCongViec}
+                      </span>
+                    </div>
                   </div>
                   <div className="mt-2">
-                    <span className="ps-1">
-                      {ungTuyenVien?.mucTieuCongViec}
-                    </span>
+                    <div className="bg-white rounded my-2 py-2 text-core fw-bold text-center">
+                      <span>Kỹ năng</span>
+                    </div>
+                    <div className="mt-2">
+                      {ungTuyenVien?.dsKyNang.map((item, index) => {
+                        return (
+                          <>
+                            <p key={index} className="ps-1">
+                              - {item?.tenKyNang}
+                            </p>
+                          </>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
-                <div className="mt-2">
-                  <div className="bg-white rounded my-2 py-2 text-core fw-bold text-center">
-                    <span>Kỹ năng</span>
-                  </div>
-                  <div className="mt-2">
-                    {ungTuyenVien?.dsKyNang.map((item, index) => {
+                <div className="col-8 bg-cv pb-30">
+                  <div>
+                    <div className="bg-core rounded my-2 py-2 text-white fw-bold text-center">
+                      <span>Học vấn</span>
+                    </div>
+                    {ungTuyenVien?.dsHocVan.map((item, index) => {
                       return (
                         <>
-                          <p key={index} className="ps-1">
-                            - {item?.tenKyNang}
-                          </p>
+                          <div className="mt-3">
+                            <div className="d-flex align-items-center justify-content-between px-2">
+                              <div>
+                                <h5 className="text-cv-8 fw-bold">
+                                  {item?.donViDaoTao}
+                                </h5>
+                              </div>
+                              <div>
+                                <h5 className="text-cv-8 fw-bold">
+                                  {TimeUtils.formatDateTime(
+                                    item?.tuNgay,
+                                    "MM/YYYY"
+                                  )}{" "}
+                                  -{" "}
+                                  {TimeUtils.formatDateTime(
+                                    item?.denNgay,
+                                    "MM/YYYY"
+                                  )}
+                                </h5>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="mt-2">
+                            <div className="d-flex align-items-center justify-content-between px-2">
+                              <div>
+                                <h6 className="text-cv-8 fw-bold">
+                                  Chuyên ngành: {item?.chuyenNganh}
+                                </h6>
+                                <span>- {item?.moTa}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </div>
+                  {/* Kinh nghiệm làm việc */}
+                  <div className="mt-4">
+                    <div className="bg-core rounded my-2 py-2 text-white fw-bold text-center">
+                      <span>Kinh nghiệm làm việc </span>
+                    </div>
+                    {ungTuyenVien?.dsKinhNghiemLamViec.map((item, index) => {
+                      return (
+                        <>
+                          <div className="mt-3">
+                            <div className="d-flex align-items-center justify-content-between px-2">
+                              <div>
+                                <h5 className="text-cv-8 fw-bold mt-1">
+                                  {item?.congTy}
+                                </h5>
+                              </div>
+                              <div>
+                                <h5 className="text-cv-8 fw-bold">
+                                  {TimeUtils.formatDateTime(
+                                    item?.tuNgay,
+                                    "MM/YYYY"
+                                  )}{" "}
+                                  -{" "}
+                                  {TimeUtils.formatDateTime(
+                                    item?.denNgay,
+                                    "MM/YYYY"
+                                  )}
+                                </h5>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="d-flex align-items-center justify-content-between px-2">
+                              <div>
+                                <h6 className="text-cv-8 fw-bold">
+                                  Vi trí: <span>{item?.viTri}</span>
+                                </h6>
+                                <span>- {item?.moTa}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </div>
+                  {/* Chứng chỉ */}
+                  <div className="mt-4">
+                    <div className="bg-core rounded my-2 py-2 text-white fw-bold text-center">
+                      <span>Chứng chỉ </span>
+                    </div>
+                    {ungTuyenVien?.dsChungChi.map((item, index) => {
+                      return (
+                        <>
+                          <div className="mt-1">
+                            <div className="d-flex align-items-center justify-content-between px-2 mt-3">
+                              <div>
+                                <h5 className="text-cv-8 fw-bold">
+                                  {item?.tenChungChi}
+                                </h5>
+                              </div>
+                              <div>
+                                <h5 className="text-cv-8 fw-bold">
+                                  {TimeUtils.formatDateTime(
+                                    item?.ngayCap,
+                                    "MM/YYYY"
+                                  )}{" "}
+                                  -{" "}
+                                  {TimeUtils.formatDateTime(
+                                    item?.ngayHetHan,
+                                    "MM/YYYY"
+                                  )}
+                                </h5>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="mt-1">
+                            <div className="d-flex align-items-center justify-content-between px-2">
+                              <div>
+                                <h6 className="">
+                                  Đơn vị cung cấp:{" "}
+                                  <span>{item?.donViCungCap}</span>
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
                         </>
                       );
                     })}
                   </div>
                 </div>
               </div>
-              <div className="col-8 bg-cv pb-30">
-                <div>
-                  <div className="bg-core rounded my-2 py-2 text-white fw-bold text-center">
-                    <span>Học vấn</span>
-                  </div>
-                  {ungTuyenVien?.dsHocVan.map((item, index) => {
-                    return (
-                      <>
-                        <div className="mt-3">
-                          <div className="d-flex align-items-center justify-content-between px-2">
-                            <div>
-                              <h5 className="text-cv-8 fw-bold">
-                                {item?.donViDaoTao}
-                              </h5>
-                            </div>
-                            <div>
-                              <h5 className="text-cv-8 fw-bold">
-                                {TimeUtils.formatDateTime(
-                                  item?.tuNgay,
-                                  "MM/YYYY"
-                                )}{" "}
-                                -{" "}
-                                {TimeUtils.formatDateTime(
-                                  item?.denNgay,
-                                  "MM/YYYY"
-                                )}
-                              </h5>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="mt-2">
-                          <div className="d-flex align-items-center justify-content-between px-2">
-                            <div>
-                              <h6 className="text-cv-8 fw-bold">
-                                Chuyên ngành: {item?.chuyenNganh}
-                              </h6>
-                              <span>- {item?.moTa}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-                {/* Kinh nghiệm làm việc */}
-                <div className="mt-4">
-                  <div className="bg-core rounded my-2 py-2 text-white fw-bold text-center">
-                    <span>Kinh nghiệm làm việc </span>
-                  </div>
-                  {ungTuyenVien?.dsKinhNghiemLamViec.map((item, index) => {
-                    return (
-                      <>
-                        <div className="mt-3">
-                          <div className="d-flex align-items-center justify-content-between px-2">
-                            <div>
-                              <h5 className="text-cv-8 fw-bold mt-1">
-                                {item?.congTy}
-                              </h5>
-                            </div>
-                            <div>
-                              <h5 className="text-cv-8 fw-bold">
-                                {TimeUtils.formatDateTime(
-                                  item?.tuNgay,
-                                  "MM/YYYY"
-                                )}{" "}
-                                -{" "}
-                                {TimeUtils.formatDateTime(
-                                  item?.denNgay,
-                                  "MM/YYYY"
-                                )}
-                              </h5>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="d-flex align-items-center justify-content-between px-2">
-                            <div>
-                              <h6 className="text-cv-8 fw-bold">
-                                Vi trí: <span>{item?.viTri}</span>
-                              </h6>
-                              <span>- {item?.moTa}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-                {/* Chứng chỉ */}
-                <div className="mt-4">
-                  <div className="bg-core rounded my-2 py-2 text-white fw-bold text-center">
-                    <span>Chứng chỉ </span>
-                  </div>
-                  {ungTuyenVien?.dsChungChi.map((item, index) => {
-                    return (
-                      <>
-                        <div className="mt-1">
-                          <div className="d-flex align-items-center justify-content-between px-2 mt-3">
-                            <div>
-                              <h5 className="text-cv-8 fw-bold">
-                                {item?.tenChungChi}
-                              </h5>
-                            </div>
-                            <div>
-                              <h5 className="text-cv-8 fw-bold">
-                                {TimeUtils.formatDateTime(
-                                  item?.ngayCap,
-                                  "MM/YYYY"
-                                )}{" "}
-                                -{" "}
-                                {TimeUtils.formatDateTime(
-                                  item?.ngayHetHan,
-                                  "MM/YYYY"
-                                )}
-                              </h5>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="mt-1">
-                          <div className="d-flex align-items-center justify-content-between px-2">
-                            <div>
-                              <h6 className="">
-                                Đơn vị cung cấp:{" "}
-                                <span>{item?.donViCungCap}</span>
-                              </h6>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
+            )}
+
           </div>
         </div>
         {renderModalDetail}

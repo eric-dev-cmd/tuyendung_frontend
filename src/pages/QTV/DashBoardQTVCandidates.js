@@ -65,7 +65,7 @@ const DashBoardQTVCandidates = () => {
   };
 
   const getDataListFilters = async () => {
-    const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/ungTuyenViens?${paramsString}`;
+    const requestUrl = `http://localhost:4000/ungTuyenViens?${paramsString}`;
     try {
       const response = await axiosClient.get(requestUrl);
       setRecruitments(response.data);
@@ -129,7 +129,7 @@ const DashBoardQTVCandidates = () => {
 
   useEffect(() => {
     const getTotalStatus = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/tongSoTinTheoTrangThai`;
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThai`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
           res.data.data.map((item) => {
@@ -153,7 +153,7 @@ const DashBoardQTVCandidates = () => {
   const [recruitmentReviewLeast, setRecruitmentReviewLeast] = useState([]);
   useEffect(() => {
     const getRecruitmentReviewLeast = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/tinTuyenDungCoNguyCoKhoa`;
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/tinTuyenDungCoNguyCoKhoa`;
       try {
         const response = await axios.get(requestUrl);
         setRecruitmentReviewLeast(response?.data?.data);
@@ -173,7 +173,7 @@ const DashBoardQTVCandidates = () => {
       okText: "Đồng ý",
       onOk: async () => {
         try {
-          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/quanTriViens/khoataikhoan/${id}`;
+          const requestUrl = `http://localhost:4000/quanTriViens/khoataikhoan/${id}`;
           const response = await axios.patch(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);
@@ -204,7 +204,7 @@ const DashBoardQTVCandidates = () => {
       okText: "Đồng ý",
       onOk: async () => {
         try {
-          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/quanTriViens/motaikhoan/${id}`;
+          const requestUrl = `http://localhost:4000/quanTriViens/motaikhoan/${id}`;
           const response = await axios.patch(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);

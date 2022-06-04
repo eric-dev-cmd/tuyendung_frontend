@@ -28,7 +28,7 @@ const MainNavigationAdmin = () => {
   const [socket, setSocket] = useState(null);
   useEffect(async () => {
     if (!socket) {
-      const st = io.connect("https://web-tuyen-dung-be.herokuapp.com");
+      const st = io.connect("http://localhost:4000");
       setSocket(st);
     }
   }, [socket]);
@@ -87,7 +87,7 @@ const MainNavigationAdmin = () => {
   };
 
   const getDataListFilters = async () => {
-    const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/timKiemTheoNhaTuyenDung?${paramsString}`;
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhaTuyenDung?${paramsString}`;
     try {
       const response = await axiosClient.get(requestUrl);
       console.log("responseresponse", response.data);
@@ -144,7 +144,7 @@ const MainNavigationAdmin = () => {
         try {
           console.log("item id", id);
           console.log("Clicked confirm");
-          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/dungTuyen/${id}`;
+          const requestUrl = `http://localhost:4000/tinTuyenDungs/dungTuyen/${id}`;
           await axios.patch(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);
@@ -173,7 +173,7 @@ const MainNavigationAdmin = () => {
       // content: "first",
       onOk: async () => {
         try {
-          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/${id}`;
+          const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
           await axios.delete(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);
@@ -205,7 +205,7 @@ const MainNavigationAdmin = () => {
   const [totalAll, setTotalAll] = useState();
 
   const getTotalStatus = async () => {
-    const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/tongSoTinTheoTrangThaiNhaTuyenDung`;
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThaiNhaTuyenDung`;
     try {
       const response = await axiosClient.get(requestUrl).then((res) => {
         let total = 0;

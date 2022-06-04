@@ -13,9 +13,9 @@ const ModalDeny = ({ showModal, onCloseModal, isEdit, user, ...props }) => {
   const [note, setNote] = useState("");
   const save = async () => {
     try {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/tuChoiDonUngTuyen/${props?.detail}`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${props?.detail}`;
       console.log("requestUrl", requestUrl);
-      const requestUrlSendEmail = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/sendEmail`;
+      const requestUrlSendEmail = `http://localhost:4000/tinTuyenDungs/sendEmail`;
       await axiosClient.patch(requestUrl).then(async (res) => {
         if (res?.status == "success") {
           console.log("requestUrl", res?.data?.thongTinLienHe?.email);
