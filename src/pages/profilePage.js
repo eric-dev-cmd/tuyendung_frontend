@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import MainNavigation from "../components/Layout/MainNavigation";
-import { Breadcrumb, Col, Layout, Menu, Modal, Row } from "antd";
+import { Col, Layout, Row } from "antd";
 import { Helmet } from "react-helmet";
 import FooterHome from "../components/Footer/FooterHome";
 import ProfileMyPage from "./User/ProfileMyPage";
-const { Header, Footer, Sider, Content } = Layout;
+const { Content } = Layout;
 
 const ProfilePage = () => {
   const currentUser = useSelector((state) => state.userLogin.userInfor);
