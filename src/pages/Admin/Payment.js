@@ -7,7 +7,7 @@ import axiosClient from "../../services/axiosClient";
 export const Payment = ({ }) => {
   useEffect(() => {
     const getPayMent = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/thanhToan`;
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/thanhToan`;
       try {
         await axiosClient.post(requestUrl);
       } catch (error) {

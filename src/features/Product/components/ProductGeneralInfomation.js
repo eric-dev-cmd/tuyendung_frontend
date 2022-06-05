@@ -254,7 +254,7 @@ const ProductGeneralInfomation = (props) => {
                 Nếu bạn thấy rằng tin tuyển dụng này không đúng, hãy phản ánh
                 với chúng tôi
               </p>
-              <Button>Báo cáo tin tuyển dụng không chính xác</Button>
+              <Button style={{width: "100%"}}>Báo cáo tin tuyển dụng không chính xác</Button>
             </div>
           </div>
           <div className="px-2 py-3 mx-2 mt-3 border">

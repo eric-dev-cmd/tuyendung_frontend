@@ -17,10 +17,14 @@ import CandidateApplicationForm from "../../../services/candidateApplicationForm
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import profileApi from "../../../services/profileApi";
+import axios from "axios";
+import { getUserProfile } from "../../../utils/localStorage";
 
 const ProductHeader = (props) => {
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
   const users = useSelector((state) => state?.userLogin);
+  const userU = getUserProfile();
+
   const userId = users?.user?.taiKhoan._id;
   const history = useHistory();
   const { t } = useTranslation();
@@ -54,6 +58,7 @@ const ProductHeader = (props) => {
   }, [userId]);
   const [isShowDaUngTuyen, setIsShowDaUngTuyen] = useState(false);
   const [isShowLinkUpdateProfile, setIsShowLinkUpdateProfile] = useState(false);
+  const [isShowOptionApply, setIsShowOptionApply] = useState(false);
   const handleAddButtonClick = (e) => {
     e.preventDefault();
     if (isAuthenticated) {
@@ -67,7 +72,9 @@ const ProductHeader = (props) => {
       ) {
         setIsShowModal(false);
         setIsShowLinkUpdateProfile(true);
+        setIsShowOptionApply(false)
       } else {
+        setIsShowOptionApply(true)
         setIsShowModal(true);
         setIsShowLinkUpdateProfile(false);
       }
@@ -80,22 +87,37 @@ const ProductHeader = (props) => {
       <>{alert("Cập nhật hồ sơ tài khoản để tiếp tục ứng tuyển.")}</>
     );
   }
-  const handleSubmitModal = async (payload) => {
+  const handleSubmitModal = async (payload, file) => {
     console.log("Call api payload", payload);
+    console.log("Call api file", file);
     setIsShowDaUngTuyen(false);
     try {
-      await CandidateApplicationForm.createApplicationForm(payload);
-      // setDetail(response);
-      // setIsSuccessSubmit(true);
-      toast.success("Ứng tuyển thành công", {
-        position: "bottom-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      await CandidateApplicationForm.createApplicationForm(payload).then(res=>{
+           console.log("Call api res", res);
+        if (res?.status === "success")
+          toast.success("Ứng tuyển thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          let formData = new FormData();
+          formData.append("file", file);
+           const requestUrl = `http://localhost:4000/ungTuyenViens/capNhatCv`;
+           axios({
+             method: "patch",
+             url: requestUrl,
+             data: formData,
+             headers: {
+               Authorization: `Bearer ${userU.token}`,
+             },
+           });
+
+      })
+      
     } catch (error) {
       if (error) {
         setIsShowDaUngTuyen(true);
@@ -140,25 +162,10 @@ const ProductHeader = (props) => {
         // isEdit={isEdit}
         user={user}
         isShowLinkUpdateProfile={isShowLinkUpdateProfile}
+        isShowOptionApply={isShowOptionApply}
       />
     );
   }, [isShowModal]);
-  // const [isShowModalApplied, setIsShowModalApplied] = useState(false)
-  //   const renderModalApplied = useMemo(() => {
-  //     if (!isShowModalApplied) return null;
-
-  //     return (
-  //       <ApplyJobModal
-  //         showModal={isShowModalApplied}
-  //         onCloseModal={() => {
-  //           setIsShowModalApplied(false);
-  //           // clearErrors();
-  //         }}
-  //         onSubmit={handleSubmitModal}
-
-  //       />
-  //     );
-  //   }, [isShowModalApplied]);
 
   return (
     <>
@@ -252,29 +259,6 @@ const ProductHeader = (props) => {
             </Button>
           </div>
         </Col>
-        {/* <Modal
-          title="Ứng tuyển việc làm"
-          visible={isShowModal}
-          footer={[
-            <Button key="back" onClick={handleCancel}>
-              Quay lại tìm việc
-            </Button>,
-            <Button
-              key="submit"
-              type="primary"
-              // loading={loading}
-              onClick={handleOk}
-              disabled
-            >
-              Tiếp tục
-            </Button>,
-          ]}
-        >
-          <p>Hồ sơ của tôi</p>
-          <div className="text-end">
-            <Button type="primary">Hoàn thành hồ sơ của tôi</Button>
-          </div>
-        </Modal> */}
         {renderModalApplyJob}
       </Row>
     </>

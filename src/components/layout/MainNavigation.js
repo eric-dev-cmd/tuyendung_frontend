@@ -144,7 +144,50 @@ const MainNavigation = () => {
           </>
         );
       } else {
-        return <></>;
+        return (
+          <>
+            <li className="nav-item dropdown d-flex align-items-center dropdown-toggle">
+              <img
+                style={avatarStyle}
+                src="https://123job.vn/images/no_user.png"
+                alt="Avatar"
+                className="md-avatar rounded-circle nav-link "
+                id="navbarDropdown-profile"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              />
+              <MdArrowDropDown color="white" size="16px" />
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdown-profile"
+              >
+                <li className="dropdown-item pe-none">
+                  <b>{user?.taiKhoan?.tenDangNhap}</b>
+                </li>
+                <li className="dropdown-item bg-none">
+                  <NavLink to="/user/account" className="text-dark">
+                    Thiết lập tài khoản
+                  </NavLink>
+                </li>
+                <li className="dropdown-item bg-none">
+                  <NavLink to="/user/account/password" className="text-dark">
+                    Đổi mật khẩu
+                  </NavLink>
+                </li>
+                <li className="dropdown-item bg-none">
+                  <a
+                    // href="javascript:void(0)"
+                    onClick={logoutHandler}
+                    className="text-decoration-none text-dark"
+                  >
+                    Đăng xuất
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </>
+        );
       }
     } else if (!isAuthenticated) {
       return (

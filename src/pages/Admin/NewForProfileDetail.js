@@ -145,7 +145,7 @@ const NewForProfileDetail = () => {
   const [totalAll, setTotalAll] = useState();
   useEffect(() => {
     const getTotalApplication = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/demDonUngTuyentheoTin/${params?.id}`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyentheoTin/${params?.id}`;
       try {
         const response = await axiosClient.get(requestUrl).then((res) => {
           let total = 0;
@@ -167,7 +167,7 @@ const NewForProfileDetail = () => {
   const [recruitmentById, setRecruitmentById] = useState();
   useEffect(() => {
     const getRecruitmentById = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/${params?.id}`;
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/${params?.id}`;
       try {
         await axiosClient.get(requestUrl).then((res) => {
           setRecruitmentById(res.data);
@@ -180,8 +180,8 @@ const NewForProfileDetail = () => {
   }, []);
 
   const handleSendEmailTalent = async (recruitment) => {
-    const requestUrlTalent = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/donUngTuyenTiemNang`;
-    const requestUrlSendEmail = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/sendEmail`;
+    const requestUrlTalent = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang`;
+    const requestUrlSendEmail = `http://localhost:4000/tinTuyenDungs/sendEmail`;
     try {
       await axiosClient.get(requestUrlTalent).then((res) => {
         res?.data?.map(async (item) => {
@@ -211,7 +211,7 @@ const NewForProfileDetail = () => {
         });
       });
 
-      // const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/${id}`;
+      // const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
       // await axios.delete(requestUrl).then((res) => {
       //   if (res?.data?.status == "success") {
       //     setIsSubmit(true);
@@ -233,7 +233,7 @@ const NewForProfileDetail = () => {
   // ứng viêm tiềm năng
   const handleAddButtonClickTalent = async (id) => {
     try {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
       await axios.patch(requestUrl).then((res) => {
         if (res?.data?.status == "success") {
           toast.success("Cập nhật thành công", {

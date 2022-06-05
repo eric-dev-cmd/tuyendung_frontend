@@ -29,7 +29,7 @@ const NavbarAdmin = (props) => {
 
   useEffect(() => {
     const getTotalRecruitments = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/tinTuyenDungs/tongSoTinTheoTrangThaiNhaTuyenDung`;
+      const requestUrl = `http://localhost:4000/tinTuyenDungs/tongSoTinTheoTrangThaiNhaTuyenDung`;
       try {
         const response = await axiosClient.get(requestUrl).then((res) => {
           let total = 0;

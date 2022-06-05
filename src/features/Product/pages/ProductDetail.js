@@ -281,7 +281,7 @@ const ProductDetail = (props) => {
 
   useEffect(() => {
     const getTotalStatus = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/danhGias/demDanhGiaTheoXepLoai/${slug}`;
+      const requestUrl = `http://localhost:4000/danhGias/demDanhGiaTheoXepLoai/${slug}`;
       try {
         const response = await axios.get(requestUrl).then((res) => {
           let total = 0;
@@ -388,8 +388,9 @@ const ProductDetail = (props) => {
                                           {checkAppliedJob == false ? (
                                             role == "nha_tuyen_dung" ? (
                                               <Button
+                                                style={{ width: "100%" }}
                                                 disabled={true}
-                                                className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                className="rounded d-flex align-items-center justify-content-center py-4 my-4"
                                                 type="primary"
                                                 icon={<BiPaperPlane />}
                                                 onClick={handleAddButtonClick}
@@ -400,7 +401,8 @@ const ProductDetail = (props) => {
                                               </Button>
                                             ) : role == "ung_tuyen_vien" ? (
                                               <Button
-                                                className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                style={{ width: "100%" }}
+                                                className="rounded d-flex align-items-center justify-content-center py-4 my-4"
                                                 type="primary"
                                                 icon={<BiPaperPlane />}
                                                 onClick={handleAddButtonClick}
@@ -411,7 +413,8 @@ const ProductDetail = (props) => {
                                               </Button>
                                             ) : role == undefined ? (
                                               <Button
-                                                className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                                style={{ width: "100%" }}
+                                                className="rounded d-flex align-items-center justify-content-center py-4 my-4"
                                                 type="primary"
                                                 icon={<BiPaperPlane />}
                                                 onClick={handleAddButtonClick}
@@ -423,8 +426,9 @@ const ProductDetail = (props) => {
                                             ) : null
                                           ) : checkAppliedJob == true ? (
                                             <Button
+                                              style={{ width: "100%" }}
                                               disabled={true}
-                                              className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                              className="rounded d-flex align-items-center justify-content-center py-4 my-4"
                                               type="primary"
                                               icon={<BiPaperPlane />}
                                               onClick={handleAddButtonClick}
@@ -439,7 +443,8 @@ const ProductDetail = (props) => {
 
                                       <Col span={3}>
                                         <Button
-                                          className="form-control d-flex align-items-center justify-content-center py-4 my-4"
+                                          style={{ width: "100%" }}
+                                          className="rounded d-flex align-items-center justify-content-center py-4 my-4"
                                           icon={<HeartOutlined />}
                                           onClick={() => {
                                             handleSubmitFavorite();

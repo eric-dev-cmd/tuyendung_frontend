@@ -59,7 +59,7 @@ const AllProfilePage = () => {
 
   const getDataListFilters = async () => {
     const paramsString = queryString.stringify(filters);
-    const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/donUngTuyenTiemNang?${paramsString}`;
+    const requestUrl = `http://localhost:4000/donUngTuyens/donUngTuyenTiemNang?${paramsString}`;
     try {
       const response = await axiosClient.get(requestUrl);
       setRecruitments(response.data);
@@ -163,7 +163,7 @@ const AllProfilePage = () => {
   const [totalAll, setTotalAll] = useState();
   useEffect(() => {
     const getTotalApplication = async () => {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/demDonUngTuyenTiemNang`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/demDonUngTuyenTiemNang`;
       try {
         const response = await axiosClient.get(requestUrl).then((res) => {
           let total = 0;
@@ -191,7 +191,7 @@ const AllProfilePage = () => {
       // content: "first",
       onOk: async () => {
         try {
-          const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/${id}`;
+          const requestUrl = `http://localhost:4000/donUngTuyens/${id}`;
           await axios.delete(requestUrl).then((res) => {
             if (res?.data?.status == "success") {
               setIsSubmit(true);
@@ -218,7 +218,7 @@ const AllProfilePage = () => {
   // ứng viêm tiềm năng
   const handleAddButtonClickTalent = async (id) => {
     try {
-      const requestUrl = `https://web-tuyen-dung-be.herokuapp.com/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
+      const requestUrl = `http://localhost:4000/donUngTuyens/themDonUngTuyenTiemNang/${id}`;
       await axios.patch(requestUrl).then((res) => {
         if (res?.data?.status == "success") {
           setIsSubmit(true);
