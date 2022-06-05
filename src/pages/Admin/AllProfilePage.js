@@ -316,6 +316,7 @@ const AllProfilePage = () => {
                                     trangThai,
                                     thongTinLienHe,
                                     tiemNang,
+                                    ngayUngTuyen
                                   } = item?.donTuyenDung;
                                   return (
                                     <tr key={index}>
@@ -347,7 +348,7 @@ const AllProfilePage = () => {
                                           <span className="created">
                                             Ngày nộp:{" "}
                                             {TimeUtils.formatDateTime(
-                                              item?.ngayUngTuyen,
+                                              ngayUngTuyen,
                                               "DD-MM-YYYY"
                                             )}
                                           </span>
