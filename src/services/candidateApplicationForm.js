@@ -6,6 +6,8 @@ const CandidateApplicationForm = {
     tinTuyenDung,
     guiEmail,
     thongTinLienHe,
+    cv,
+    phuongThuc
   }) => {
     const url = `/donUngTuyens`;
     return axiosClient.post(url, {
@@ -13,6 +15,8 @@ const CandidateApplicationForm = {
       tinTuyenDung,
       guiEmail,
       thongTinLienHe,
+      cv,
+      phuongThuc
     });
   },
 };

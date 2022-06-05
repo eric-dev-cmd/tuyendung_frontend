@@ -60,7 +60,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, isShowOptionApply, ...
         loiGioiThieu: introduce,
       },
       phuongThuc: cvMethod === "1" ? true : false,
-      cv: file?.name
+      cv: file?.name || null
     };
     console.log(
       "🚀 ~ file: ApplyJobModal.js ~ line 57 ~ save ~ payload",

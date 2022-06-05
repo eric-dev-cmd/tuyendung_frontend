@@ -92,8 +92,8 @@ const ProductHeader = (props) => {
     console.log("Call api file", file);
     setIsShowDaUngTuyen(false);
     try {
-      await CandidateApplicationForm.createApplicationForm(payload).then(res=>{
-           console.log("Call api res", res);
+      await CandidateApplicationForm.createApplicationForm(payload).then(res => {
+        console.log("Call api res", res);
         if (res?.status === "success")
           toast.success("Ứng tuyển thành công", {
             position: "bottom-right",
@@ -104,20 +104,22 @@ const ProductHeader = (props) => {
             draggable: true,
             progress: undefined,
           });
+        if (payload?.phuongThuc == true) {
           let formData = new FormData();
           formData.append("file", file);
-           const requestUrl = `http://localhost:4000/ungTuyenViens/capNhatCv`;
-           axios({
-             method: "patch",
-             url: requestUrl,
-             data: formData,
-             headers: {
-               Authorization: `Bearer ${userU.token}`,
-             },
-           });
+          const requestUrl = `http://localhost:4000/ungTuyenViens/capNhatCv`;
+          axios({
+            method: "patch",
+            url: requestUrl,
+            data: formData,
+            headers: {
+              Authorization: `Bearer ${userU.token}`,
+            },
+          });
+        }
 
       })
-      
+
     } catch (error) {
       if (error) {
         setIsShowDaUngTuyen(true);

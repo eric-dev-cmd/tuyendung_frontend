@@ -42,6 +42,8 @@ const ModalProfileDetail = ({
     trangThai,
     _id,
     thongTinLienHe,
+    phuongThuc,
+    cv
   } = user?.donTuyenDung;
   console.log("Trung Vinh user", user);
 
@@ -325,7 +327,7 @@ const ModalProfileDetail = ({
             </div>
           </div>
           <div className="col-9">
-            {ungTuyenVien.cv ? (
+            {phuongThuc ? (
               <div
                 style={{
                   height: '50rem',
@@ -339,7 +341,7 @@ const ModalProfileDetail = ({
                     width: '50rem',
                     margin: '1rem auto',
                   }}>
-                    <Viewer fileUrl={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${ungTuyenVien?.cv}`}
+                    <Viewer fileUrl={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${cv}`}
                       plugins={[defaultLayoutPluginInstance]} />
                   </div>
                 </Worker>
