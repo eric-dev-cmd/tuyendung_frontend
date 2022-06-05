@@ -1547,8 +1547,8 @@ const DashBoardQTV = () => {
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
                               <div className=" p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
+                                <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                                  <thead className="bg-table">
                                     <tr>
                                       <th className="text-secondary opacity-7 text-white py-3 text-center">
                                         <strong>STT</strong>
@@ -1859,8 +1859,8 @@ const DashBoardQTV = () => {
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
                               <div className=" p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
+                                <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                                  <thead className="bg-table">
                                     <tr>
                                       <th className="text-secondary opacity-7 text-white py-3 text-center">
                                         <strong>STT</strong>
@@ -2183,8 +2183,8 @@ const DashBoardQTV = () => {
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
                               <div className=" p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
+                                <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                                  <thead className="bg-table">
                                     <tr>
                                       <th className="text-secondary opacity-7 text-white py-3 text-center">
                                         <strong>STT</strong>
@@ -2499,8 +2499,8 @@ const DashBoardQTV = () => {
                           <div className="card mb-4">
                             <div className="card-body px-0 pt-0 pb-2">
                               <div className=" p-0">
-                                <table className="table align-items-center justify-content-center mb-0">
-                                  <thead className="bg-dark">
+                                <table className="table table-bordered table-hover align-items-center justify-content-center mb-0">
+                                  <thead className="bg-table">
                                     <tr>
                                       <th className="text-secondary opacity-7 text-white py-3 text-center">
                                         <strong>STT</strong>
