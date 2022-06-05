@@ -19,7 +19,7 @@ import NewJob from "./pages/Admin/NewJob";
 import AppliedJobsPage from "./pages/AppliedJobsPage";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./pages/profilePage";
 import DashBoardQTV from "./pages/QTV/DashBoardQTV";
 import DashBoardQTVCandidates from "./pages/QTV/DashBoardQTVCandidates";
 import DashBoardQTVEmployer from "./pages/QTV/DashBoardQTVEmployer";
