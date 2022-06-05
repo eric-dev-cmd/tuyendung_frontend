@@ -5,7 +5,7 @@ import { Route, Switch, useHistory, withRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import Login from "./components/Auth/Login";
+import Login from "./components/Auth/login";
 import Register from "./components/Auth/Register";
 import SearchCommon from "./components/Search";
 import ProductDetail from "./features/Product/pages/ProductDetail";
