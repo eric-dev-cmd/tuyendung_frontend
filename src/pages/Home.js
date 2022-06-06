@@ -41,7 +41,8 @@ const Home = () => {
       try {
         const response = await CareerApi.getListCareerTrends();
         console.log("getListCareerTrends", response);
-        setCareersTrends(response.data);
+
+        setCareersTrends(response?.data);
       } catch (error) {
         console.log(error.response);
       }

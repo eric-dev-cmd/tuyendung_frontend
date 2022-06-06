@@ -39,6 +39,7 @@ import EmployerRoute from "./routes/EmployerRoute";
 import AdminRoute from "./routes/AdminRoute";
 import UpdateJob from "./pages/Admin/UpdateJob";
 import CompanyDetail from "./features/Product/pages/CompanyDetail";
+import CareerDetail from "./features/Product/pages/CareerDetail";
 
 function App(props) {
   return (
@@ -99,6 +100,7 @@ function App(props) {
         {/* EMPLOYER ENND */}
         <Route exact path="/job-detail/:slug" component={ProductDetail} />
         <Route exact path="/company/:slug" component={CompanyDetail} />
+        <Route exact path="/career/:slug" component={CareerDetail} />
         <Route exact path="/search" component={SearchPage} />
         <ProtectedRoute exact path="/user/profile" component={ProfilePage} />
         <ProtectedRoute
