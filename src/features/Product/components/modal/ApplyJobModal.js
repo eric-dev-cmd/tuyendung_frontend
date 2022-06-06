@@ -16,7 +16,8 @@ import profileApi from "../../../../services/profileApi";
 import { toast } from "react-toastify";
 import { RadioButton } from "../../../../components/RadioButton/RadioButton";
 import "./styles.scss";
-
+import isEmpty from "validator/lib/isEmpty";
+import isEmail from "validator/lib/isEmail";
 const ApplyJobModal = ({
   showModal,
   onCloseModal,
@@ -43,11 +44,43 @@ const ApplyJobModal = ({
   console.log(" modal isEdit", isEdit);
   const accountUser = getUserProfile();
   const uniqueId = accountUser.taiKhoan._id;
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [validationMsg, setValidationMsg] = useState("");
+
+  const validateAll = () => {
+    const msg = {};
+    if (isEmpty(name)) {
+      msg.name = "Vui lòng nhập tên của bạn";
+    }
+    if (isEmpty(phone)) {
+      msg.phone = "Vui lòng nhập số điện thoại của bạn";
+    }
+    if (isEmpty(email)) {
+      msg.email = "Vui lòng nhập email của bạn";
+    } else if (!isEmail(email)) {
+      msg.email = "Vui lòng nhập email hợp lệ";
+    }
+    setValidationMsg(msg);
+    if (Object.keys(msg).length > 0) return false;
+    return true;
+  };
 
   const nextPage = () => {
+    const isValid = validateAll();
+    if (!isValid) {
+      return;
+    }
     setIsEntered(true);
   };
   const nextPage2 = () => {
+    if (cvMethod) {
+      console.log("Chọn");
+      setIsDisabled(false);
+    } else {
+      console.log("Không Chọn");
+      setIsDisabled(true);
+      return;
+    }
     setIsShowNextPage2(false);
     setIsShowButtonGD1(false);
     setIsShowApply(false);
@@ -154,6 +187,7 @@ const ApplyJobModal = ({
               (isEntered ? <span>Quay lại</span> : <span>Quay lại</span>)}
           </Button>,
           <Button
+            disabled={isDisabled}
             key="submit"
             type="primary"
             onClick={() => {
@@ -195,6 +229,9 @@ const ApplyJobModal = ({
                 value="0"
               />
             </div>
+            {!cvMethod && (
+              <span className="text-danger">Vui lòng chọn thông tin sau</span>
+            )}
             {cvMethod === "1" && (
               <Fragment>
                 <div className="container">
@@ -270,10 +307,14 @@ const ApplyJobModal = ({
                 value={name}
                 // defaultValue={user?.ten}
                 onChange={(e) => {
-                  setName(e.target.value);
+                  const value = e.target.value;
+                  setName(value);
                 }}
                 defaultValue={name}
               />
+              <p className="text-danger text-xs text-italic mt-1">
+                {validationMsg.name}
+              </p>
             </div>
             <div className="pb-2">
               <p>
@@ -285,12 +326,16 @@ const ApplyJobModal = ({
                 // maxLength={20}
                 value={phone}
                 onChange={(e) => {
-                  setPhone(e.target.value);
+                  const value = e.target.value;
+                  setPhone(value);
                 }}
                 size="large"
                 placeholder="0987079079"
                 defaultValue={phone}
               />
+              <p className="text-danger text-xs text-italic mt-1">
+                {validationMsg.phone}
+              </p>
             </div>
             <div className="pb-2">
               <p>
@@ -302,12 +347,16 @@ const ApplyJobModal = ({
                 // maxLength={20}
                 value={email}
                 onChange={(e) => {
-                  setEmail(e.target.value);
+                  const value = e.target.value;
+                  setEmail(value);
                 }}
                 size="large"
                 placeholder="zunggzing@gmail.com"
                 defaultValue={email}
               />
+              <p className="text-danger text-xs text-italic mt-1">
+                {validationMsg.email}
+              </p>
             </div>
             <div className="pb-2">
               <p>
@@ -319,7 +368,8 @@ const ApplyJobModal = ({
                 style={{ height: 120 }}
                 value={introduce}
                 onChange={(e) => {
-                  setIntroduce(e.target.value);
+                  const value = e.target.value;
+                  setIntroduce(value);
                 }}
                 defaultValue={introduce}
               />
