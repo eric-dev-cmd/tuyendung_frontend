@@ -53,8 +53,8 @@ const ModalNewDetailReview = ({
         }
       >
         <div className="row mt-4">
-          <div className="col-12 my-3 text-center">
-            <span className="fw-bold fs-19">
+          <div className="col-12 my-1 text-center">
+            <span className="fw-bold fs-19 text-uppercase">
               Xem chi tiết tuyển dụng có đánh giá kém
             </span>
           </div>
@@ -76,7 +76,7 @@ const ModalNewDetailReview = ({
                     <strong className="fs-14-d">Vị trí:</strong>
                   </div>
                   <div className="col-8">
-                    <span>{props?.detail?.viTri}</span>
+                    <span>{props?.detail?.tinTuyenDung?.viTri}</span>
                   </div>
                 </div>
                 <div className="row mt-2">
@@ -190,7 +190,7 @@ const ModalNewDetailReview = ({
                         <strong className="fs-14-d">Số lượng đã tuyển:</strong>
                       </div>
                       <div className="col-8">
-                        {props?.detail?.tinTuyenDung?.soLuongDaTuyen}
+                        {props?.detail?.soLuongDaTuyen}
                       </div>
                     </div>
                     <div className="row my-2">
