@@ -18,8 +18,6 @@ const ModalDeny = ({ showModal, onCloseModal, isEdit, user, ...props }) => {
       const requestUrlSendEmail = `http://localhost:4000/tinTuyenDungs/sendEmail`;
       await axiosClient.patch(requestUrl).then(async (res) => {
         if (res?.status == "success") {
-          console.log("requestUrl", res?.data?.thongTinLienHe?.email);
-
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
             autoClose: 1000,
@@ -34,10 +32,12 @@ const ModalDeny = ({ showModal, onCloseModal, isEdit, user, ...props }) => {
             subject: "TỪ CHỐI ĐƠN ỨNG TUYỂN",
             message: `Nhà ứng tuyển đã từ chối đơn ứng tuyển của bạn. Lý do: ${note}`,
           };
-          await axios.post(requestUrlSendEmail, sendMail);
+          await axios.post(requestUrlSendEmail, sendMail).then((res) => {
+            onCloseModal();
+            window.location.reload();
+          });
         }
       });
-      onCloseModal(false);
     } catch (error) {
       console.log(error.response);
     }

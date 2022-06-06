@@ -40,6 +40,8 @@ import AdminRoute from "./routes/AdminRoute";
 import UpdateJob from "./pages/Admin/UpdateJob";
 import CompanyDetail from "./features/Product/pages/CompanyDetail";
 import CareerDetail from "./features/Product/pages/CareerDetail";
+import DashBoardQTVField from "./pages/QTV/DashBoardQTVField";
+import DashBoardQTVCareer from "./pages/QTV/DashBoardQTVCareer";
 
 function App(props) {
   return (
@@ -125,6 +127,16 @@ function App(props) {
         />
         {/* ADMIN START */}
         <AdminRoute exact path="/admin/dashboard" component={DashBoardQTV} />
+        <AdminRoute
+          exact
+          path="/admin/management-field"
+          component={DashBoardQTVField}
+        />
+        <AdminRoute
+          exact
+          path="/admin/management-career"
+          component={DashBoardQTVCareer}
+        />
         <AdminRoute
           exact
           path="/admin/employers"

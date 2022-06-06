@@ -72,6 +72,14 @@ const NavbarQTV = (props) => {
               <Link to="/admin/candidates" />
             </Menu.Item>
           </Menu.SubMenu>
+          <Menu.Item icon={<DesktopOutlined />} key="5">
+            Quản lý ngành nghề
+            <Link to="/admin/management-career" />
+          </Menu.Item>
+          <Menu.Item icon={<DesktopOutlined />} key="6">
+            Quản lý lĩnh vực
+            <Link to="/admin/management-field" />
+          </Menu.Item>
           <Menu.Item icon={<GoSignOut />} key="7" onClick={logoutHandler}>
             Đăng xuất
             <Link to="/" />

@@ -1,4 +1,8 @@
 import { UserOutlined } from "@ant-design/icons";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { Avatar, Button, DatePicker, Modal, Select } from "antd";
 import axios from "axios";
 import React, { useMemo, useState } from "react";
@@ -9,11 +13,8 @@ import { HiOutlineMail } from "react-icons/hi";
 import { toast } from "react-toastify";
 import axiosClient from "../../../../services/axiosClient";
 import TimeUtils from "../../../../utils/timeUtils";
+import { useReloadCommonContext } from "../context/ReloadCommonContext";
 import ModalDeny from "./ModalDeny";
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -26,14 +27,8 @@ const ModalProfileDetail = ({
   user,
   ...props
 }) => {
-  const [isSubmit, setIsSubmit] = useState([]);
-  const [typeDegree, setTypeDegree] = useState("");
-  const [school, setSchool] = useState("");
-  const [specialized, setSpecialized] = useState("");
-  const [description, setDescription] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+  const { isSubmitT, setIsSubmitT } = useReloadCommonContext();
+
   const {
     tinTuyenDung,
     ungTuyenVien,
@@ -43,7 +38,7 @@ const ModalProfileDetail = ({
     _id,
     thongTinLienHe,
     phuongThuc,
-    cv
+    cv,
   } = user?.donTuyenDung;
   console.log("Trung Vinh user", user);
 
@@ -61,7 +56,6 @@ const ModalProfileDetail = ({
       const requestUrlSubmit = `http://localhost:4000/tintuyendungs/sendEmail`;
       await axiosClient.patch(requestUrl).then(async (res) => {
         if (res?.status == "success") {
-          setIsSubmit(true);
           toast.success("Cập nhật thành công", {
             position: "bottom-right",
             autoClose: 1000,
@@ -76,8 +70,11 @@ const ModalProfileDetail = ({
             subject: "CHẤP NHẬN ĐƠN ỨNG TUYỂN",
             message: `Nhà ứng tuyển đã chấp nhận đơn ứng tuyển của bạn.`,
           };
-          await axios.post(requestUrlSubmit, sendMail);
-          onCloseModal(false);
+          await axios.post(requestUrlSubmit, sendMail).then((res) => {
+            setIsSubmitT(true);
+            onCloseModal();
+            window.location.reload();
+          });
         }
       });
     } catch (error) {
@@ -106,41 +103,10 @@ const ModalProfileDetail = ({
           // clearErrors();
         }}
         detail={detail}
-      // onSubmit={handleSubmitModalProfile}
+        // onSubmit={handleSubmitModalProfile}
       />
     );
   }, [isShowModal]);
-  // Modal confirm don ung tuyen
-  const confirmDeleteProfile = (id) =>
-    Modal.confirm({
-      title: `Bạn chắc chắn muốn từ chối đơn ứng tuyển này?`,
-      // content: "first",
-      onOk: async () => {
-        try {
-          const requestUrl = `http://localhost:4000/donUngTuyens/tuChoiDonUngTuyen/${id}`;
-          await axiosClient.patch(requestUrl).then((res) => {
-            if (res?.status == "success") {
-              setIsSubmit(true);
-              toast.success("Cập nhật thành công", {
-                position: "bottom-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-              onCloseModal(false);
-            }
-          });
-        } catch (error) {
-          Modal.error({
-            title: "error",
-            content: error.message,
-          });
-        }
-      },
-    });
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
@@ -294,7 +260,7 @@ const ModalProfileDetail = ({
                   <div className="col-12 mt-3">
                     <div className="d-flex align-items-center justify-content-between">
                       {trangThai === "Đã ứng tuyển" ||
-                        trangThai === "Thất bại" ? null : (
+                      trangThai === "Thất bại" ? null : (
                         <>
                           <Button
                             size="large"
@@ -330,22 +296,25 @@ const ModalProfileDetail = ({
             {phuongThuc ? (
               <div
                 style={{
-                  height: '50rem',
-                  width: '50rem',
-                  margin: '1rem auto',
+                  height: "50rem",
+                  width: "50rem",
+                  margin: "1rem auto",
                 }}
               >
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist/build/pdf.worker.min.js">
-                  <div style={{
-                    height: '50rem',
-                    width: '50rem',
-                    margin: '1rem auto',
-                  }}>
-                    <Viewer fileUrl={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${cv}`}
-                      plugins={[defaultLayoutPluginInstance]} />
+                  <div
+                    style={{
+                      height: "50rem",
+                      width: "50rem",
+                      margin: "1rem auto",
+                    }}
+                  >
+                    <Viewer
+                      fileUrl={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${cv}`}
+                      plugins={[defaultLayoutPluginInstance]}
+                    />
                   </div>
                 </Worker>
-
               </div>
             ) : (
               <div className="row">
@@ -358,7 +327,11 @@ const ModalProfileDetail = ({
                       {ungTuyenVien?.viTriMuonUngTuyen}{" "}
                     </p>
                     <div className="text-center">
-                      <Avatar shape="square" size={120} icon={<UserOutlined />} />
+                      <Avatar
+                        shape="square"
+                        size={120}
+                        icon={<UserOutlined />}
+                      />
                     </div>
                     <div className="mt-2">
                       <p className="d-flex align-items-center pt-1">
@@ -557,7 +530,6 @@ const ModalProfileDetail = ({
                 </div>
               </div>
             )}
-
           </div>
         </div>
         {renderModalDetail}
