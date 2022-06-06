@@ -17,7 +17,13 @@ import { toast } from "react-toastify";
 import { RadioButton } from "../../../../components/RadioButton/RadioButton";
 import "./styles.scss";
 
-const ApplyJobModal = ({ showModal, onCloseModal, isEdit, isShowOptionApply, ...props }) => {
+const ApplyJobModal = ({
+  showModal,
+  onCloseModal,
+  isEdit,
+  isShowOptionApply,
+  ...props
+}) => {
   const [isEntered, setIsEntered] = useState(false);
   const [name, setName] = useState(props?.user?.ten);
   const [phone, setPhone] = useState(props?.user?.sdt);
@@ -60,7 +66,7 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, isShowOptionApply, ...
         loiGioiThieu: introduce,
       },
       phuongThuc: cvMethod === "1" ? true : false,
-      cv: file?.name || null
+      cv: file?.name || null,
     };
     console.log(
       "🚀 ~ file: ApplyJobModal.js ~ line 57 ~ save ~ payload",
@@ -98,9 +104,12 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, isShowOptionApply, ...
   const radioChangeHandler = (e) => {
     setCvMethod(e.target.value);
   };
-
+  const [isShowFileName, setIsShowFileName] = useState(false);
   const handleChange = (e) => {
-    setFile(e.target.files[0]);
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setIsShowFileName(true);
+    }
   };
   return (
     <div>
@@ -217,26 +226,30 @@ const ApplyJobModal = ({ showModal, onCloseModal, isEdit, isShowOptionApply, ...
                       </button>
                     </div>
                     <div>
-                      <div>
-                        <strong>Tệp đã tải lên:</strong>{" "}
-                      </div>
-                      <Tag
-                        style={{ width: "100%" }}
-                        className="rounded d-block py-2 fs-16"
-                        closable
-                        onClose={() => {
-                          console.log("Click delete api");
-                          // setFile(file.filter((fil) => fil?.name !== x?.name));
-                        }}
-                      >
-                        {file?.name}
-                      </Tag>
+                      {isShowFileName && (
+                        <>
+                          <div>
+                            <strong>Tệp đã tải lên:</strong>{" "}
+                          </div>
+                          <Tag
+                            style={{ width: "100%" }}
+                            className="rounded d-block py-2 fs-16"
+                            closable
+                            onClose={() => {
+                              console.log("Click delete api");
+                              // setFile(file.filter((fil) => fil?.name !== x?.name));
+                            }}
+                          >
+                            {file?.name}
+                          </Tag>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
               </Fragment>
             )}
-            <h2 style={{ marginTop: "25px" }}>Bạn chọn: {cvMethod}</h2>
+            {/* <h2 style={{ marginTop: "25px" }}>Bạn chọn: {cvMethod}</h2> */}
           </Fragment>
         ) : !isEntered ? (
           <Fragment>

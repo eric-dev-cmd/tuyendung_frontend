@@ -5,6 +5,10 @@ const FieldCompanyApi = {
     const url = `/linhVucs`;
     return axiosClient.get(url);
   },
+  getCompanyById: (slug) => {
+    const url = `/nhatuyendungs/timKiem/${slug}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default FieldCompanyApi;

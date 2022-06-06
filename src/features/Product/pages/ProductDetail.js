@@ -128,6 +128,7 @@ const ProductDetail = (props) => {
   useEffect(() => {
     getListRelatedJob();
   }, [filterRelatedJob]);
+  console.log("ABC", detail);
 
   //CALL API
   const getRecruitmentByIdAndStatus = async () => {

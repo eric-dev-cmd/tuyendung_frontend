@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { BsBoxArrowUpRight, BsInfoSquare } from "react-icons/bs";
 const ProductCompanyGeneralInfomation = (props) => {
   const { t } = useTranslation();
+  console.log("props?.companyInfo", props);
   return (
     <Fragment>
       <Row>
@@ -16,12 +17,6 @@ const ProductCompanyGeneralInfomation = (props) => {
                 Thông tin {props?.companyInfo?.tenCongty}
               </span>
             </h1>
-            {/* <div>
-              <Link to={`/company/${props?.companyInfo?.slug}`} target="_blank">
-                <span className="fs-14"> Xem trang công ty</span>{" "}
-                <BsBoxArrowUpRight size={12} />
-              </Link>
-            </div> */}
           </div>
         </Col>
       </Row>
@@ -88,9 +83,7 @@ const ProductCompanyGeneralInfomation = (props) => {
             </Col>
             <Col span={23}>
               <p className="fw-bolder mb-2">Website</p>
-              <a href={`${props?.companyInfo?.website}`}>
-                {props?.companyInfo?.website}
-              </a>
+              <a href={`${props?.companyInfo?.website}`}>{props?.companyInfo?.website}</a>
             </Col>
           </Row>
         </Col>
