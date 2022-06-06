@@ -1,31 +1,16 @@
-import { Layout, Menu, Breadcrumb, Input, Tooltip, Button, Modal } from "antd";
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { FaListUl, FaUserPlus } from "react-icons/fa";
-import { GoSignOut } from "react-icons/go";
-import { Link } from "react-router-dom";
-import { Tabs } from "antd";
-import { Select } from "antd";
-import { GrFormRefresh } from "react-icons/gr";
-import { FaEllipsisV } from "react-icons/fa";
-import RecruitmentApi from "../../services/recruitmentApi";
-import TimeUtils from "../../utils/timeUtils";
-import ReactPaginate from "react-paginate";
-import Pagination from "../../components/Pagination/Pagination";
-import PostFiltersForm from "../../components/Admin/PostFiltersForm";
-import queryString from "query-string";
+import { Breadcrumb, Button, Layout, Menu, Modal, Select, Tabs } from "antd";
 import axios from "axios";
+import queryString from "query-string";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
-import NavbarQTV from "./components/navbar/NavbarQTV";
-import { toast } from "react-toastify";
 import { RiRefreshLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import Pagination from "../../components/Pagination/Pagination";
+import TimeUtils from "../../utils/timeUtils";
+import ModalNewDetailEmployer from "./components/modal/ModalNewDetailEmployer";
+import NavbarQTV from "./components/navbar/NavbarQTV";
 
 const { Option } = Select;
 
@@ -85,16 +70,6 @@ const DashBoardQTVEmployer = () => {
     };
   }, [filters]);
 
-  // const prevPage = async () => {
-  //   const pg = page === 1 ? 1 : page - 1;
-  //    getListData(pg);
-  //   setPage(pg);
-  // };
-  // const nextPage = async () => {
-  //   const pg = page < Math.ceil(totalCount / pageSize) ? page + 1 : page;
-  //   // getListData(pg);
-  //   setPage(pg);
-  // };
   const handleFiltersStatusChange = (newFilters) => {
     console.log("New filters: ", newFilters);
     console.log("+VINH+;", {
@@ -228,6 +203,32 @@ const DashBoardQTVEmployer = () => {
   useEffect(() => {
     getDataListFilters();
   }, [isSubmit]);
+
+  const [isShowModalDetail, setIsShowModalDetail] = useState(false);
+  const [detail, setDetail] = useState(false);
+  const handleAddButtonClickDetail = (item) => {
+    // setUserProfile(item);
+    // e.preventDefault();
+    console.log("item employer", item);
+    setDetail(item);
+    setIsShowModalDetail(true);
+  };
+  const renderModalDetailEmployer = useMemo(() => {
+    if (!isShowModalDetail) return null;
+
+    return (
+      <ModalNewDetailEmployer
+        showModal={isShowModalDetail}
+        // showModal={true}
+        onCloseModal={() => {
+          setIsShowModalDetail(false);
+          // clearErrors();
+        }}
+        detail={detail}
+        // onSubmit={handleSubmitModalProfile}
+      />
+    );
+  }, [isShowModalDetail]);
 
   return (
     <Fragment>
@@ -413,7 +414,13 @@ const DashBoardQTVEmployer = () => {
                                             class="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                           >
-                                            <li>
+                                            <li
+                                              onClick={() => {
+                                                handleAddButtonClickDetail(
+                                                  item
+                                                );
+                                              }}
+                                            >
                                               <span class="dropdown-item">
                                                 Xem
                                               </span>
@@ -475,6 +482,7 @@ const DashBoardQTVEmployer = () => {
               </div>
             </div>
             <div></div>
+            {renderModalDetailEmployer}
           </Content>
           <Footer
             style={{

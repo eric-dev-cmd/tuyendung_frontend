@@ -147,9 +147,9 @@ const ApplyJobModal = ({
               }
             }}
           >
-            {isShowButtonGD1 && <span>Quay lại tìm việc 1</span>}
+            {isShowButtonGD1 && <span>Quay lại tìm việc</span>}
             {!isShowButtonGD1 &&
-              (isEntered ? <span>Quay lại 3</span> : <span>Quay lại 2</span>)}
+              (isEntered ? <span>Quay lại</span> : <span>Quay lại</span>)}
           </Button>,
           <Button
             key="submit"
@@ -170,12 +170,12 @@ const ApplyJobModal = ({
               //   onCloseModal(false);
             }}
           >
-            {isShowNextPage2 && <span>Tiếp tục 1</span>}
+            {isShowNextPage2 && <span>Tiếp tục</span>}
             {!isShowNextPage2 &&
               (isEntered ? (
-                <span>Nộp hồ sơ xin việc 3</span>
+                <span>Nộp hồ sơ xin việc</span>
               ) : (
-                <span>Tiếp tục 2</span>
+                <span>Tiếp tục</span>
               ))}
           </Button>,
         ]}
