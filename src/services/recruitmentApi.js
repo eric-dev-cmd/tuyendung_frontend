@@ -15,6 +15,11 @@ const RecruitmentApi = {
     const url = `/tinTuyenDungs/timKiemTheoNhieuTieuChi`;
     return axiosClient.get(url, { params });
   },
+  getListRecruitmentFilterParamsNhaTuyenDungById: (params) => {
+    console.log("params api", params);
+    const url = `/tinTuyenDungs/tinTheoNhaTuyenDung/${params}`;
+    return axiosClient.get(url);
+  },
 
   getListTopNewsRecruitments: () => {
     const url = `/tinTuyenDungs/tinNoiBat`;

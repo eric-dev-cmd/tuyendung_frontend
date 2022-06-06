@@ -16,12 +16,12 @@ const ProductCompanyGeneralInfomation = (props) => {
                 Thông tin {props?.companyInfo?.tenCongty}
               </span>
             </h1>
-            {/* <div>
+            <div>
               <Link to={`/company/${props?.companyInfo?.slug}`} target="_blank">
                 <span className="fs-14"> Xem trang công ty</span>{" "}
                 <BsBoxArrowUpRight size={12} />
               </Link>
-            </div> */}
+            </div>
           </div>
         </Col>
       </Row>

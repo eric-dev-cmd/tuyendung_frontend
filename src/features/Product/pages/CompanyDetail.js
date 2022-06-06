@@ -17,7 +17,8 @@ import MainNavigation from "../../../components/Layout/MainNavigation";
 import FieldCompanyApi from "../../../services/fieldCompanyApi";
 import ProductGeneralInfomation from "../components/company/ProductGeneralInfomation";
 import ProductHeader from "../components/company/ProductHeader";
-import ProductCompanyGeneralInfomation from "../components/ProductCompanyGeneralInfomation";
+import ProductCompanyGeneralInfomation from "../components/company/ProductCompanyGeneralInfomation";
+import RecruitmentApi from "../../../services/recruitmentApi";
 
 
 const { TabPane } = Tabs;
@@ -53,6 +54,22 @@ const CompanyDetail = (props) => {
     useEffect(() => {
       getCompanyDetail();
     }, [slug]);
+  //     const [dataCompany, setDataCompany] = useState([])
+  // // Việc làm theo nhà tuyển dụng
+  // const getListTinTuyenDungTheoNhaTuyenDung = async () => {
+  //   try {
+  //     const response = await RecruitmentApi.getListRecruitmentFilterParamsNhaTuyenDungById(company?._id);
+  //     setDataCompany(response?.data);
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getListTinTuyenDungTheoNhaTuyenDung();
+  // }, [company?._id]);
+  //   useEffect(() => {
+  //     getListTinTuyenDungTheoNhaTuyenDung();
+  //   }, []);
   return (
     <Fragment>
       <Helmet>
