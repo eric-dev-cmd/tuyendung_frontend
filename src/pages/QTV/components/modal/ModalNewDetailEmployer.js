@@ -31,7 +31,7 @@ const ModalNewDetailEmployer = ({
         onCancel={() => {
           onCloseModal(false);
         }}
-        width={1400}
+        width={1000}
         footer={
           [
             // <Button
