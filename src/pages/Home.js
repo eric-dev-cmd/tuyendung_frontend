@@ -94,35 +94,11 @@ const Home = () => {
                   <div className="row mt-2">
                     <JobList recruitments={recruitmentsTopNews} />
                   </div>
-                  {/* <div className="row mt-5">
-                    <div className="col-12">
-                      <h5 className="text-uppercase">
-                        <AiFillStar className="pb-1" />
-                        {t("common.titleRecruitmentNew")}
-                      </h5>
-                    </div>
-                  </div>
-                  <div className="row mt-2">
-                    <JobList recruitments={recruitments} />
-                  </div> */}
                   <div className="row mt-2">
                     <div className="col-12">
                       <CarouselCustom />
                     </div>
                   </div>
-                  {/* <div className="my-3">
-                    <div className="row mt-4">
-                      <div className="col-12">
-                        <h5 className="text-uppercase">
-                          <AiFillStar className="pb-1" />
-                          {t("common.titlePartTimeJob")}
-                        </h5>
-                      </div>
-                    </div>
-                    <div className="row mt-2">
-                      <JobList recruitments={recruitmentsPartTime} />
-                    </div>
-                  </div> */}
                   {/* Three */}
                   <div className="d-flex flex-wrap mt-4 pb-5 mb-2">
                     <div className="width-33 me-4">

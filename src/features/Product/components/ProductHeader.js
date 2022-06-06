@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { BiPaperPlane } from "react-icons/bi";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import TimeUtils from "../../../utils/timeUtils";
 import ApplyJobModal from "./modal/ApplyJobModal";
 import CandidateApplicationForm from "../../../services/candidateApplicationForm";
@@ -19,12 +19,16 @@ import { useSelector } from "react-redux";
 import profileApi from "../../../services/profileApi";
 import axios from "axios";
 import { getUserProfile } from "../../../utils/localStorage";
+import InterestedJobApi from "../../../services/interestedJobApi";
 
 const ProductHeader = (props) => {
   const { isAuthenticated } = useSelector((state) => state?.userLogin);
   const users = useSelector((state) => state?.userLogin);
   const userU = getUserProfile();
+  console.log("props aaa", props);
+  const params = useParams();
 
+  const { slug } = params;
   const userId = users?.user?.taiKhoan._id;
   const history = useHistory();
   const { t } = useTranslation();
@@ -72,9 +76,9 @@ const ProductHeader = (props) => {
       ) {
         setIsShowModal(false);
         setIsShowLinkUpdateProfile(true);
-        setIsShowOptionApply(false)
+        setIsShowOptionApply(false);
       } else {
-        setIsShowOptionApply(true)
+        setIsShowOptionApply(true);
         setIsShowModal(true);
         setIsShowLinkUpdateProfile(false);
       }
@@ -92,34 +96,34 @@ const ProductHeader = (props) => {
     console.log("Call api file", file);
     setIsShowDaUngTuyen(false);
     try {
-      await CandidateApplicationForm.createApplicationForm(payload).then(res => {
-        console.log("Call api res", res);
-        if (res?.status === "success")
-          toast.success("Ứng tuyển thành công", {
-            position: "bottom-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        if (payload?.phuongThuc == true) {
-          let formData = new FormData();
-          formData.append("file", file);
-          const requestUrl = `http://localhost:4000/ungTuyenViens/capNhatCv`;
-          axios({
-            method: "patch",
-            url: requestUrl,
-            data: formData,
-            headers: {
-              Authorization: `Bearer ${userU.token}`,
-            },
-          });
+      await CandidateApplicationForm.createApplicationForm(payload).then(
+        (res) => {
+          console.log("Call api res", res);
+          if (res?.status === "success")
+            toast.success("Ứng tuyển thành công", {
+              position: "bottom-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          if (payload?.phuongThuc == true) {
+            let formData = new FormData();
+            formData.append("file", file);
+            const requestUrl = `http://localhost:4000/ungTuyenViens/capNhatCv`;
+            axios({
+              method: "patch",
+              url: requestUrl,
+              data: formData,
+              headers: {
+                Authorization: `Bearer ${userU.token}`,
+              },
+            });
+          }
         }
-
-      })
-
+      );
     } catch (error) {
       if (error) {
         setIsShowDaUngTuyen(true);
@@ -168,6 +172,36 @@ const ProductHeader = (props) => {
       />
     );
   }, [isShowModal]);
+
+  const handleSubmitFavorite = async () => {
+    if (!userId) {
+      history.push("/login");
+    } else {
+      // handleHightLightFavorite();
+      // setIsFavorite(true);
+      const payload = {
+        tinTuyenDung: slug,
+      };
+      try {
+        const response = await InterestedJobApi.creatInterestedJob(payload);
+        if (response.status === "success") {
+          toast.success("Lưu tin tuyển dụng thành công", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response);
+        console.log(error.response);
+      }
+    }
+  };
 
   return (
     <>
@@ -256,6 +290,7 @@ const ProductHeader = (props) => {
             <Button
               className="form-control d-flex align-items-center justify-content-center py-2 my-4"
               icon={<HeartOutlined />}
+              onClick={handleSubmitFavorite}
             >
               {t("productDetail.saveRecruitment")}
             </Button>
