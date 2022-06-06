@@ -89,6 +89,7 @@ const Login = () => {
                             required: true,
                             minLength: 8,
                             maxLength: 30,
+                            pattern: /^[a-zA-Z0-9]+$/,
                           })}
                         />
                         <label htmlFor="adminUsername" className="form__label">
@@ -107,6 +108,10 @@ const Login = () => {
                         {errors.dangNhapTenTaiKhoan &&
                           errors.dangNhapTenTaiKhoan.type === "maxLength" && (
                             <p>Vui lòng nhập ít hơn 30 ký tự</p>
+                          )}
+                        {errors.dangNhapTenTaiKhoan &&
+                          errors.dangNhapTenTaiKhoan.type === "pattern" && (
+                            <p>Tên tài khoản ko chứa kí tự đặc biệt</p>
                           )}
                       </div>
                     </div>

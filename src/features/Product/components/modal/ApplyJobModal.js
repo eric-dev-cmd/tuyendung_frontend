@@ -187,7 +187,7 @@ const ApplyJobModal = ({
                 changed={radioChangeHandler}
                 id="1"
                 isSelected={cvMethod === "1"}
-                label="Tải hồ sơ từ máy tính của bạn"
+                label="Tải từ máy tính của bạn"
                 value="1"
               />
 
@@ -195,7 +195,7 @@ const ApplyJobModal = ({
                 changed={radioChangeHandler}
                 id="2"
                 isSelected={cvMethod === "0"}
-                label="Chọn hồ sơ online"
+                label="Hồ sơ online"
                 value="0"
               />
             </div>
