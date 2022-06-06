@@ -407,7 +407,7 @@ const DashBoardQTVField = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12 mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}

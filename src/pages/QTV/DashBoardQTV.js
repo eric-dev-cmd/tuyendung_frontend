@@ -203,7 +203,7 @@ const DashBoardQTV = () => {
             progress: undefined,
           });
           const sendMail = {
-            email: 'catluynh99@gmail.com',//`${res?.data?.thongTinLienHe?.email}`,
+            email: "catluynh99@gmail.com", //`${res?.data?.thongTinLienHe?.email}`,
             subject: "CHẤP NHẬN TIN TUYỂN DỤNG",
             message: `Tin tuyển dụng đã được duyệt`,
           };
@@ -305,7 +305,7 @@ const DashBoardQTV = () => {
           // clearErrors();
         }}
         detail={detailReview}
-      // onSubmit={handleSubmitModalProfile}
+        // onSubmit={handleSubmitModalProfile}
       />
     );
   }, [isShowModalDetailReview]);
@@ -337,7 +337,7 @@ const DashBoardQTV = () => {
           // clearErrors();
         }}
         detail={detail}
-      // onSubmit={handleSubmitModalProfile}
+        // onSubmit={handleSubmitModalProfile}
       />
     );
   }, [isShowModalDetail]);
@@ -663,7 +663,7 @@ const DashBoardQTV = () => {
                                             </li>
                                             <>
                                               {item?.trangThai ==
-                                                "Chờ duyệt" ? (
+                                              "Chờ duyệt" ? (
                                                 <>
                                                   <li
                                                     onClick={() => {
@@ -751,7 +751,7 @@ const DashBoardQTV = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12  mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -762,8 +762,9 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Chờ xét duyệt (${totalChoDuyet ? totalChoDuyet : 0
-                        })`}
+                      tab={`Chờ xét duyệt (${
+                        totalChoDuyet ? totalChoDuyet : 0
+                      })`}
                       key="1"
                     >
                       <div className="row">
@@ -1064,7 +1065,7 @@ const DashBoardQTV = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12  mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -1381,7 +1382,7 @@ const DashBoardQTV = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12  mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -1693,7 +1694,7 @@ const DashBoardQTV = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12  mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -2017,7 +2018,7 @@ const DashBoardQTV = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12  mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -2329,7 +2330,7 @@ const DashBoardQTV = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12  mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -2340,8 +2341,9 @@ const DashBoardQTV = () => {
                       </div>
                     </TabPane>
                     <TabPane
-                      tab={`Đánh giá kém (${totalReviewLeast ? totalReviewLeast : 0
-                        })`}
+                      tab={`Đánh giá kém (${
+                        totalReviewLeast ? totalReviewLeast : 0
+                      })`}
                       key="9"
                     >
                       <div className="row">
@@ -2641,7 +2643,7 @@ const DashBoardQTV = () => {
                                                         </span>
                                                       </li>
                                                     ) : item?.tinTuyenDung
-                                                      ?.trangThai ==
+                                                        ?.trangThai ==
                                                       "Đã duyệt" ? (
                                                       <li
                                                         onClick={() => {
@@ -2693,7 +2695,7 @@ const DashBoardQTV = () => {
                             </div>
                           </div>
                         )}
-                        <div className="col-12">
+                        <div className="col-12  mt-4">
                           {recruitmentReviewLeast.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}

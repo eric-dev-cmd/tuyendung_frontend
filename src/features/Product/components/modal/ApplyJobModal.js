@@ -102,12 +102,14 @@ const ApplyJobModal = ({
   }, []);
 
   const radioChangeHandler = (e) => {
-    setCvMethod(e.target.value);
+    const value = e.target.value;
+    setCvMethod(value);
   };
   const [isShowFileName, setIsShowFileName] = useState(false);
   const handleChange = (e) => {
     if (e.target.files[0]) {
-      setFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setFile(file);
       setIsShowFileName(true);
     }
   };
@@ -162,12 +164,6 @@ const ApplyJobModal = ({
               } else if (!isShowNextPage2 && !isEntered) {
                 nextPage();
               }
-              // {
-              //   isShowNextPage2 ? nextPage2(): (
-              //     isEntered ? save() : nextPage()
-              //   )
-              // }
-              //   onCloseModal(false);
             }}
           >
             {isShowNextPage2 && <span>Tiếp tục</span>}

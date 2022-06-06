@@ -1,22 +1,19 @@
 import { Breadcrumb, Button, Layout, Menu, Modal, Select, Tabs } from "antd";
 import axios from "axios";
 import queryString from "query-string";
-import React, { Fragment, useEffect, useState, useRef, useMemo } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { FaUserPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import PostFiltersForm from "../../components/Admin/PostFiltersForm";
-import axiosClient from "../../services/axiosClient";
-import RecruitmentApi from "../../services/recruitmentApi";
-import TimeUtils from "../../utils/timeUtils";
-import NavbarAdmin from "./components/navbar/NavbarAdmin";
-import { toast } from "react-toastify";
-import ReactPaginate from "react-paginate";
-import Pagination from "../../components/Pagination/Pagination";
 import { RiRefreshLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import io from "socket.io-client";
-import { AiFillEye } from "react-icons/ai";
+import PostFiltersForm from "../../components/Admin/PostFiltersForm";
+import Pagination from "../../components/Pagination/Pagination";
+import axiosClient from "../../services/axiosClient";
+import TimeUtils from "../../utils/timeUtils";
 import ModalNewDetail from "./components/modals/ModalNewDetail";
+import NavbarAdmin from "./components/navbar/NavbarAdmin";
 
 const { Option } = Select;
 
@@ -34,12 +31,8 @@ const MainNavigationAdmin = () => {
   }, [socket]);
 
   const [isSubmit, setIsSubmit] = useState([]);
-
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
   const [totalCount, setTotalCount] = useState(0);
-  const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({
     page: 1,
     limit: 5,
@@ -47,11 +40,7 @@ const MainNavigationAdmin = () => {
 
   const [recruitments, setRecruitments] = useState([]);
   const paramsString = queryString.stringify(filters);
-  console.log("paramsString", paramsString);
   const [type, setType] = useState();
-  const onHandleChangeType = (value) => {
-    setType(value);
-  };
   const [value, setValue] = useState(0);
 
   const [pagination, setPagination] = useState({
@@ -66,31 +55,10 @@ const MainNavigationAdmin = () => {
     });
   };
 
-  const getListData = async (pg = page, pgSize = pageSize) => {
-    try {
-      const params = {
-        page: pg,
-        limit: 15,
-        // tieuDe: "",
-        // trangThai: "",
-      };
-
-      const response =
-        await RecruitmentApi.getListRecruitmentByEmployerFilterParams(params);
-      console.log("response:::", response);
-      setRecruitments(response.data);
-      setIsSubmit(false);
-      setTotalCount(response.pagination.total);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
   const getDataListFilters = async () => {
     const requestUrl = `http://localhost:4000/tinTuyenDungs/timKiemTheoNhaTuyenDung?${paramsString}`;
     try {
       const response = await axiosClient.get(requestUrl);
-      console.log("responseresponse", response.data);
       setRecruitments(response.data);
       setTotalCount(response.pagination.total);
       setPagination(response.pagination);
@@ -124,6 +92,7 @@ const MainNavigationAdmin = () => {
     setFilters({
       ...filters,
       page: 1,
+      limit: 2,
       trangThai: newFilters,
     });
   };
@@ -244,7 +213,6 @@ const MainNavigationAdmin = () => {
   const handleAddButtonClickDetail = (item) => {
     // setUserProfile(item);
     // e.preventDefault();
-    console.log("item", item);
     setDetail(item);
     setIsShowModalDetail(true);
   };
@@ -519,7 +487,7 @@ const MainNavigationAdmin = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12 mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -691,7 +659,7 @@ const MainNavigationAdmin = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12 mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -878,7 +846,7 @@ const MainNavigationAdmin = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12 mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -1049,7 +1017,7 @@ const MainNavigationAdmin = () => {
                             </div>
                           </div>
                         )}
-                        <div className="col-12">
+                        <div className="col-12 mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -1222,7 +1190,7 @@ const MainNavigationAdmin = () => {
                           </div>
                         )}
 
-                        <div className="col-12">
+                        <div className="col-12 mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}
@@ -1385,7 +1353,7 @@ const MainNavigationAdmin = () => {
                           </div>
                         </div>
 
-                        <div className="col-12">
+                        <div className="col-12 mt-4">
                           {recruitments.length !== 0 && (
                             <Pagination
                               onPageChange={handlePageChange}

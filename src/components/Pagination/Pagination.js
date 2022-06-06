@@ -1,6 +1,7 @@
 import ReactPaginate from "react-paginate";
 const Pagination = ({ pagination, onPageChange }) => {
   const { limit, total } = pagination;
+
   console.log("pagination", pagination);
   const totalPages = Math.ceil(total / limit);
   const handlePageClick = (newPage) => {
@@ -17,7 +18,7 @@ const Pagination = ({ pagination, onPageChange }) => {
       pageRangeDisplayed={6}
       marginPagesDisplayed={6}
       containerClassName={"justify-content-center pagination"}
-      // disabledClassName={"text-gray-300"}
+      disabledClassName={"text-secondary"}
       pageClassName={"page-item"}
       activeClassName={"active"}
       pageLinkClassName={"page-link"}
