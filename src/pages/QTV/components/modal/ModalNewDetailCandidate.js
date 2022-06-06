@@ -1,16 +1,13 @@
-import { Avatar, Comment, DatePicker, Modal, Select, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import { DatePicker, Modal, Select } from "antd";
+import React from "react";
 import { BiBriefcase } from "react-icons/bi";
 import TimeUtils from "../../../../utils/timeUtils";
-import queryString from "query-string";
-import ReviewApi from "../../../../services/reviewApi";
-import { AiFillStar } from "react-icons/ai";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY-MM-DD";
 
-const ModalNewDetailReview = ({
+const ModalNewDetailCandidate = ({
   showModal,
   onCloseModal,
   isEdit,
@@ -18,43 +15,6 @@ const ModalNewDetailReview = ({
   ...props
 }) => {
   console.log("props?.detail", props?.detail);
-  const [reviews, setReviews] = useState([]);
-  const [filterReview, setFilterReview] = useState({});
-
-  const paramsString = queryString.stringify(filterReview);
-  const getListTabReveiew = async () => {
-    try {
-      const params = {
-        paramsString,
-      };
-      const response = await ReviewApi.getReviewFilterById(
-        props?.detail?.tinTuyenDung?._id,
-        params.paramsString
-      );
-      setReviews(response);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-  useEffect(() => {
-    getListTabReveiew();
-  }, [filterReview]);
-
-  //CALL API
-  // const getListReviewById = async () => {
-  //   // setLoading(true);
-  //   try {
-  //     const response = await ReviewApi.getReviewById(slug);
-  //     setReviews(response);
-  //     // setLoading(false);
-  //   } catch (error) {
-  //     // setLoading(false);
-  //     console.log("error", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getListReviewById();
-  // }, []);
 
   return (
     <div>
@@ -307,134 +267,6 @@ const ModalNewDetailReview = ({
                     <div>{props?.detail?.tinTuyenDung?.yeuCau}</div>
                   </div>
                 </div>{" "}
-                <div className="col-12 mt-3">
-                  <div>
-                    <h5>Các lượt đánh giá tuyển dụng</h5>
-                  </div>
-                  {reviews?.data &&
-                    reviews?.data.map((item, index) => {
-                      console.log("vinh item", item?.danhGiaBoi);
-                      return (
-                        <Comment
-                          className="ms-2"
-                          key={index}
-                          // actions={actions}
-                          author={<a>{`${item?.danhGiaBoi.ten}`}</a>}
-                          avatar={
-                            <Avatar
-                              src={`https://webtuyendung.s3.ap-southeast-1.amazonaws.com/${item?.danhGiaBoi?.avatar}`}
-                              alt={`${item?.danhGiaBoi.ten}`}
-                            />
-                          }
-                          content={
-                            <>
-                              {
-                                item?.xepLoai == 1 ? (
-                                  <>
-                                    <span className="fs-18">
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar />
-                                      <AiFillStar />
-                                      <AiFillStar />
-                                      <AiFillStar />
-                                    </span>
-                                  </>
-                                ) : item?.xepLoai == 2 ? (
-                                  <>
-                                    <span className="fs-18">
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar />
-                                      <AiFillStar />
-                                      <AiFillStar />
-                                    </span>
-                                  </>
-                                ) : item?.xepLoai == 3 ? (
-                                  <>
-                                    <span className="fs-18">
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar />
-                                      <AiFillStar />
-                                    </span>
-                                  </>
-                                ) : item?.xepLoai == 4 ? (
-                                  <>
-                                    <span className="fs-18">
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar />
-                                    </span>
-                                  </>
-                                ) : item?.xepLoai == 5 ? (
-                                  <>
-                                    <span className="fs-18">
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                      <AiFillStar
-                                        style={{ color: "#ee4d2d" }}
-                                      />
-                                    </span>
-                                  </>
-                                ) : null
-                                // onHandleStarReview(1)
-                              }
-                              <p>{`${item?.noiDung}`}</p>
-                            </>
-                          }
-                          datetime={
-                            <Tooltip
-                              title={TimeUtils.formatDateTime(
-                                `${item?.ngay}`,
-                                "DD-MMM-YYYY HH:mm:ss"
-                              )}
-                            >
-                              <span>
-                                {TimeUtils.formatDateTime(
-                                  `${item?.ngay}`,
-                                  "DD-MMM-YYYY HH:mm:ss"
-                                )}
-                              </span>
-                            </Tooltip>
-                          }
-                        />
-                      );
-                    })}
-                  {reviews?.total == 0 && <p>Không có đánh giá nào</p>}
-                </div>
               </div>
             </div>
           </div>
@@ -444,6 +276,6 @@ const ModalNewDetailReview = ({
   );
 };
 
-ModalNewDetailReview.propTypes = {};
+ModalNewDetailCandidate.propTypes = {};
 
-export default ModalNewDetailReview;
+export default ModalNewDetailCandidate;
