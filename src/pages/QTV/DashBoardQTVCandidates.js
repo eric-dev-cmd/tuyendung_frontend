@@ -370,14 +370,13 @@ const DashBoardQTVCandidates = () => {
                                           </span>
                                         </p>
 
-                                        <p>
-                                          <Link
-                                            to={`/job-detail/${item._id}`}
-                                            target="_blank"
-                                          >
-                                            Xem thông tin ứng tuyển viên
-                                          </Link>
-                                        </p>
+                                        {/* <p
+                                          onClick={() => {
+                                            handleAddButtonClickDetail(item);
+                                          }}
+                                        >
+                                          Xem thông tin ứng tuyển viên
+                                        </p> */}
                                       </td>
                                       <td className="align-middle">
                                         <span className="text-xs font-weight-bold d-flex align-items-center  text-center">

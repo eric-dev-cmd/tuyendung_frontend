@@ -338,6 +338,7 @@ const DashBoardQTVEmployer = () => {
                               </thead>
                               <tbody>
                                 {recruitments.map((item, index) => {
+                                  console.log("luu", item);
                                   return (
                                     <tr key={index}>
                                       <td className="align-middle">
@@ -369,7 +370,7 @@ const DashBoardQTVEmployer = () => {
                                             to={`/company/${item?._id}`}
                                             target="_blank"
                                           >
-                                            Xem thông tin trên website
+                                            {/* Xem thông tin trên website */}
                                           </Link>
                                         </p>
                                       </td>
