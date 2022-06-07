@@ -33,13 +33,14 @@ const { SubMenu } = Menu;
 
 const UpdateJob = (props) => {
   const history = useHistory();
+  const [job, setJob] = useState();
   const [selectedItems, setSelectedItems] = useState([]);
   const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
   const [isHideForm1, setIsHideForm1] = useState(false);
   const [isHideForm2, setIsHideForm2] = useState(false);
   const [collapsed, setCollapsed] = React.useState(false);
   const [placeWorks, setPLaceWorks] = useState([]);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(job?.tieuDe);
   const [salary, setSalary] = useState();
   const { listCareers, levels, typeWorks, experiences } = useCommonContext();
   const [city, setCity] = useState(1);
@@ -71,6 +72,24 @@ const UpdateJob = (props) => {
   const [dataJobs, setDataJobs] = useState({});
   const { id } = useParams();
   console.log("🚀 ~ file: UpdateJob.js ~ line 73 ~ UpdateJob ~ id", id);
+  const getTinTuyenDungById = async () => {
+    const requestUrl = `http://localhost:4000/tinTuyenDungs/${id}`;
+    try {
+      const response = await axios.get(requestUrl);
+      console.log("response update", response);
+      // setTotalStatus(response.data.data);
+      setJob(response?.data?.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  useEffect(() => {
+    getTinTuyenDungById();
+  }, [id]);
+  
+  useEffect(() => {
+    getTinTuyenDungById();
+  }, []);
 
   const [filters, setFilters] = useState({
     page: 1,
@@ -213,7 +232,7 @@ const UpdateJob = (props) => {
       setPLaceWorks([]);
     };
   }, []);
-
+  console.log("jobs update", job);
   return (
     <Fragment>
       <Helmet>
@@ -286,11 +305,12 @@ const UpdateJob = (props) => {
                           <Input
                             placeholder="Ví dụ tuyển nhân viên kinh doanh"
                             size="large"
-                            // value={detail?.tieuDe}
-                            defaultValue={detail?.tieuDe}
+                            value={title}
+                            defaultValue={title}
                             onChange={(e) => {
                               console.log("anh");
-                              setTitle(e.target.value);
+                              const value = e.target.value;
+                              setTitle(value);
                             }}
                           />
                         </p>

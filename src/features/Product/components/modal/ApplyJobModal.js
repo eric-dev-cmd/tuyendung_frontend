@@ -139,11 +139,15 @@ const ApplyJobModal = ({
     setCvMethod(value);
   };
   const [isShowFileName, setIsShowFileName] = useState(false);
+  const [isHideButton, setIsHideButton] = useState(true);
   const handleChange = (e) => {
     if (e.target.files[0]) {
       const file = e.target.files[0];
       setFile(file);
       setIsShowFileName(true);
+      setIsHideButton(false);
+    } else {
+      alert("Khong co file");
     }
   };
   return (
@@ -187,7 +191,7 @@ const ApplyJobModal = ({
               (isEntered ? <span>Quay lại</span> : <span>Quay lại</span>)}
           </Button>,
           <Button
-            disabled={isDisabled}
+            disabled={isHideButton}
             key="submit"
             type="primary"
             onClick={() => {
@@ -240,11 +244,11 @@ const ApplyJobModal = ({
                       <header>
                         <h4>Chọn file tại đây</h4>
                       </header>
-                      <p>Các tệp được hỗ trợ: PDF, TEXT, DOC, DOCX</p>
+                      <p>Tệp được hỗ trợ: PDF</p>
                       <input
                         type="file"
                         hidden
-                        accept=".doc,.docx,.pdf"
+                        accept=".pdf"
                         id="fileID"
                         style={{ display: "none" }}
                         onChange={handleChange}

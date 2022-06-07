@@ -206,7 +206,17 @@ const NewForProfileDetail = () => {
                 recruitment._id
               }`,
             };
-            await axios.post(requestUrlSendEmail, sendMail);
+            await axios.post(requestUrlSendEmail, sendMail).then((res) => {
+              toast.success("Gửi email thành công", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            });
           }
         });
       });
